@@ -41,7 +41,7 @@
                     placeholder="••••••••"
                     autocomplete="current-password"
                 >
-                <button type="button" class="toggle-password" onclick="togglePassword('contrasena', this)">
+                <button type="button" class="toggle-password">
                     <i class="fa-regular fa-eye-slash"></i>
                 </button>
             </div>
@@ -65,20 +65,4 @@
             ¿No tiene cuenta corporativa? <a href="{{ route('register') }}">Solicitar acceso</a>
         </p>
     </form>
-
-    <script>
-        function togglePassword(fieldId, btn) {
-            const input = document.getElementById(fieldId);
-            const icon = btn.querySelector('i');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            }
-        }
-    </script>
 @endsection
