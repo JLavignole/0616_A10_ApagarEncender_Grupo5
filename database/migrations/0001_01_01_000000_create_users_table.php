@@ -7,16 +7,38 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        // ── 1️⃣ Sedes ──────────────────────────────────────
+        Schema::create('sedes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('codigo', 10)->unique();       // BCN, BER, YUL
+            $table->string('nombre');                      // Barcelona, Berlín, Montreal
+            $table->string('zona_horaria')->nullable();    // Zona horaria (opcional)
+            $table->boolean('activo')->default(true);      // Sede activa
+            $table->timestamps();
+        });
+
+        // ── Roles (relación 1:1 con usuarios) ──────────────
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre')->unique(); // admin, cliente, gestor, tecnico
+            $table->string('descripcion')->nullable();
+            $table->timestamps();
+        });
+
+        // ── Usuarios (solo autenticación) ──────────────────
+        Schema::create('usuarios', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete();
+            $table->foreignId('rol_id')->nullable()->constrained('roles')->nullOnDelete(); // Rol del usuario (1:1)
+            $table->string('nombre');
+            $table->string('correo')->unique();
+            $table->string('contrasena');
+            $table->boolean('activo')->default(true);
+            $table->timestamp('ultimo_acceso')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -38,12 +60,14 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('usuarios');
+        Schema::dropIfExists('roles');
+        Schema::dropIfExists('sedes');
     }
 };
