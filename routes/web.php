@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\Administrador\DashboardController as AdminDashboard;
 use App\Http\Controllers\Administrador\SedesController;
+use App\Http\Controllers\Administrador\UsuariosController;
 use App\Http\Controllers\Gestor\DashboardController as GestorDashboard;
 use App\Http\Controllers\Tecnico\DashboardController as TecnicoDashboard;
 use App\Http\Controllers\Cliente\DashboardController as ClienteDashboard;
@@ -26,6 +27,15 @@ Route::middleware('auth')->group(function () {
     // Rutas del módulo Administrador
     Route::middleware('role:administrador')->prefix('administrador')->name('administrador.')->group(function () {
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+
+        // Gestión de usuarios
+        Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
+        Route::get('/usuarios/crear', [UsuariosController::class, 'crear'])->name('usuarios.crear');
+        Route::post('/usuarios', [UsuariosController::class, 'store'])->name('usuarios.store');
+        Route::get('/usuarios/{usuario}/editar', [UsuariosController::class, 'editar'])->name('usuarios.editar');
+        Route::put('/usuarios/{usuario}', [UsuariosController::class, 'update'])->name('usuarios.update');
+        Route::post('/usuarios/{usuario}/desactivar', [UsuariosController::class, 'desactivar'])->name('usuarios.desactivar');
+        Route::post('/usuarios/{usuario}/reactivar', [UsuariosController::class, 'reactivar'])->name('usuarios.reactivar');
 
         // Gestión de sedes
         Route::get('/sedes', [SedesController::class, 'index'])->name('sedes.index');

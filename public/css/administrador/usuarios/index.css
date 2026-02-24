@@ -1,0 +1,271 @@
+/* ── Administrador / Usuarios / index.css ─────────────────── */
+
+/* ── Filtros ── */
+.filtros-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filtros-busqueda {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.filtros-busqueda i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-texto-secundario);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.filtros-busqueda input {
+    width: 100%;
+    padding: 8px 12px 8px 34px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    font-size: 13.5px;
+    background: #fff;
+    color: var(--color-texto-principal);
+    outline: none;
+    transition: border-color .15s;
+}
+
+.filtros-busqueda input:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+/* ── Selects de filtro ── */
+.filtro-select {
+    padding: 8px 12px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    font-size: 13.5px;
+    background: #fff;
+    color: var(--color-texto-principal);
+    outline: none;
+    cursor: pointer;
+    transition: border-color .15s;
+}
+
+.filtro-select:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+/* ── Botones de estado ── */
+.filtros-estado {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.btn-filtro-estado {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--color-borde);
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-texto-secundario);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    line-height: 1.4;
+}
+
+.btn-filtro-estado:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.btn-filtro-estado.activo {
+    background: var(--color-primario);
+    border-color: var(--color-primario);
+    color: #fff;
+}
+
+/* ── Botón limpiar ── */
+.btn-limpiar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #fee2e2;
+    color: #dc2626;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background .15s;
+}
+
+.btn-limpiar:hover {
+    background: #fecaca;
+    color: #dc2626;
+}
+
+/* ── Tabla ── */
+.tabla-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.tabla-datos thead th {
+    background: var(--color-fondo-tabla);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--color-texto-secundario);
+    border-bottom: 1px solid var(--color-borde);
+    padding: 12px 16px;
+    white-space: nowrap;
+}
+
+.tabla-datos tbody td {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--color-texto-principal);
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.tabla-datos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-datos tbody tr:hover {
+    background: #f8faff;
+}
+
+.fila-inactiva {
+    opacity: .6;
+}
+
+.td-secundario {
+    color: var(--color-texto-secundario);
+    font-size: 13.5px;
+}
+
+.th-acciones,
+.td-acciones {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.td-vacio {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--color-texto-secundario);
+    font-size: 14px;
+}
+
+/* ── Badges de rol ── */
+.badge-rol {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-rol--administrador {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.badge-rol--gestor {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge-rol--tecnico {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-rol--cliente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-rol--sin-rol {
+    background: #f1f5f9;
+    color: var(--color-texto-secundario);
+}
+
+/* ── Badges de estado ── */
+.badge-estado {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-estado--activo {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.badge-estado--inactivo {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ── Botones de acción ── */
+.btn-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    text-decoration: none;
+    transition: background .15s, color .15s;
+    background: transparent;
+}
+
+.btn-icono--editar {
+    color: var(--color-primario);
+}
+
+.btn-icono--editar:hover {
+    background: #eff6ff;
+    color: var(--color-primario);
+}
+
+.btn-icono--activar {
+    color: #15803d;
+}
+
+.btn-icono--activar:hover {
+    background: #dcfce7;
+}
+
+.btn-icono--desactivar {
+    color: #dc2626;
+}
+
+.btn-icono--desactivar:hover {
+    background: #fee2e2;
+}
+
+.form-toggle {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}

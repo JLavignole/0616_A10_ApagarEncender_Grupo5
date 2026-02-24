@@ -47,7 +47,8 @@
 
                     <p class="sidebar-section">Gestión</p>
 
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.usuarios.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/usuarios') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span>Usuarios</span>
                     </a>
