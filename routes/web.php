@@ -6,6 +6,7 @@ use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\Administrador\DashboardController as AdminDashboard;
 use App\Http\Controllers\Administrador\SedesController;
 use App\Http\Controllers\Administrador\UsuariosController;
+use App\Http\Controllers\Administrador\CategoriasController;
 use App\Http\Controllers\Gestor\DashboardController as GestorDashboard;
 use App\Http\Controllers\Tecnico\DashboardController as TecnicoDashboard;
 use App\Http\Controllers\Cliente\DashboardController as ClienteDashboard;
@@ -36,6 +37,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/usuarios/{usuario}', [UsuariosController::class, 'update'])->name('usuarios.update');
         Route::post('/usuarios/{usuario}/desactivar', [UsuariosController::class, 'desactivar'])->name('usuarios.desactivar');
         Route::post('/usuarios/{usuario}/reactivar', [UsuariosController::class, 'reactivar'])->name('usuarios.reactivar');
+
+        // Gestión de categorías
+        Route::get('/categorias', [CategoriasController::class, 'index'])->name('categorias.index');
+        Route::get('/categorias/crear', [CategoriasController::class, 'crear'])->name('categorias.crear');
+        Route::post('/categorias', [CategoriasController::class, 'store'])->name('categorias.store');
+        Route::get('/categorias/{categoria}/editar', [CategoriasController::class, 'editar'])->name('categorias.editar');
+        Route::put('/categorias/{categoria}', [CategoriasController::class, 'update'])->name('categorias.update');
+        Route::post('/categorias/{categoria}/activar', [CategoriasController::class, 'activar'])->name('categorias.activar');
+        Route::post('/categorias/{categoria}/desactivar', [CategoriasController::class, 'desactivar'])->name('categorias.desactivar');
 
         // Gestión de sedes
         Route::get('/sedes', [SedesController::class, 'index'])->name('sedes.index');

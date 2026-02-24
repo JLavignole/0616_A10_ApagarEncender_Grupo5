@@ -52,7 +52,8 @@
                         <i class="bi bi-people"></i>
                         <span>Usuarios</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.categorias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/categorias') ? 'active' : '' }}">
                         <i class="bi bi-tags"></i>
                         <span>Categorías</span>
                     </a>
