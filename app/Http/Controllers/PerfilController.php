@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdatePerfilRequest;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 
 class PerfilController extends Controller
 {
-    // Mostrar formulario de perfil
-    public function show(): View
+    /**
+     * Mostrar formulario de perfil
+     */
+    public function show()
     {
         /** @var User $usuario */
         $usuario = Auth::user();
@@ -20,11 +21,27 @@ class PerfilController extends Controller
         return view('perfil.editar', compact('usuario'));
     }
 
-    // Guardar cambios
-    public function update(UpdatePerfilRequest $request): RedirectResponse
+    /**
+     * Guardar cambios del perfil
+     */
+    public function update(Request $request)
     {
         /** @var User $usuario */
         $usuario = Auth::user();
+
+        $request->merge(['correo' => strtolower(trim($request->correo))]);
+
+        $request->validate([
+            'nombre'       => ['required', 'string', 'min:2', 'max:255'],
+            'correo'       => ['required', 'string', 'max:255', Rule::unique('usuarios', 'correo')->ignore($usuario->id)],
+            'contrasena'   => ['nullable', 'string', 'min:6'],
+            'ruta_avatar'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
+            'apellidos'    => ['nullable', 'string', 'max:255'],
+            'telefono'     => ['nullable', 'string', 'max:50'],
+            'cargo'        => ['nullable', 'string', 'max:100'],
+            'departamento' => ['nullable', 'string', 'max:100'],
+            'biografia'    => ['nullable', 'string', 'max:1000'],
+        ]);
 
         // Datos de cuenta básicos
         $datosUsuario = [
@@ -54,7 +71,6 @@ class PerfilController extends Controller
                 ]);
             }
 
-            // Recargar para reflejar el avatar nuevo en el resto del método
             $usuario->load('perfil');
         }
 

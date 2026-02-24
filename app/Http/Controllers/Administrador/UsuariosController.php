@@ -3,35 +3,31 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreUsuarioRequest;
-use App\Http\Requests\Admin\UpdateUsuarioRequest;
 use App\Models\Incidencia;
 use App\Models\Rol;
 use App\Models\Sede;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 
 class UsuariosController extends Controller
 {
-    // Listado con filtros
-    public function index(Request $request): View
+    /**
+     * Listado con filtros
+     */
+    public function index(Request $request)
     {
         $query = User::with(['sede', 'rol', 'perfil'])->orderBy('nombre');
 
-        // Filtro por sede
         if ($request->filled('sede_id')) {
             $query->where('sede_id', $request->input('sede_id'));
         }
 
-        // Filtro por rol
         if ($request->filled('rol_id')) {
             $query->where('rol_id', $request->input('rol_id'));
         }
 
-        // Filtro por estado activo
         $estado = $request->input('estado', 'todos');
         if ($estado === 'activos') {
             $query->where('activo', true);
@@ -39,7 +35,6 @@ class UsuariosController extends Controller
             $query->where('activo', false);
         }
 
-        // Búsqueda por nombre o correo
         if ($request->filled('buscar')) {
             $term = $request->input('buscar');
             $query->where(function ($q) use ($term) {
@@ -55,8 +50,10 @@ class UsuariosController extends Controller
         return view('administrador.usuarios.index', compact('usuarios', 'sedes', 'roles', 'estado'));
     }
 
-    // Formulario de creación
-    public function crear(): View
+    /**
+     * Formulario de creación
+     */
+    public function crear()
     {
         $sedes = Sede::where('activo', true)->orderBy('nombre')->get();
         $roles = Rol::orderBy('nombre')->get();
@@ -64,25 +61,33 @@ class UsuariosController extends Controller
         return view('administrador.usuarios.crear', compact('sedes', 'roles'));
     }
 
-    // Guardar nuevo usuario
-    public function store(StoreUsuarioRequest $request): RedirectResponse
+    /**
+     * Guardar nuevo usuario
+     */
+    public function store(Request $request)
     {
-        User::create([
-            'sede_id'    => $request->sede_id,
-            'rol_id'     => $request->rol_id,
-            'nombre'     => $request->nombre,
-            'correo'     => $request->correo,
-            'contrasena' => $request->contrasena,
-            'activo'     => $request->boolean('activo', true),
+        $request->merge(['correo' => strtolower(trim($request->correo))]);
+
+        $validated = $request->validate([
+            'nombre'     => ['required', 'string', 'min:2', 'max:255'],
+            'correo'     => ['required', 'email', 'max:255', 'unique:usuarios,correo'],
+            'contrasena' => ['required', 'string', 'min:6'],
+            'sede_id'    => ['required', 'integer', Rule::exists('sedes', 'id')->where('activo', true)],
+            'rol_id'     => ['required', 'integer', 'exists:roles,id'],
+            'activo'     => ['nullable', 'boolean'],
         ]);
+
+        User::create($validated);
 
         return redirect()
             ->route('administrador.usuarios.index')
-            ->with('exito', "Usuario «{$request->nombre}» creado correctamente.");
+            ->with('exito', "Usuario {$request->nombre} creado correctamente.");
     }
 
-    // Formulario de edición
-    public function editar(User $usuario): View
+    /**
+     * Formulario de edición
+     */
+    public function editar(User $usuario)
     {
         $sedes = Sede::where('activo', true)->orderBy('nombre')->get();
         $roles = Rol::orderBy('nombre')->get();
@@ -90,14 +95,28 @@ class UsuariosController extends Controller
         return view('administrador.usuarios.editar', compact('usuario', 'sedes', 'roles'));
     }
 
-    // Actualizar usuario
-    public function update(UpdateUsuarioRequest $request, User $usuario): RedirectResponse
+    /**
+     * Actualizar usuario
+     */
+    public function update(Request $request, User $usuario)
     {
+        $request->merge(['correo' => strtolower(trim($request->correo))]);
+
+        $validated = $request->validate([
+            'nombre'      => ['required', 'string', 'min:2', 'max:255'],
+            'correo'      => ['required', 'email', 'max:255', Rule::unique('usuarios', 'correo')->ignore($usuario->id)],
+            'contrasena'  => ['nullable', 'string', 'min:6'],
+            'sede_id'     => ['required', 'integer', Rule::exists('sedes', 'id')->where('activo', true)],
+            'rol_id'      => ['required', 'integer', 'exists:roles,id'],
+            'activo'      => ['nullable', 'boolean'],
+            'ruta_avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
+        ]);
+
         $datos = [
-            'sede_id' => $request->sede_id,
-            'rol_id'  => $request->rol_id,
-            'nombre'  => $request->nombre,
-            'correo'  => $request->correo,
+            'sede_id' => $validated['sede_id'],
+            'rol_id'  => $validated['rol_id'],
+            'nombre'  => $validated['nombre'],
+            'correo'  => $validated['correo'],
             'activo'  => $request->boolean('activo', true),
         ];
 
@@ -126,11 +145,13 @@ class UsuariosController extends Controller
 
         return redirect()
             ->route('administrador.usuarios.index')
-            ->with('exito', "Usuario «{$usuario->nombre}» actualizado correctamente.");
+            ->with('exito', "Usuario {$usuario->nombre} actualizado correctamente.");
     }
 
-    // Desactivar usuario
-    public function desactivar(User $usuario): RedirectResponse
+    /**
+     * Desactivar usuario
+     */
+    public function desactivar(User $usuario)
     {
         $rolNombre = $usuario->rol?->nombre;
 
@@ -157,7 +178,7 @@ class UsuariosController extends Controller
                 ->count();
 
             if ($incidenciasActivas > 0) {
-                return back()->with('error', "No se puede desactivar al técnico «{$usuario->nombre}» porque tiene {$incidenciasActivas} incidencia(s) asignada(s) o en progreso. Reasígnalas antes de continuar.");
+                return back()->with('error', "No se puede desactivar al técnico {$usuario->nombre} porque tiene {$incidenciasActivas} incidencia(s) asignada(s) o en progreso. Reasígnalas antes de continuar.");
             }
         }
 
@@ -170,7 +191,7 @@ class UsuariosController extends Controller
               ->count();
 
             if ($gestoresActivosSede <= 1) {
-                return back()->with('error', "No puedes desactivar a «{$usuario->nombre}» porque es el único gestor activo de su sede.");
+                return back()->with('error', "No puedes desactivar a {$usuario->nombre} porque es el único gestor activo de su sede.");
             }
         }
 
@@ -178,16 +199,18 @@ class UsuariosController extends Controller
 
         return redirect()
             ->route('administrador.usuarios.index')
-            ->with('exito', "Usuario «{$usuario->nombre}» desactivado correctamente.");
+            ->with('exito', "Usuario {$usuario->nombre} desactivado correctamente.");
     }
 
-    // Reactivar usuario
-    public function reactivar(User $usuario): RedirectResponse
+    /**
+     * Reactivar usuario
+     */
+    public function reactivar(User $usuario)
     {
         $usuario->update(['activo' => true]);
 
         return redirect()
             ->route('administrador.usuarios.index')
-            ->with('exito', "Usuario «{$usuario->nombre}» reactivado correctamente.");
+            ->with('exito', "Usuario {$usuario->nombre} reactivado correctamente.");
     }
 }

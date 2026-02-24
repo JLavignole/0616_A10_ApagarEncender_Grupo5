@@ -3,21 +3,19 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreSedeRequest;
-use App\Http\Requests\Admin\UpdateSedeRequest;
 use App\Models\Sede;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 
 class SedesController extends Controller
 {
-    // ── Listado con filtros ────────────────────────────
-    public function index(Request $request): View
+    /**
+     * Listado con filtros
+     */
+    public function index(Request $request)
     {
         $query = Sede::query();
 
-        // Filtro por estado
         $estado = $request->input('estado', 'todas');
         if ($estado === 'activas') {
             $query->where('activo', true);
@@ -25,7 +23,6 @@ class SedesController extends Controller
             $query->where('activo', false);
         }
 
-        // Búsqueda por nombre o código
         if ($request->filled('buscar')) {
             $term = $request->input('buscar');
             $query->where(function ($q) use ($term) {
@@ -39,55 +36,85 @@ class SedesController extends Controller
         return view('administrador.sedes.index', compact('sedes', 'estado'));
     }
 
-    // ── Formulario de creación ─────────────────────────
-    public function crear(): View
+    /**
+     * Formulario de creación
+     */
+    public function crear()
     {
         return view('administrador.sedes.crear');
     }
 
-    // ── Guardar nueva sede ─────────────────────────────
-    public function store(StoreSedeRequest $request): RedirectResponse
+    /**
+     * Guardar nueva sede
+     */
+    public function store(Request $request)
     {
-        Sede::create($request->validated());
+        $request->merge(['codigo' => strtoupper(trim($request->codigo))]);
+
+        $validated = $request->validate([
+            'codigo'       => ['required', 'string', 'min:2', 'max:5', 'regex:/^[A-Z]+$/', 'unique:sedes,codigo'],
+            'nombre'       => ['required', 'string', 'max:255'],
+            'zona_horaria' => ['nullable', 'string', 'max:80'],
+            'activo'       => ['sometimes', 'boolean'],
+        ]);
+
+        Sede::create($validated);
 
         return redirect()
             ->route('administrador.sedes.index')
-            ->with('exito', "Sede «{$request->nombre}» creada correctamente.");
+            ->with('exito', "Sede {$request->nombre} creada correctamente.");
     }
 
-    // ── Formulario de edición ──────────────────────────
-    public function editar(Sede $sede): View
+    /**
+     * Formulario de edición
+     */
+    public function editar(Sede $sede)
     {
         return view('administrador.sedes.editar', compact('sede'));
     }
 
-    // ── Actualizar sede ────────────────────────────────
-    public function update(UpdateSedeRequest $request, Sede $sede): RedirectResponse
+    /**
+     * Actualizar sede
+     */
+    public function update(Request $request, Sede $sede)
     {
-        $sede->update($request->validated());
+        $request->merge(['codigo' => strtoupper(trim($request->codigo))]);
+
+        $validated = $request->validate([
+            'codigo'       => ['required', 'string', 'min:2', 'max:5', 'regex:/^[A-Z]+$/', Rule::unique('sedes', 'codigo')->ignore($sede->id)],
+            'nombre'       => ['required', 'string', 'max:255'],
+            'zona_horaria' => ['nullable', 'string', 'max:80'],
+            'activo'       => ['sometimes', 'boolean'],
+        ]);
+
+        $sede->update($validated);
 
         return redirect()
             ->route('administrador.sedes.index')
-            ->with('exito', "Sede «{$sede->nombre}» actualizada correctamente.");
+            ->with('exito', "Sede {$sede->nombre} actualizada correctamente.");
     }
 
-    // ── Activar sede ───────────────────────────────────
-    public function activar(Sede $sede): RedirectResponse
+    /**
+     * Activar sede
+     */
+    public function activar(Sede $sede)
     {
         $sede->update(['activo' => true]);
 
         return redirect()
             ->route('administrador.sedes.index')
-            ->with('exito', "Sede «{$sede->nombre}» activada correctamente.");
+            ->with('exito', "Sede {$sede->nombre} activada correctamente.");
     }
 
-    // ── Desactivar sede ────────────────────────────────
-    public function desactivar(Sede $sede): RedirectResponse
+    /**
+     * Desactivar sede
+     */
+    public function desactivar(Sede $sede)
     {
         $sede->update(['activo' => false]);
 
         return redirect()
             ->route('administrador.sedes.index')
-            ->with('exito', "Sede «{$sede->nombre}» desactivada. Los usuarios de esta sede no podrán registrarse ni crear incidencias.");
+            ->with('exito', "Sede {$sede->nombre} desactivada. Los usuarios de esta sede no podrán registrarse ni crear incidencias.");
     }
 }

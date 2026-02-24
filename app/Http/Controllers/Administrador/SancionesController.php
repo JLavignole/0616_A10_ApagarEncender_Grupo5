@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreSancionRequest;
 use App\Models\SancionUsuario;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class SancionesController extends Controller
 {
-    // Listado con filtros
-    public function index(Request $request): View
+    /**
+     * Listado con filtros
+     */
+    public function index(Request $request)
     {
         $query = SancionUsuario::with(['usuario', 'creadoPor']);
 
@@ -51,8 +50,10 @@ class SancionesController extends Controller
         return view('administrador.sanciones.index', compact('sanciones', 'tipo', 'estado'));
     }
 
-    // Formulario de creación
-    public function crear(): View
+    /**
+     * Formulario de creación
+     */
+    public function crear()
     {
         $usuarios = User::with('rol')
             ->where('activo', true)
@@ -62,13 +63,22 @@ class SancionesController extends Controller
         return view('administrador.sanciones.crear', compact('usuarios'));
     }
 
-    // Guardar nueva sanción
-    public function store(StoreSancionRequest $request): RedirectResponse
+    /**
+     * Guardar nueva sanción
+     */
+    public function store(Request $request)
     {
-        $data      = $request->validated();
+        $validated = $request->validate([
+            'usuario_id' => ['required', 'integer', 'exists:usuarios,id'],
+            'tipo'       => ['required', 'string', 'in:advertencia,silencio,bloqueo'],
+            'motivo'     => ['required', 'string', 'min:5', 'max:1000'],
+            'inicio_en'  => ['nullable', 'date'],
+            'fin_en'     => ['nullable', 'date', 'after_or_equal:inicio_en'],
+        ]);
+
         $adminId   = Auth::id();
-        $usuarioId = $data['usuario_id'];
-        $tipo      = $data['tipo'];
+        $usuarioId = $validated['usuario_id'];
+        $tipo      = $validated['tipo'];
 
         // Regla: no sancionarse a sí mismo con bloqueo
         if ($tipo === 'bloqueo' && $usuarioId == $adminId) {
@@ -97,9 +107,9 @@ class SancionesController extends Controller
         SancionUsuario::create([
             'usuario_id' => $usuarioId,
             'tipo'       => $tipo,
-            'motivo'     => $data['motivo'],
-            'inicio_en'  => $data['inicio_en'] ?? null,
-            'fin_en'     => $data['fin_en'] ?? null,
+            'motivo'     => $validated['motivo'],
+            'inicio_en'  => $validated['inicio_en'] ?? null,
+            'fin_en'     => $validated['fin_en'] ?? null,
             'creado_por' => $adminId,
         ]);
 
@@ -111,8 +121,10 @@ class SancionesController extends Controller
             ->with('exito', "Sanción aplicada a {$nombre} correctamente.");
     }
 
-    // Finalizar sanción activa
-    public function finalizar(SancionUsuario $sancion): RedirectResponse
+    /**
+     * Finalizar sanción activa
+     */
+    public function finalizar(SancionUsuario $sancion)
     {
         $sancion->update(['fin_en' => now()]);
 
