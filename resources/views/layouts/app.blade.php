@@ -114,11 +114,13 @@
 
                     <p class="sidebar-section">Incidencias</p>
 
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('cliente.incidencias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'cliente/incidencias') && !str_contains($rutaActual, 'crear') ? 'active' : '' }}">
                         <i class="bi bi-list-check"></i>
                         <span>Mis incidencias</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('cliente.incidencias.crear') }}"
+                       class="sidebar-link {{ str_contains($rutaActual, 'incidencias/crear') ? 'active' : '' }}">
                         <i class="bi bi-plus-circle"></i>
                         <span>Crear incidencia</span>
                     </a>
