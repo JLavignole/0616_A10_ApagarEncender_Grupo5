@@ -12,8 +12,8 @@ class ReporteMensajeSeeder extends Seeder
 {
     public function run(): void
     {
-        $reportador = User::where('correo', 'n.gonzalez@incitech.com')->firstOrFail();
-        $revisor = User::where('correo', 'l.martinez@incitech.com')->firstOrFail();
+        $reportador = User::where('correo', 'n.gonzalez@techtrack.com')->firstOrFail();
+        $revisor = User::where('correo', 'l.martinez@techtrack.com')->firstOrFail();
 
         $incidencia = Incidencia::where('codigo', 'YUL-2026-000103')->firstOrFail();
         $mensaje = MensajeIncidencia::where('incidencia_id', $incidencia->id)->firstOrFail();

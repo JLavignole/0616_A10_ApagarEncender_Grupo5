@@ -14,18 +14,18 @@ class IncidenciaSeeder extends Seeder
 {
     public function run(): void
     {
-        $gestorBcn = User::where('correo', 'l.martinez@incitech.com')->firstOrFail();
-        $gestorMad = User::where('correo', 'd.ortega@incitech.com')->firstOrFail();
-        $tecnicoBcn = User::where('correo', 'c.ruiz@incitech.com')->firstOrFail();
-        $tecnicoBer = User::where('correo', 'a.schmidt@incitech.com')->firstOrFail();
-        $tecnicoLis = User::where('correo', 'j.ferreira@incitech.com')->firstOrFail();
-        $tecnicoRom = User::where('correo', 'g.bianchi@incitech.com')->firstOrFail();
+        $gestorBcn = User::where('correo', 'l.martinez@techtrack.com')->firstOrFail();
+        $gestorMad = User::where('correo', 'd.ortega@techtrack.com')->firstOrFail();
+        $tecnicoBcn = User::where('correo', 'c.ruiz@techtrack.com')->firstOrFail();
+        $tecnicoBer = User::where('correo', 'a.schmidt@techtrack.com')->firstOrFail();
+        $tecnicoLis = User::where('correo', 'j.ferreira@techtrack.com')->firstOrFail();
+        $tecnicoRom = User::where('correo', 'g.bianchi@techtrack.com')->firstOrFail();
 
-        $clienteJuan = User::where('correo', 'j.perez@incitech.com')->firstOrFail();
-        $clienteMaria = User::where('correo', 'm.lopez@incitech.com')->firstOrFail();
-        $clienteMarc = User::where('correo', 'm.dupont@incitech.com')->firstOrFail();
-        $clienteHelena = User::where('correo', 'h.costa@incitech.com')->firstOrFail();
-        $clienteLuca = User::where('correo', 'l.moretti@incitech.com')->firstOrFail();
+        $clienteJuan = User::where('correo', 'j.perez@techtrack.com')->firstOrFail();
+        $clienteMaria = User::where('correo', 'm.lopez@techtrack.com')->firstOrFail();
+        $clienteMarc = User::where('correo', 'm.dupont@techtrack.com')->firstOrFail();
+        $clienteHelena = User::where('correo', 'h.costa@techtrack.com')->firstOrFail();
+        $clienteLuca = User::where('correo', 'l.moretti@techtrack.com')->firstOrFail();
 
         $incidencias = [
             [

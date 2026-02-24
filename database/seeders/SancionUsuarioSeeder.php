@@ -11,8 +11,8 @@ class SancionUsuarioSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::where('correo', 'n.gonzalez@incitech.com')->firstOrFail();
-        $usuario = User::where('correo', 'm.dupont@incitech.com')->firstOrFail();
+        $admin = User::where('correo', 'n.gonzalez@techtrack.com')->firstOrFail();
+        $usuario = User::where('correo', 'm.dupont@techtrack.com')->firstOrFail();
 
         SancionUsuario::create([
             'usuario_id' => $usuario->id,

@@ -12,8 +12,8 @@ class AdjuntoSeeder extends Seeder
 {
     public function run(): void
     {
-        $tecnico = User::where('correo', 'g.bianchi@incitech.com')->firstOrFail();
-        $cliente = User::where('correo', 'm.lopez@incitech.com')->firstOrFail();
+        $tecnico = User::where('correo', 'g.bianchi@techtrack.com')->firstOrFail();
+        $cliente = User::where('correo', 'm.lopez@techtrack.com')->firstOrFail();
 
         $incErp = Incidencia::where('codigo', 'MAD-2026-000102')->firstOrFail();
         $incOutlook = Incidencia::where('codigo', 'MAD-2026-000107')->firstOrFail();
