@@ -33,7 +33,7 @@ class SubcategoriasController extends Controller
             $query->where('nombre', 'like', "%{$term}%");
         }
 
-        $subcategorias = $query->orderBy('nombre')->paginate(10)->withQueryString();
+        $subcategorias = $query->orderBy('nombre')->paginate(7)->withQueryString();
         $categorias    = Categoria::orderBy('nombre')->get();
 
         return view('administrador.subcategorias.index', compact('subcategorias', 'categorias', 'estado'));
