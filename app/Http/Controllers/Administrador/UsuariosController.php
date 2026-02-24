@@ -19,7 +19,7 @@ class UsuariosController extends Controller
     // Listado con filtros
     public function index(Request $request): View
     {
-        $query = User::with(['sede', 'rol'])->orderBy('nombre');
+        $query = User::with(['sede', 'rol', 'perfil'])->orderBy('nombre');
 
         // Filtro por sede
         if ($request->filled('sede_id')) {
@@ -106,6 +106,23 @@ class UsuariosController extends Controller
         }
 
         $usuario->update($datos);
+
+        // Actualizar foto de perfil
+        if ($request->hasFile('ruta_avatar')) {
+            $archivo       = $request->file('ruta_avatar');
+            $extension     = $archivo->getClientOriginalExtension();
+            $nombreArchivo = 'usuario-' . $usuario->id . '-' . time() . '.' . $extension;
+            $archivo->move(public_path('img/perfiles/usuarios'), $nombreArchivo);
+
+            if ($usuario->perfil) {
+                $usuario->perfil->update(['ruta_avatar' => $nombreArchivo]);
+            } else {
+                $usuario->perfil()->create([
+                    'nombre'      => $usuario->nombre,
+                    'ruta_avatar' => $nombreArchivo,
+                ]);
+            }
+        }
 
         return redirect()
             ->route('administrador.usuarios.index')

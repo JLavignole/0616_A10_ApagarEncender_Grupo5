@@ -24,21 +24,22 @@ class UpdateUsuarioRequest extends FormRequest
         $usuarioId = $this->route('usuario')->id;
 
         return [
-            'nombre'     => ['required', 'string', 'min:2', 'max:255'],
-            'correo'     => [
+            'nombre'      => ['required', 'string', 'min:2', 'max:255'],
+            'correo'      => [
                 'required',
                 'email',
                 'max:255',
                 Rule::unique('usuarios', 'correo')->ignore($usuarioId),
             ],
-            'contrasena' => ['nullable', 'string', 'min:6'],
-            'sede_id'    => [
+            'contrasena'  => ['nullable', 'string', 'min:6'],
+            'sede_id'     => [
                 'required',
                 'integer',
                 Rule::exists('sedes', 'id')->where('activo', true),
             ],
-            'rol_id'     => ['required', 'integer', 'exists:roles,id'],
-            'activo'     => ['nullable', 'boolean'],
+            'rol_id'      => ['required', 'integer', 'exists:roles,id'],
+            'activo'      => ['nullable', 'boolean'],
+            'ruta_avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
         ];
     }
 

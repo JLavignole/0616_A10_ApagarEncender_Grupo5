@@ -151,4 +151,33 @@ window.onload = function () {
         }
     };
 
+    // ── Preview avatar ───────────────────────────────────────
+    const inputAvatar  = document.getElementById('ruta_avatar');
+    const previewImg   = document.getElementById('previewAvatar');
+
+    if (inputAvatar && previewImg) {
+        inputAvatar.onchange = function () {
+            const archivo = inputAvatar.files[0];
+            if (!archivo) return;
+
+            const tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (tiposPermitidos.indexOf(archivo.type) === -1) {
+                toastError('Formato no válido. Usa JPG, PNG, GIF o WEBP.');
+                inputAvatar.value = '';
+                return;
+            }
+            if (archivo.size > 2 * 1024 * 1024) {
+                toastError('La imagen no puede superar los 2 MB.');
+                inputAvatar.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImg.src = e.target.result;
+            };
+            reader.readAsDataURL(archivo);
+        };
+    }
+
 };

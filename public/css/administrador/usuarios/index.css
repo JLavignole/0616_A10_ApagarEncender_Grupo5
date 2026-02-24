@@ -1,6 +1,21 @@
 /* ── Administrador / Usuarios / index.css ─────────────────── */
 
-/* ── Filtros ── */
+/* ── Avatar en tabla ── */
+.td-nombre-avatar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-mini {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-borde);
+    flex-shrink: 0;
+}
+
 .filtros-bar {
     display: flex;
     align-items: center;

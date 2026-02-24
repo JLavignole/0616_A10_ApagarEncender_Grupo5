@@ -19,9 +19,33 @@
     </div>
 
     <div class="form-card">
-        <form method="POST" action="{{ route('administrador.usuarios.update', $usuario) }}" id="formUsuario" novalidate data-edicion="true">
+        <form method="POST" action="{{ route('administrador.usuarios.update', $usuario) }}" id="formUsuario" novalidate data-edicion="true" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
+            {{-- Avatar --}}
+            <div class="avatar-seccion mb-4">
+                <div class="avatar-actual-wrap">
+                    @php
+                        $avatarActual = $usuario->perfil && $usuario->perfil->ruta_avatar
+                            ? asset('img/perfiles/usuarios/' . $usuario->perfil->ruta_avatar)
+                            : asset('img/perfiles/defecto/avatar-default.png');
+                    @endphp
+                    <img src="{{ $avatarActual }}" alt="Avatar actual" id="previewAvatar" class="avatar-grande">
+                </div>
+                <div class="avatar-upload-info">
+                    <label for="ruta_avatar" class="form-label">Foto de perfil</label>
+                    <input type="file"
+                           id="ruta_avatar"
+                           name="ruta_avatar"
+                           class="form-control @error('ruta_avatar') is-invalid @enderror"
+                           accept="image/jpg,image/jpeg,image/png,image/gif,image/webp">
+                    <div class="form-text">Formatos: JPG, PNG, GIF, WEBP. Máximo 2 MB. Deja vacío para no cambiar.</div>
+                    <div id="error-avatar" class="invalid-feedback d-block">
+                        @error('ruta_avatar'){{ $message }}@enderror
+                    </div>
+                </div>
+            </div>
 
             @include('administrador.usuarios._campos')
 

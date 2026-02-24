@@ -77,7 +77,17 @@
                 <tbody>
                     @forelse($usuarios as $usuario)
                         <tr class="{{ $usuario->activo ? '' : 'fila-inactiva' }}">
-                            <td class="fw-semibold">{{ $usuario->nombre }}</td>
+                            <td>
+                                @php
+                                    $avatarUser = $usuario->perfil && $usuario->perfil->ruta_avatar
+                                        ? asset('img/perfiles/usuarios/' . $usuario->perfil->ruta_avatar)
+                                        : asset('img/perfiles/defecto/avatar-default.png');
+                                @endphp
+                                <div class="td-nombre-avatar">
+                                    <img src="{{ $avatarUser }}" alt="{{ $usuario->nombre }}" class="avatar-mini">
+                                    <span class="fw-semibold">{{ $usuario->nombre }}</span>
+                                </div>
+                            </td>
                             <td class="td-secundario">{{ $usuario->correo }}</td>
                             <td class="td-secundario">{{ $usuario->sede?->nombre ?? '—' }}</td>
                             <td>
