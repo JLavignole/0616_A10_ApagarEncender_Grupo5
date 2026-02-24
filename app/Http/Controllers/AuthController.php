@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Sede;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -16,39 +17,48 @@ class AuthController extends Controller
 
     public function showLogin(): View
     {
-        return view('auth.login');
+        return view('autenticacion.login');
     }
 
     // ── Procesar login ─────────────────────────────────
 
-    public function login(Request $request): RedirectResponse
+    public function login(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'correo'     => ['required', 'string', 'email', 'max:255'],
-            'contrasena' => ['required', 'string', 'min:6'],
-        ], [
-            'correo.required'     => 'El correo corporativo es obligatorio.',
-            'correo.email'        => 'Introduce un correo electrónico válido.',
-            'correo.max'          => 'El correo no puede superar los 255 caracteres.',
-            'contrasena.required' => 'La contraseña es obligatoria.',
-            'contrasena.min'      => 'La contraseña debe tener al menos 6 caracteres.',
-        ]);
+        $validated = $request->validated();
 
         // Intentar autenticación con campos personalizados
-        if (Auth::attempt(['correo' => $credentials['correo'], 'password' => $credentials['contrasena']])) {
-            $request->session()->regenerate();
-
-            // Actualizar último acceso
-            /** @var User $user */
-            $user = Auth::user();
-            $user->update(['ultimo_acceso' => now()]);
-
-            return redirect()->intended('/home');
+        if (!Auth::attempt(['correo' => $validated['correo'], 'password' => $validated['contrasena']])) {
+            return back()
+                ->withInput($request->only('correo'))
+                ->with('error', 'Las credenciales proporcionadas no son correctas. Por favor, inténtalo de nuevo.');
         }
 
-        return back()
-            ->withInput($request->only('correo'))
-            ->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros. Por favor, inténtelo de nuevo.');
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Cuenta desactivada
+        if (!$user->activo) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()
+                ->withInput($request->only('correo'))
+                ->with('error', 'Tu cuenta ha sido desactivada. Contacta con el administrador.');
+        }
+
+        $request->session()->regenerate();
+        $user->update(['ultimo_acceso' => now()]);
+
+        // Redirección según rol
+        $rol = $user->rol?->nombre ?? 'cliente';
+
+        return match (true) {
+            in_array($rol, ['admin', 'administrador']) => redirect()->route('administrador.dashboard'),
+            $rol === 'gestor'                          => redirect()->route('gestor.dashboard'),
+            $rol === 'tecnico'                         => redirect()->route('tecnico.dashboard'),
+            default                                    => redirect()->route('cliente.dashboard'),
+        };
     }
 
     // ── Mostrar formulario de registro ─────────────────

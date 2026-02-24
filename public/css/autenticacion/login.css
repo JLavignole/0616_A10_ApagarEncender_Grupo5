@@ -1,0 +1,191 @@
+/* ────────────────────────────────────────────────────
+   CentralIT — CSS Login
+   ──────────────────────────────────────────────────── */
+
+:root {
+    --login-izq-bg : #ffffff;
+    --login-der-bg : #0f172a;
+    --login-accent : #2563eb;
+    --login-radius : 12px;
+    --font-base    : 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-base);
+    background: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+}
+
+/* ── Wrapper 2 columnas ─────────────────────────────── */
+.login-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* ── Columna formulario ─────────────────────────────── */
+.login-col-form {
+    flex: 1;
+    background: var(--login-izq-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+}
+
+.login-header {
+    margin-bottom: 32px;
+}
+
+.login-titulo {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.login-subtitulo {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* Labels */
+.form-label {
+    font-weight: 600;
+    font-size: 13.5px;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+/* Input con icono */
+.input-group-text {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+}
+
+.form-control {
+    border-color: #e2e8f0;
+    font-size: 14px;
+    padding: 10px 14px;
+    transition: border-color .15s;
+}
+
+.form-control:focus {
+    border-color: var(--login-accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+/* Mensajes de error inline */
+.invalid-feedback {
+    font-size: 12.5px;
+    min-height: 18px;
+    margin-top: 4px;
+}
+
+/* Botón principal */
+.btn-login {
+    padding: 11px;
+    font-size: 15px;
+    font-weight: 600;
+    background: var(--login-accent);
+    border-color: var(--login-accent);
+    border-radius: 8px;
+    transition: background .15s, opacity .15s;
+    margin-top: 8px;
+}
+
+.btn-login:disabled {
+    background: #94a3b8;
+    border-color: #94a3b8;
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+.btn-login:not(:disabled):hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.login-footer-texto {
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: center;
+    margin-top: 36px;
+}
+
+/* ── Columna marca (derecha) ────────────────────────── */
+.login-col-marca {
+    flex: 1;
+    background: linear-gradient(150deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    max-width: 480px;
+}
+
+.login-marca-inner {
+    text-align: center;
+    color: #fff;
+}
+
+.login-marca-logo {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+    border-radius: 22px;
+    background: rgba(255,255,255,.06);
+    padding: 14px;
+    margin-bottom: 24px;
+}
+
+.login-marca-nombre {
+    font-size: 36px;
+    font-weight: 800;
+    color: #f1f5f9;
+    letter-spacing: -.5px;
+    margin-bottom: 14px;
+}
+
+.login-marca-descripcion {
+    font-size: 15px;
+    color: #94a3b8;
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.login-marca-badges {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.badge-marca {
+    background: rgba(255,255,255,.08);
+    color: #cbd5e1;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 991px) {
+    .login-col-form {
+        padding: 40px 18px;
+    }
+}

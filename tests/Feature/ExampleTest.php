@@ -1,7 +1,8 @@
 <?php
 
-test('the application returns a successful response', function () {
-    $response = $this->get('/');
+use function Pest\Laravel\get;
 
-    $response->assertStatus(200);
+test('the application returns a successful response', function () {
+    get('/')
+        ->assertRedirect(route('login'));
 });
