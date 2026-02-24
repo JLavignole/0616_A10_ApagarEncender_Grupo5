@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Iniciar sesión — CentralIT</title>
+    <title>Crear cuenta — CentralIT</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -20,15 +20,34 @@
             <div class="login-card">
 
                 <div class="login-header">
-                    <h2 class="login-titulo">Bienvenido</h2>
-                    <p class="login-subtitulo">Introduce tus credenciales corporativas</p>
+                    <h2 class="login-titulo">Crear cuenta</h2>
+                    <p class="login-subtitulo">Regístrate para acceder al sistema de incidencias</p>
                 </div>
 
-                <form method="POST" action="{{ route('login') }}" id="formLogin" novalidate>
+                <form method="POST" action="{{ route('register') }}" id="formRegister" novalidate>
                     @csrf
 
+                    {{-- Nombre --}}
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre completo</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input
+                                type="text"
+                                id="nombre"
+                                name="nombre"
+                                class="form-control"
+                                value="{{ old('nombre') }}"
+                                placeholder="Tu nombre completo"
+                                autocomplete="name"
+                                autofocus
+                            >
+                        </div>
+                        <div class="invalid-feedback d-block" id="error-nombre"></div>
+                    </div>
+
                     {{-- Correo --}}
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label for="correo" class="form-label">Correo corporativo</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-envelope"></i></span>
@@ -40,14 +59,30 @@
                                 value="{{ old('correo') }}"
                                 placeholder="usuario@empresa.com"
                                 autocomplete="email"
-                                autofocus
                             >
                         </div>
                         <div class="invalid-feedback d-block" id="error-correo"></div>
                     </div>
 
+                    {{-- Sede --}}
+                    <div class="mb-3">
+                        <label for="sede_id" class="form-label">Sede</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                            <select id="sede_id" name="sede_id" class="form-select">
+                                <option value="">— Seleccionar sede —</option>
+                                @foreach ($sedes as $sede)
+                                    <option value="{{ $sede->id }}" @selected(old('sede_id') == $sede->id)>
+                                        {{ $sede->nombre }} ({{ $sede->codigo }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="invalid-feedback d-block" id="error-sede"></div>
+                    </div>
+
                     {{-- Contraseña --}}
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label for="contrasena" class="form-label">Contraseña</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
@@ -56,8 +91,8 @@
                                 id="contrasena"
                                 name="contrasena"
                                 class="form-control"
-                                placeholder="••••••••"
-                                autocomplete="current-password"
+                                placeholder="Mínimo 8 caracteres"
+                                autocomplete="new-password"
                             >
                             <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                 <i class="bi bi-eye-slash" id="iconoPassword"></i>
@@ -66,21 +101,38 @@
                         <div class="invalid-feedback d-block" id="error-contrasena"></div>
                     </div>
 
+                    {{-- Confirmar contraseña --}}
+                    <div class="mb-4">
+                        <label for="contrasena_confirmation" class="form-label">Confirmar contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                            <input
+                                type="password"
+                                id="contrasena_confirmation"
+                                name="contrasena_confirmation"
+                                class="form-control"
+                                placeholder="Repite la contraseña"
+                                autocomplete="new-password"
+                            >
+                        </div>
+                        <div class="invalid-feedback d-block" id="error-confirmacion"></div>
+                    </div>
+
                     <button
                         type="submit"
-                        id="btnLogin"
+                        id="btnRegister"
                         class="btn btn-primary w-100 btn-login"
                         disabled
                     >
-                        <i class="bi bi-box-arrow-in-right me-2"></i>
-                        Iniciar sesión
+                        <i class="bi bi-person-plus me-2"></i>
+                        Crear cuenta
                     </button>
 
                 </form>
 
                 <div class="login-enlace">
-                    ¿No tienes cuenta?
-                    <a href="{{ route('register') }}">Crear cuenta</a>
+                    ¿Ya tienes cuenta?
+                    <a href="{{ route('login') }}">Inicia sesión</a>
                 </div>
 
                 <p class="login-footer-texto">
@@ -108,17 +160,17 @@
 
     </div>
 
-    {{-- Flash messages --}}
+    {{-- Errores de servidor --}}
+    @if ($errors->any())
+        <span id="flash-error" data-msg="{{ $errors->first() }}" hidden></span>
+    @endif
     @if (session('error'))
         <span id="flash-error" data-msg="{{ session('error') }}" hidden></span>
-    @endif
-    @if (session('success'))
-        <span id="flash-success" data-msg="{{ session('success') }}" hidden></span>
     @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/autenticacion/login.js') }}"></script>
+    <script src="{{ asset('js/autenticacion/register.js') }}"></script>
 
 </body>
 </html>

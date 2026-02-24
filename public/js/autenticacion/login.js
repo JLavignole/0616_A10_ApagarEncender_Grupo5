@@ -3,14 +3,14 @@
  * Validación frontend sin addEventListener, sin required
  */
 
-var campoCorreo     = null;
+var campoCorreo = null;
 var campoContrasena = null;
-var btnLogin        = null;
+var btnLogin = null;
 
 function validarCorreo() {
     var valor = campoCorreo.value.trim();
     var patron = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    var error  = document.getElementById('error-correo');
+    var error = document.getElementById('error-correo');
 
     if (valor === '') {
         error.textContent = 'El correo corporativo es obligatorio.';
@@ -53,18 +53,18 @@ function validarContrasena() {
 }
 
 function actualizarBoton() {
-    var correoOk     = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(campoCorreo.value.trim());
+    var correoOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(campoCorreo.value.trim());
     var contrasenaOk = campoContrasena.value.length >= 6;
     btnLogin.disabled = !(correoOk && contrasenaOk);
 }
 
 window.onload = function () {
-    campoCorreo     = document.getElementById('correo');
+    campoCorreo = document.getElementById('correo');
     campoContrasena = document.getElementById('contrasena');
-    btnLogin        = document.getElementById('btnLogin');
-    var toggle      = document.getElementById('togglePassword');
-    var icono       = document.getElementById('iconoPassword');
-    var flash       = document.getElementById('flash-error');
+    btnLogin = document.getElementById('btnLogin');
+    var toggle = document.getElementById('togglePassword');
+    var icono = document.getElementById('iconoPassword');
+    var flash = document.getElementById('flash-error');
 
     if (!campoCorreo || !campoContrasena || !btnLogin) return;
 
@@ -75,6 +75,17 @@ window.onload = function () {
             title: 'Acceso denegado',
             text: flash.dataset.msg,
             confirmButtonColor: '#dc2626'
+        });
+    }
+
+    // Mostrar éxito de registro con SweetAlert
+    var flashSuccess = document.getElementById('flash-success');
+    if (flashSuccess) {
+        Swal.fire({
+            icon: 'success',
+            title: '¡Cuenta creada!',
+            text: flashSuccess.dataset.msg,
+            confirmButtonColor: '#2563eb'
         });
     }
 
@@ -112,7 +123,7 @@ window.onload = function () {
 
     // Validar antes del submit
     document.getElementById('formLogin').onsubmit = function (e) {
-        var correoOk     = validarCorreo();
+        var correoOk = validarCorreo();
         var contrasenaOk = validarContrasena();
 
         if (!correoOk || !contrasenaOk) {

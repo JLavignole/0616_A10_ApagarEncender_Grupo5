@@ -65,9 +65,9 @@ class AuthController extends Controller
 
     public function showRegister(): View
     {
-        $sedes = Sede::where('activo', true)->orderBy('nombre')->get();
+        $sedes = Sede::orderBy('nombre')->get();
 
-        return view('auth.register', compact('sedes'));
+        return view('autenticacion.register', compact('sedes'));
     }
 
     // ── Procesar registro ──────────────────────────────
