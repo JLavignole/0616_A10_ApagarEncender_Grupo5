@@ -76,11 +76,13 @@
 
                     <p class="sidebar-section">Gestión</p>
 
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('gestor.incidencias') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'gestor/incidencias') ? 'active' : '' }}">
                         <i class="bi bi-clipboard-list"></i>
                         <span>Incidencias</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('gestor.tecnicos') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'gestor/tecnicos') ? 'active' : '' }}">
                         <i class="bi bi-bar-chart-line"></i>
                         <span>Carga técnicos</span>
                     </a>

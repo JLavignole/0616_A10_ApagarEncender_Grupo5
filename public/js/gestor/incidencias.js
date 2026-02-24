@@ -1,11 +1,28 @@
-/* public/js/gestor/dashboard.js */
+/* public/js/gestor/incidencias.js */
 
 /**
- * Gestor Dashboard — Modal de asignación rápida
- * Usa fetch() con .then() para enviar la asignación
+ * Gestor Incidencias — Filtro ocultar cerradas + Modal de asignación
+ * Usa fetch() con .then() para el POST de asignación
  */
 
 var urlAsignar = '';
+
+// ── Checkbox ocultar cerradas ──
+var chkOcultar = document.getElementById('chkOcultarCerradas');
+if (chkOcultar) {
+    chkOcultar.onclick = function () {
+        var filas = document.querySelectorAll('.fila-incidencia');
+        for (var i = 0; i < filas.length; i++) {
+            if (filas[i].getAttribute('data-estado') === 'cerrada') {
+                if (chkOcultar.checked) {
+                    filas[i].classList.add('oculta');
+                } else {
+                    filas[i].classList.remove('oculta');
+                }
+            }
+        }
+    };
+}
 
 // ── Abrir modal ──
 var botonesAbrir = document.querySelectorAll('.btn-abrir-asignar');
@@ -37,7 +54,7 @@ if (btnCancelar) {
     btnCancelar.onclick = cerrarModal;
 }
 
-// Cerrar al hacer clic fuera del modal
+// Cerrar al hacer clic fuera
 var overlay = document.getElementById('modalAsignar');
 if (overlay) {
     overlay.onclick = function (e) {
@@ -77,24 +94,23 @@ if (btnConfirmar) {
                 tecnico_id: tecnicoId
             })
         })
-        .then(function (respuesta) {
-            return respuesta.json();
-        })
-        .then(function (datos) {
-            cerrarModal();
-            if (datos.exito) {
-                toastExito(datos.mensaje);
-                // Recargar la página después de 1.5s para actualizar la tabla
-                setTimeout(function () {
-                    location.reload();
-                }, 1500);
-            } else {
-                toastError(datos.mensaje || 'Error al asignar la incidencia');
-            }
-        })
-        .catch(function (error) {
-            cerrarModal();
-            toastError('Error de conexión: ' + error.message);
-        });
+            .then(function (respuesta) {
+                return respuesta.json();
+            })
+            .then(function (datos) {
+                cerrarModal();
+                if (datos.exito) {
+                    toastExito(datos.mensaje);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    toastError(datos.mensaje || 'Error al asignar la incidencia');
+                }
+            })
+            .catch(function (error) {
+                cerrarModal();
+                toastError('Error de conexión: ' + error.message);
+            });
     };
 }
