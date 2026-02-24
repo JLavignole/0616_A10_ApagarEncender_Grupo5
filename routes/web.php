@@ -19,15 +19,30 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    // Dashboards por rol
-    Route::get('/administrador/dashboard', [AdminDashboard::class,   'index'])->name('administrador.dashboard');
-    Route::get('/gestor/dashboard',        [GestorDashboard::class,  'index'])->name('gestor.dashboard');
-    Route::get('/tecnico/dashboard',       [TecnicoDashboard::class, 'index'])->name('tecnico.dashboard');
-    Route::get('/cliente/dashboard',       [ClienteDashboard::class, 'index'])->name('cliente.dashboard');
 
-    // Incidencias y otros
+    // ── Módulo Administrador ────────────────────────────────────────
+    Route::middleware('role:administrador')->prefix('administrador')->name('administrador.')->group(function () {
+        Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+    });
+
+    // ── Módulo Gestor ───────────────────────────────────────────────
+    Route::middleware('role:gestor')->prefix('gestor')->name('gestor.')->group(function () {
+        Route::get('/dashboard', [GestorDashboard::class, 'index'])->name('dashboard');
+    });
+
+    // ── Módulo Técnico ──────────────────────────────────────────────
+    Route::middleware('role:tecnico')->prefix('tecnico')->name('tecnico.')->group(function () {
+        Route::get('/dashboard', [TecnicoDashboard::class, 'index'])->name('dashboard');
+    });
+
+    // ── Módulo Cliente ──────────────────────────────────────────────
+    Route::middleware('role:cliente')->prefix('cliente')->name('cliente.')->group(function () {
+        Route::get('/dashboard', [ClienteDashboard::class, 'index'])->name('dashboard');
+    });
+
+    // ── Incidencias (accesible por múltiples roles) ─────────────────
     Route::get('/incidencias', [IncidenciaController::class, 'index'])->name('incidencias.index');
 
-    // Cerrar sesión
+    // ── Cerrar sesión ───────────────────────────────────────────────
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

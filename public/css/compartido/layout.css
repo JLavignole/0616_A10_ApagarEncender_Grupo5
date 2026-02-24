@@ -20,6 +20,13 @@
     --radius: 8px;
     --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
     --transition: .15s ease;
+
+    /* Colores semánticos compartidos */
+    --color-primario:          #2563eb;
+    --color-texto-principal:   #0f172a;
+    --color-texto-secundario:  #64748b;
+    --color-borde:             #e2e8f0;
+    --color-fondo-tabla:       #f7f8fa;
 }
 
 /* ── Reset ──────────────────────────────────────────── */

@@ -15,7 +15,7 @@ class DashboardController extends Controller
         /** @var User $usuario */
         $usuario = Auth::user();
 
-        $totalUsuarios     = User::count();
+        $totalUsuarios     = User::where('activo', true)->count();
         $totalIncidencias  = Incidencia::count();
         $incidenciasAbiertas = Incidencia::whereIn('estado', [
             'sin_asignar', 'asignada', 'en_progreso', 'reabierta',
