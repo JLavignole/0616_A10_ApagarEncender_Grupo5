@@ -7,6 +7,7 @@ use App\Models\Incidencia;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -17,26 +18,33 @@ class DashboardController extends Controller
 
         $totalMisIncidencias = Incidencia::where('cliente_id', $usuario->id)->count();
 
-        $incidenciasAbiertas = Incidencia::where('cliente_id', $usuario->id)
-            ->whereIn('estado', ['sin_asignar', 'asignada', 'en_progreso', 'reabierta'])
-            ->count();
+        // Conteo por estado para el pipeline visual
+        $sinAsignar = Incidencia::where('cliente_id', $usuario->id)->where('estado', 'sin_asignar')->count();
+        $asignadas  = Incidencia::where('cliente_id', $usuario->id)->where('estado', 'asignada')->count();
+        $enProgreso = Incidencia::where('cliente_id', $usuario->id)->where('estado', 'en_progreso')->count();
+        $resueltas  = Incidencia::where('cliente_id', $usuario->id)->where('estado', 'resuelta')->count();
+        $cerradas   = Incidencia::where('cliente_id', $usuario->id)->where('estado', 'cerrada')->count();
 
-        $incidenciasCerradas = Incidencia::where('cliente_id', $usuario->id)
-            ->whereIn('estado', ['resuelta', 'cerrada'])
-            ->count();
+        $incidenciasAbiertas = $sinAsignar + $asignadas + $enProgreso;
 
-        $misIncidencias = Incidencia::with(['sede', 'tecnico'])
+        // Últimas 4 incidencias activas como tarjetas
+        $recientes = Incidencia::with(['tecnico', 'categoria'])
             ->where('cliente_id', $usuario->id)
-            ->latest('created_at')
-            ->take(10)
+            ->where('estado', '!=', 'cerrada')
+            ->latest('reportado_en')
+            ->take(4)
             ->get();
 
         return view('cliente.dashboard', compact(
             'usuario',
             'totalMisIncidencias',
             'incidenciasAbiertas',
-            'incidenciasCerradas',
-            'misIncidencias',
+            'sinAsignar',
+            'asignadas',
+            'enProgreso',
+            'resueltas',
+            'cerradas',
+            'recientes',
         ));
     }
 }

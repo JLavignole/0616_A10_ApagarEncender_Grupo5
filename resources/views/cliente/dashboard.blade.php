@@ -8,111 +8,135 @@
 
 @section('contenido')
 
-    <div class="seccion-header">
-        <div>
-            <h2 class="seccion-titulo">Mis incidencias</h2>
-            <p class="seccion-subtitulo">Seguimiento de todas tus solicitudes</p>
+    {{-- ── Bienvenida ── --}}
+    <div class="dash-bienvenida">
+        <div class="dash-bienvenida-texto">
+            <h2 class="dash-bienvenida-nombre">Hola, {{ $usuario->nombre }}</h2>
+            <p class="dash-bienvenida-sub">Tienes <strong>{{ $incidenciasAbiertas }}</strong> {{ $incidenciasAbiertas === 1 ? 'incidencia activa' : 'incidencias activas' }} en este momento.</p>
         </div>
-        <a href="#" class="btn btn-primary btn-accion">
-            <i class="bi bi-plus-circle me-2"></i>Crear incidencia
+        <a href="{{ route('cliente.incidencias.crear') }}" class="dash-btn-crear">
+            <i class="bi bi-plus-lg"></i>
+            <span>Nueva incidencia</span>
         </a>
     </div>
 
-    {{-- ── KPIs ── --}}
-    <div class="row g-3 mb-4">
-
-        <div class="col-12 col-sm-6 col-xl-4">
-            <div class="tarjeta-kpi">
-                <div class="tarjeta-kpi-icono kpi-azul">
-                    <i class="bi bi-clipboard2-fill"></i>
-                </div>
-                <div class="tarjeta-kpi-info">
-                    <div class="tarjeta-kpi-valor">{{ $totalMisIncidencias }}</div>
-                    <div class="tarjeta-kpi-etiqueta">Total incidencias</div>
-                </div>
+    {{-- ── Pipeline de estados ── --}}
+    <div class="dash-pipeline">
+        <p class="dash-pipeline-titulo">Flujo de mis incidencias</p>
+        <div class="dash-pipeline-flujo">
+            <div class="dash-pipeline-paso">
+                <div class="dash-pipeline-numero pipeline-gris">{{ $sinAsignar }}</div>
+                <span class="dash-pipeline-label">Sin asignar</span>
+            </div>
+            <div class="dash-pipeline-flecha"><i class="bi bi-chevron-right"></i></div>
+            <div class="dash-pipeline-paso">
+                <div class="dash-pipeline-numero pipeline-azul">{{ $asignadas }}</div>
+                <span class="dash-pipeline-label">Asignadas</span>
+            </div>
+            <div class="dash-pipeline-flecha"><i class="bi bi-chevron-right"></i></div>
+            <div class="dash-pipeline-paso">
+                <div class="dash-pipeline-numero pipeline-morado">{{ $enProgreso }}</div>
+                <span class="dash-pipeline-label">En progreso</span>
+            </div>
+            <div class="dash-pipeline-flecha"><i class="bi bi-chevron-right"></i></div>
+            <div class="dash-pipeline-paso">
+                <div class="dash-pipeline-numero pipeline-verde">{{ $resueltas }}</div>
+                <span class="dash-pipeline-label">Resueltas</span>
+            </div>
+            <div class="dash-pipeline-flecha"><i class="bi bi-chevron-right"></i></div>
+            <div class="dash-pipeline-paso">
+                <div class="dash-pipeline-numero pipeline-oscuro">{{ $cerradas }}</div>
+                <span class="dash-pipeline-label">Cerradas</span>
             </div>
         </div>
-
-        <div class="col-12 col-sm-6 col-xl-4">
-            <div class="tarjeta-kpi">
-                <div class="tarjeta-kpi-icono kpi-naranja">
-                    <i class="bi bi-hourglass-split"></i>
-                </div>
-                <div class="tarjeta-kpi-info">
-                    <div class="tarjeta-kpi-valor">{{ $incidenciasAbiertas }}</div>
-                    <div class="tarjeta-kpi-etiqueta">Abiertas / en curso</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-xl-4">
-            <div class="tarjeta-kpi">
-                <div class="tarjeta-kpi-icono kpi-verde">
-                    <i class="bi bi-check-circle-fill"></i>
-                </div>
-                <div class="tarjeta-kpi-info">
-                    <div class="tarjeta-kpi-valor">{{ $incidenciasCerradas }}</div>
-                    <div class="tarjeta-kpi-etiqueta">Cerradas / resueltas</div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    {{-- ── Lista incidencias recientes ── --}}
-    <div class="tabla-card">
-        <div class="tabla-card-header">
-            <h3 class="tabla-card-titulo">Incidencias recientes</h3>
-            <a href="#" class="tabla-card-enlace">Ver todas</a>
+    {{-- ── Grid: resumen + accesos rápidos ── --}}
+    <div class="dash-grid">
+
+        {{-- Columna izquierda: tarjetas de incidencias recientes --}}
+        <div class="dash-col-principal">
+            <div class="dash-bloque-header">
+                <h3 class="dash-bloque-titulo">Incidencias activas recientes</h3>
+                <a href="{{ route('cliente.incidencias.index') }}" class="dash-bloque-enlace">Ver todas <i class="bi bi-arrow-right"></i></a>
+            </div>
+
+            @forelse ($recientes as $inc)
+                <a href="{{ route('cliente.incidencias.detalle', $inc) }}" class="dash-incidencia-card">
+                    <div class="dash-inc-izq">
+                        <span class="dash-inc-dot dash-inc-dot--{{ $inc->estado }}"></span>
+                    </div>
+                    <div class="dash-inc-cuerpo">
+                        <div class="dash-inc-titulo">{{ \Illuminate\Support\Str::limit($inc->titulo, 50) }}</div>
+                        <div class="dash-inc-meta">
+                            <span class="dash-inc-codigo">{{ $inc->codigo }}</span>
+                            <span class="dash-inc-sep">&middot;</span>
+                            <span>{{ $inc->categoria->nombre ?? '—' }}</span>
+                            <span class="dash-inc-sep">&middot;</span>
+                            <span>{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</span>
+                        </div>
+                    </div>
+                    <div class="dash-inc-der">
+                        <span class="badge-estado badge-estado--{{ $inc->estado }}">
+                            {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
+                        </span>
+                        @if ($inc->prioridad)
+                            <span class="badge-prioridad badge-prioridad--{{ $inc->prioridad }}">
+                                {{ ucfirst($inc->prioridad) }}
+                            </span>
+                        @endif
+                    </div>
+                </a>
+            @empty
+                <div class="dash-vacio">
+                    <i class="bi bi-inbox"></i>
+                    <p>No tienes incidencias activas</p>
+                    <a href="{{ route('cliente.incidencias.crear') }}">Crea tu primera incidencia</a>
+                </div>
+            @endforelse
         </div>
-        <div class="table-responsive">
-            <table class="table tabla-datos mb-0">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Título</th>
-                        <th>Estado</th>
-                        <th>Prioridad</th>
-                        <th>Técnico</th>
-                        <th>Fecha</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($misIncidencias as $inc)
-                        <tr>
-                            <td class="td-codigo">{{ $inc->codigo }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
-                            <td>
-                                <span class="badge-estado badge-estado--{{ $inc->estado }}">
-                                    {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
-                                </span>
-                            </td>
-                            <td>
-                                @if ($inc->prioridad)
-                                    <span class="badge-prioridad badge-prioridad--{{ $inc->prioridad }}">
-                                        {{ ucfirst($inc->prioridad) }}
-                                    </span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
-                            </td>
-                            <td>{{ $inc->tecnico->nombre ?? '—' }}</td>
-                            <td class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Ver</a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="td-vacio">
-                                <i class="bi bi-inbox"></i> No has creado ninguna incidencia todavía
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+
+        {{-- Columna derecha: resumen y accesos rápidos --}}
+        <div class="dash-col-lateral">
+
+            {{-- Resumen numérico --}}
+            <div class="dash-resumen-card">
+                <div class="dash-resumen-icono">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+                <div class="dash-resumen-big">{{ $totalMisIncidencias }}</div>
+                <div class="dash-resumen-label">Total incidencias</div>
+                <div class="dash-resumen-barra">
+                    @php
+                        $pctAbiertas = $totalMisIncidencias > 0 ? round($incidenciasAbiertas / $totalMisIncidencias * 100) : 0;
+                    @endphp
+                    <div class="dash-resumen-barra-fill" style="width: {{ $pctAbiertas }}%"></div>
+                </div>
+                <div class="dash-resumen-leyenda">
+                    <span><span class="dash-dot dash-dot--activas"></span>{{ $incidenciasAbiertas }} activas</span>
+                    <span><span class="dash-dot dash-dot--cerradas"></span>{{ $resueltas + $cerradas }} cerradas</span>
+                </div>
+            </div>
+
+            {{-- Accesos rápidos --}}
+            <div class="dash-accesos">
+                <p class="dash-accesos-titulo">Accesos rápidos</p>
+                <a href="{{ route('cliente.incidencias.crear') }}" class="dash-acceso-item">
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Crear incidencia</span>
+                </a>
+                <a href="{{ route('cliente.incidencias.index') }}" class="dash-acceso-item">
+                    <i class="bi bi-list-check"></i>
+                    <span>Mis incidencias</span>
+                </a>
+                <a href="{{ route('cliente.incidencias.index', ['estado' => 'resuelta']) }}" class="dash-acceso-item">
+                    <i class="bi bi-check2-square"></i>
+                    <span>Pendientes de cerrar</span>
+                </a>
+            </div>
+
         </div>
+
     </div>
 
 @endsection
