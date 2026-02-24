@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\Administrador\DashboardController as AdminDashboard;
 use App\Http\Controllers\Administrador\SedesController;
@@ -14,7 +13,6 @@ use App\Http\Controllers\Gestor\DashboardController as GestorDashboard;
 use App\Http\Controllers\Tecnico\DashboardController as TecnicoDashboard;
 use App\Http\Controllers\Cliente\DashboardController as ClienteDashboard;
 use App\Http\Controllers\Cliente\IncidenciaController as ClienteIncidencia;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -91,27 +89,22 @@ Route::middleware('auth')->group(function () {
     // Rutas del módulo Cliente
     Route::middleware('role:cliente')->prefix('cliente')->name('cliente.')->group(function () {
         Route::get('/dashboard', [ClienteDashboard::class, 'index'])->name('dashboard');
+
+        // Gestión de incidencias del cliente
+        Route::get('/incidencias',                             [ClienteIncidencia::class, 'index'])->name('incidencias.index');
+        Route::get('/incidencias/crear',                       [ClienteIncidencia::class, 'create'])->name('incidencias.crear');
+        Route::post('/incidencias',                            [ClienteIncidencia::class, 'store'])->name('incidencias.store');
+        Route::get('/incidencias/{incidencia}',                [ClienteIncidencia::class, 'show'])->name('incidencias.detalle');
+        Route::post('/incidencias/{incidencia}/mensajes',      [ClienteIncidencia::class, 'sendMessage'])->name('incidencias.mensaje');
+        Route::patch('/incidencias/{incidencia}/cerrar',       [ClienteIncidencia::class, 'close'])->name('incidencias.cerrar');
     });
+
+    // AJAX: subcategorías por categoría (accesible por todos los roles)
+    Route::get('/api/categorias/{categoria}/subcategorias', [ClienteIncidencia::class, 'subcategorias'])->name('api.subcategorias');
 
     // Mi perfil (todos los roles)
     Route::get('/perfil', [PerfilController::class, 'show'])->name('perfil.show');
     Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
-
-    // Incidencias (accesible por múltiples roles)
-    Route::get('/incidencias', [IncidenciaController::class, 'index'])->name('incidencias.index');
-
-    // ── Cliente: Gestión de incidencias ─────────────────
-    Route::prefix('cliente')->group(function () {
-        Route::get('/incidencias',              [ClienteIncidencia::class, 'index'])->name('cliente.incidencias.index');
-        Route::get('/incidencias/crear',        [ClienteIncidencia::class, 'create'])->name('cliente.incidencias.crear');
-        Route::post('/incidencias',             [ClienteIncidencia::class, 'store'])->name('cliente.incidencias.store');
-        Route::get('/incidencias/{incidencia}', [ClienteIncidencia::class, 'show'])->name('cliente.incidencias.detalle');
-        Route::post('/incidencias/{incidencia}/mensajes', [ClienteIncidencia::class, 'sendMessage'])->name('cliente.incidencias.mensaje');
-        Route::patch('/incidencias/{incidencia}/cerrar', [ClienteIncidencia::class, 'close'])->name('cliente.incidencias.cerrar');
-    });
-
-    // ── AJAX: Subcategorías por categoría ───────────────
-    Route::get('/api/categorias/{categoria}/subcategorias', [ClienteIncidencia::class, 'subcategorias'])->name('api.subcategorias');
 
     // Cerrar sesión
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
