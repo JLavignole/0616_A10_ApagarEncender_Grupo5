@@ -47,6 +47,28 @@ class AuthController extends Controller
                 ->with('error', 'Tu cuenta ha sido desactivada. Contacta con el administrador.');
         }
 
+        // Sanción de bloqueo activa
+        $ahora   = now();
+        $baneado = $user->sanciones()
+            ->where('tipo', 'bloqueo')
+            ->where(function ($q) use ($ahora) {
+                $q->whereNull('inicio_en')->orWhere('inicio_en', '<=', $ahora);
+            })
+            ->where(function ($q) use ($ahora) {
+                $q->whereNull('fin_en')->orWhere('fin_en', '>', $ahora);
+            })
+            ->exists();
+
+        if ($baneado) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()
+                ->withInput($request->only('correo'))
+                ->with('error', 'Tu acceso ha sido restringido temporalmente. Contacta con el administrador para más información.');
+        }
+
         $request->session()->regenerate();
         $user->update(['ultimo_acceso' => now()]);
 

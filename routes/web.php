@@ -8,6 +8,7 @@ use App\Http\Controllers\Administrador\SedesController;
 use App\Http\Controllers\Administrador\UsuariosController;
 use App\Http\Controllers\Administrador\CategoriasController;
 use App\Http\Controllers\Administrador\SubcategoriasController;
+use App\Http\Controllers\Administrador\SancionesController;
 use App\Http\Controllers\Gestor\DashboardController as GestorDashboard;
 use App\Http\Controllers\Tecnico\DashboardController as TecnicoDashboard;
 use App\Http\Controllers\Cliente\DashboardController as ClienteDashboard;
@@ -57,6 +58,12 @@ Route::middleware('auth')->group(function () {
         Route::put('/subcategorias/{subcategoria}', [SubcategoriasController::class, 'update'])->name('subcategorias.update');
         Route::post('/subcategorias/{subcategoria}/activar', [SubcategoriasController::class, 'activar'])->name('subcategorias.activar');
         Route::post('/subcategorias/{subcategoria}/desactivar', [SubcategoriasController::class, 'desactivar'])->name('subcategorias.desactivar');
+
+        // Gestión de sanciones
+        Route::get('/sanciones', [SancionesController::class, 'index'])->name('sanciones.index');
+        Route::get('/sanciones/crear', [SancionesController::class, 'crear'])->name('sanciones.crear');
+        Route::post('/sanciones', [SancionesController::class, 'store'])->name('sanciones.store');
+        Route::post('/sanciones/{sancion}/finalizar', [SancionesController::class, 'finalizar'])->name('sanciones.finalizar');
 
         // Gestión de sedes
         Route::get('/sedes', [SedesController::class, 'index'])->name('sedes.index');

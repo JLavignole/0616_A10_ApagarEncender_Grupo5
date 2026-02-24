@@ -67,7 +67,8 @@
                         <i class="bi bi-building"></i>
                         <span>Sedes</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.sanciones.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/sanciones') ? 'active' : '' }}">
                         <i class="bi bi-shield-exclamation"></i>
                         <span>Sanciones</span>
                     </a>
