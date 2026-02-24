@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IncidenciaController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\Administrador\DashboardController as AdminDashboard;
 use App\Http\Controllers\Administrador\SedesController;
 use App\Http\Controllers\Administrador\UsuariosController;
@@ -89,6 +90,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:cliente')->prefix('cliente')->name('cliente.')->group(function () {
         Route::get('/dashboard', [ClienteDashboard::class, 'index'])->name('dashboard');
     });
+
+    // Mi perfil (todos los roles)
+    Route::get('/perfil', [PerfilController::class, 'show'])->name('perfil.show');
+    Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
 
     // Incidencias (accesible por múltiples roles)
     Route::get('/incidencias', [IncidenciaController::class, 'index'])->name('incidencias.index');

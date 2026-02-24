@@ -136,7 +136,8 @@
                 {{-- ── Común ── --}}
                 <p class="sidebar-section">Mi cuenta</p>
 
-                <a href="#" class="sidebar-link">
+                <a href="{{ route('perfil.show') }}"
+                   class="sidebar-link {{ str_starts_with($rutaActual, 'perfil') ? 'active' : '' }}">
                     <i class="bi bi-person-circle"></i>
                     <span>Mi perfil</span>
                 </a>
