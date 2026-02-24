@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePerfilRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -12,7 +13,9 @@ class PerfilController extends Controller
     // Mostrar formulario de perfil
     public function show(): View
     {
-        $usuario = Auth::user()->load('perfil');
+        /** @var User $usuario */
+        $usuario = Auth::user();
+        $usuario->load('perfil');
 
         return view('perfil.editar', compact('usuario'));
     }
@@ -20,6 +23,7 @@ class PerfilController extends Controller
     // Guardar cambios
     public function update(UpdatePerfilRequest $request): RedirectResponse
     {
+        /** @var User $usuario */
         $usuario = Auth::user();
 
         // Datos de cuenta básicos
