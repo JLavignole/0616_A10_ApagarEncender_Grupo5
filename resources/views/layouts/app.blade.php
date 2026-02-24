@@ -57,6 +57,11 @@
                         <i class="bi bi-tags"></i>
                         <span>Categorías</span>
                     </a>
+                    <a href="{{ route('administrador.subcategorias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/subcategorias') ? 'active' : '' }}">
+                        <i class="bi bi-diagram-3"></i>
+                        <span>Subcategorías</span>
+                    </a>
                     <a href="{{ route('administrador.sedes.index') }}"
                        class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/sedes') ? 'active' : '' }}">
                         <i class="bi bi-building"></i>
