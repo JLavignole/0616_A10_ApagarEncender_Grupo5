@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/incidencias/crear',        [ClienteIncidencia::class, 'create'])->name('cliente.incidencias.crear');
         Route::post('/incidencias',             [ClienteIncidencia::class, 'store'])->name('cliente.incidencias.store');
         Route::get('/incidencias/{incidencia}', [ClienteIncidencia::class, 'show'])->name('cliente.incidencias.detalle');
+        Route::post('/incidencias/{incidencia}/mensajes', [ClienteIncidencia::class, 'sendMessage'])->name('cliente.incidencias.mensaje');
         Route::patch('/incidencias/{incidencia}/cerrar', [ClienteIncidencia::class, 'close'])->name('cliente.incidencias.cerrar');
     });
 

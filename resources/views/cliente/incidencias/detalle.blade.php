@@ -53,36 +53,92 @@
                 {!! nl2br(e($incidencia->descripcion)) !!}
             </div>
 
-            {{-- Actividad (mensajes) --}}
-            <p class="detalle-seccion">ACTIVIDAD</p>
-            <div class="actividad-lista">
-                @forelse ($incidencia->mensajes as $msg)
-                    @if (!$msg->eliminado)
-                        <div class="actividad-item">
-                            <div class="actividad-avatar">
-                                {{ strtoupper(substr($msg->usuario->nombre ?? '?', 0, 1)) }}
-                            </div>
-                            <div class="actividad-contenido">
-                                <div class="actividad-cabecera">
-                                    <div>
-                                        <span class="actividad-nombre">{{ $msg->usuario->nombre ?? 'Usuario' }}</span>
-                                        @if ($msg->usuario && $msg->usuario->rol)
-                                            <span class="actividad-rol">({{ ucfirst($msg->usuario->rol->nombre) }})</span>
-                                        @endif
-                                    </div>
-                                    <span class="actividad-fecha">
-                                        {{ $msg->created_at->format('d/m/Y, H:i') }}
-                                    </span>
+            {{-- Actividad (Chat) ── --}}
+            <p class="detalle-seccion">ACTIVIDAD Y CHAT</p>
+            
+            <div class="chat-contenedor">
+                <div class="actividad-lista" id="chat-mensajes">
+                    @forelse ($incidencia->mensajes as $msg)
+                        @if (!$msg->eliminado)
+                            <div class="actividad-item {{ $msg->usuario_id === auth()->id() ? 'mensaje-propio' : '' }}">
+                                <div class="actividad-avatar">
+                                    {{ strtoupper(substr($msg->usuario->nombre ?? '?', 0, 1)) }}
                                 </div>
-                                <p class="actividad-texto">{{ $msg->cuerpo }}</p>
+                                <div class="actividad-contenido">
+                                    <div class="actividad-cabecera">
+                                        <div>
+                                            <span class="actividad-nombre">{{ $msg->usuario_id === auth()->id() ? 'Tú' : ($msg->usuario->nombre ?? 'Usuario') }}</span>
+                                            @if ($msg->usuario && $msg->usuario->rol && $msg->usuario_id !== auth()->id())
+                                                <span class="actividad-rol">({{ ucfirst($msg->usuario->rol->nombre) }})</span>
+                                            @endif
+                                        </div>
+                                        <span class="actividad-fecha">
+                                            {{ $msg->created_at->format('d/m/Y, H:i') }}
+                                        </span>
+                                    </div>
+                                    
+                                    @if($msg->cuerpo)
+                                        <p class="actividad-texto">{{ $msg->cuerpo }}</p>
+                                    @endif
+
+                                    {{-- Imágenes adjuntas en el mensaje --}}
+                                    @if($msg->adjuntos->count() > 0)
+                                        <div class="mensaje-adjuntos">
+                                            @foreach($msg->adjuntos as $adj)
+                                                @if(str_contains($adj->tipo_mime, 'image'))
+                                                    <a href="{{ asset('storage/' . $adj->ruta) }}" target="_blank" class="mensaje-imagen-link">
+                                                        <img src="{{ asset('storage/' . $adj->ruta) }}" alt="Adjunto" class="mensaje-imagen">
+                                                    </a>
+                                                @else
+                                                    <a href="{{ asset('storage/' . $adj->ruta) }}" target="_blank" class="mensaje-archivo">
+                                                        <i class="bi bi-file-earmark"></i> {{ $adj->nombre_original }}
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
+                        @endif
+                    @empty
+                        <div class="chat-vacio">
+                            <i class="bi bi-chat-dots"></i>
+                            <p>No hay mensajes todavía. ¡Inicia la conversación!</p>
                         </div>
-                    @endif
-                @empty
-                    <p class="text-muted" style="font-size: 13px;">
-                        <i class="bi bi-chat-dots"></i> No hay mensajes en esta incidencia todavía.
-                    </p>
-                @endforelse
+                    @endforelse
+                </div>
+
+                {{-- Formulario de envío (solo si no está cerrada) --}}
+                @if($incidencia->estado !== 'cerrada')
+                    <div class="chat-input-area">
+                        <form id="form-chat" 
+                              action="{{ route('cliente.incidencias.mensaje', $incidencia) }}" 
+                              method="POST" 
+                              enctype="multipart/form-data">
+                            @csrf
+                            <div class="chat-input-wrapper">
+                                <label for="adjunto-chat" class="btn-adjuntar" title="Adjuntar imagen">
+                                    <i class="bi bi-image"></i>
+                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" style="display: none;">
+                                </label>
+                                
+                                <textarea name="cuerpo" id="cuerpo-mensaje" placeholder="Escribe un mensaje..." rows="1"></textarea>
+                                
+                                <button type="submit" class="btn-enviar-chat" id="btn-enviar">
+                                    <i class="bi bi-send-fill"></i>
+                                </button>
+                            </div>
+                            <div id="preview-adjunto" class="preview-adjunto" style="display: none;">
+                                <span class="preview-nombre"></span>
+                                <button type="button" class="btn-quitar-adjunto"><i class="bi bi-x"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                @else
+                    <div class="chat-cerrado-aviso">
+                        <i class="bi bi-lock-fill"></i> Esta incidencia está cerrada. No se pueden enviar más mensajes.
+                    </div>
+                @endif
             </div>
 
         </div>
