@@ -1,48 +1,60 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\Administrador\DashboardController as AdminDashboard;
+use App\Http\Controllers\Administrador\SedesController;
 use App\Http\Controllers\Gestor\DashboardController as GestorDashboard;
 use App\Http\Controllers\Tecnico\DashboardController as TecnicoDashboard;
 use App\Http\Controllers\Cliente\DashboardController as ClienteDashboard;
-use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect()->route('login'));
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
-// ── Autenticación ──────────────────────────────────────
+// Rutas de autenticación
 Route::middleware('guest')->group(function () {
-    Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login',   [AuthController::class, 'login']);
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register',[AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register']);
 });
 
 Route::middleware('auth')->group(function () {
 
-    // ── Módulo Administrador ────────────────────────────────────────
+    // Rutas del módulo Administrador
     Route::middleware('role:administrador')->prefix('administrador')->name('administrador.')->group(function () {
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+
+        // Gestión de sedes
+        Route::get('/sedes', [SedesController::class, 'index'])->name('sedes.index');
+        Route::get('/sedes/crear', [SedesController::class, 'crear'])->name('sedes.crear');
+        Route::post('/sedes', [SedesController::class, 'store'])->name('sedes.store');
+        Route::get('/sedes/{sede}/editar', [SedesController::class, 'editar'])->name('sedes.editar');
+        Route::put('/sedes/{sede}', [SedesController::class, 'update'])->name('sedes.update');
+        Route::post('/sedes/{sede}/activar', [SedesController::class, 'activar'])->name('sedes.activar');
+        Route::post('/sedes/{sede}/desactivar', [SedesController::class, 'desactivar'])->name('sedes.desactivar');
     });
 
-    // ── Módulo Gestor ───────────────────────────────────────────────
+    // Rutas del módulo Gestor
     Route::middleware('role:gestor')->prefix('gestor')->name('gestor.')->group(function () {
         Route::get('/dashboard', [GestorDashboard::class, 'index'])->name('dashboard');
     });
 
-    // ── Módulo Técnico ──────────────────────────────────────────────
+    // Rutas del módulo Técnico
     Route::middleware('role:tecnico')->prefix('tecnico')->name('tecnico.')->group(function () {
         Route::get('/dashboard', [TecnicoDashboard::class, 'index'])->name('dashboard');
     });
 
-    // ── Módulo Cliente ──────────────────────────────────────────────
+    // Rutas del módulo Cliente
     Route::middleware('role:cliente')->prefix('cliente')->name('cliente.')->group(function () {
         Route::get('/dashboard', [ClienteDashboard::class, 'index'])->name('dashboard');
     });
 
-    // ── Incidencias (accesible por múltiples roles) ─────────────────
+    // Incidencias (accesible por múltiples roles)
     Route::get('/incidencias', [IncidenciaController::class, 'index'])->name('incidencias.index');
 
-    // ── Cerrar sesión ───────────────────────────────────────────────
+    // Cerrar sesión
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

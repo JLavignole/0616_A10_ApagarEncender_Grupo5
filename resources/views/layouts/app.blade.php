@@ -55,7 +55,8 @@
                         <i class="bi bi-tags"></i>
                         <span>Categorías</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.sedes.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/sedes') ? 'active' : '' }}">
                         <i class="bi bi-building"></i>
                         <span>Sedes</span>
                     </a>
