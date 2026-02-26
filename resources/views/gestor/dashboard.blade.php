@@ -21,7 +21,7 @@
     {{-- ── KPIs ── --}}
     <div class="row g-3 mb-4">
 
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-sm-6">
             <div class="tarjeta-kpi">
                 <div class="tarjeta-kpi-icono kpi-rojo">
                     <i class="bi bi-clipboard-x-fill"></i>
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-sm-6">
             <div class="tarjeta-kpi">
                 <div class="tarjeta-kpi-icono kpi-naranja">
                     <i class="bi bi-arrow-repeat"></i>
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-sm-6">
             <div class="tarjeta-kpi">
                 <div class="tarjeta-kpi-icono kpi-verde">
                     <i class="bi bi-check-circle-fill"></i>
@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-sm-6">
             <div class="tarjeta-kpi">
                 <div class="tarjeta-kpi-icono kpi-azul">
                     <i class="bi bi-person-check-fill"></i>

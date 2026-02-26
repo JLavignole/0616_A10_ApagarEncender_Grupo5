@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('css/autenticacion/login.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/autenticacion/register.css') }}">
 </head>
 <body>
 
@@ -78,10 +77,6 @@
 
                 </form>
 
-                <div class="login-enlace">
-                    ¿No tienes cuenta?
-                    <a href="{{ route('register') }}">Crear cuenta</a>
-                </div>
 
                 <p class="login-footer-texto">
                     &copy; {{ date('Y') }} CentralIT — Acceso restringido a personal autorizado
