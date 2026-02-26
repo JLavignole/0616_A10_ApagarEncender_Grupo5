@@ -14,10 +14,10 @@ class NotificacionSeeder extends Seeder
     public function run(): void
     {
         $notificaciones = [
-            ['correo' => 'j.perez@incitech.com', 'tipo' => 'incidencia_actualizada', 'codigo' => 'BCN-2026-000101', 'accion' => 'en_progreso', 'leido_en' => null, 'fecha' => Carbon::now()->subHours(10)],
-            ['correo' => 'm.lopez@incitech.com', 'tipo' => 'incidencia_asignada', 'codigo' => 'MAD-2026-000102', 'accion' => 'asignada', 'leido_en' => Carbon::now()->subHours(5), 'fecha' => Carbon::now()->subHours(7)],
-            ['correo' => 'm.dupont@incitech.com', 'tipo' => 'nuevo_mensaje', 'codigo' => 'YUL-2026-000103', 'accion' => 'mensaje_tecnico', 'leido_en' => null, 'fecha' => Carbon::now()->subHours(3)],
-            ['correo' => 'h.costa@incitech.com', 'tipo' => 'incidencia_resuelta', 'codigo' => 'LIS-2026-000108', 'accion' => 'resuelta', 'leido_en' => Carbon::now()->subDays(1), 'fecha' => Carbon::now()->subDays(1)->subHours(1)],
+            ['correo' => 'j.perez@techtrack.com', 'tipo' => 'incidencia_actualizada', 'codigo' => 'BCN-2026-000101', 'accion' => 'en_progreso', 'leido_en' => null, 'fecha' => Carbon::now()->subHours(10)],
+            ['correo' => 'm.lopez@techtrack.com', 'tipo' => 'incidencia_asignada', 'codigo' => 'MAD-2026-000102', 'accion' => 'asignada', 'leido_en' => Carbon::now()->subHours(5), 'fecha' => Carbon::now()->subHours(7)],
+            ['correo' => 'm.dupont@techtrack.com', 'tipo' => 'nuevo_mensaje', 'codigo' => 'YUL-2026-000103', 'accion' => 'mensaje_tecnico', 'leido_en' => null, 'fecha' => Carbon::now()->subHours(3)],
+            ['correo' => 'h.costa@techtrack.com', 'tipo' => 'incidencia_resuelta', 'codigo' => 'LIS-2026-000108', 'accion' => 'resuelta', 'leido_en' => Carbon::now()->subDays(1), 'fecha' => Carbon::now()->subDays(1)->subHours(1)],
         ];
 
         foreach ($notificaciones as $item) {

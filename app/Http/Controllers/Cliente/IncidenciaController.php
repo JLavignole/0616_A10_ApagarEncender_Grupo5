@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cliente;
 
 use App\Http\Controllers\Controller;
 use App\Models\Adjunto;
+use App\Models\MensajeIncidencia;
 use App\Models\Categoria;
 use App\Models\Incidencia;
 use Illuminate\Http\JsonResponse;
@@ -199,6 +200,64 @@ class IncidenciaController extends Controller
         ]);
 
         return back()->with('exito', 'Incidencia cerrada correctamente.');
+    }
+
+    /**
+     * Enviar un mensaje de chat dentro de la incidencia.
+     * Soporta mensaje de texto e imagen adjunta.
+     */
+    public function sendMessage(Request $request, Incidencia $incidencia): RedirectResponse
+    {
+        $usuario = Auth::user();
+
+        // Verificar que la incidencia pertenece al cliente
+        if ($incidencia->cliente_id !== $usuario->id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'cuerpo' => ['required_without:imagen', 'nullable', 'string'],
+            'imagen' => ['nullable', 'image', 'max:5120'], // Máximo 5MB
+        ], [
+            'cuerpo.required_without' => 'Debes escribir un mensaje o adjuntar una imagen.',
+            'imagen.image'            => 'El archivo debe ser una imagen válida.',
+            'imagen.max'              => 'La imagen no puede superar los 5 MB.',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Crear el mensaje
+            $mensaje = MensajeIncidencia::create([
+                'incidencia_id' => $incidencia->id,
+                'usuario_id'    => $usuario->id,
+                'cuerpo'        => $validated['cuerpo'] ?? '',
+            ]);
+
+            // Guardar imagen si existe
+            if ($request->hasFile('imagen')) {
+                $archivo = $request->file('imagen');
+                $ruta    = $archivo->store('adjuntos/mensajes', 'public');
+
+                Adjunto::create([
+                    'disco'           => 'public',
+                    'ruta'            => $ruta,
+                    'nombre_original' => $archivo->getClientOriginalName(),
+                    'tipo_mime'       => $archivo->getMimeType(),
+                    'tamano'          => $archivo->getSize(),
+                    'subido_por'      => $usuario->id,
+                    'mensaje_id'      => $mensaje->id,
+                ]);
+            }
+
+            DB::commit();
+
+            return back()->with('exito', 'Mensaje enviado correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error al enviar el mensaje. Inténtalo de nuevo.');
+        }
     }
 
     /**

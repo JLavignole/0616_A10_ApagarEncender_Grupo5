@@ -4,7 +4,7 @@
  * Funciones globales disponibles en toda la aplicación:
  *   toastExito(texto)
  *   toastError(texto)
- *   confirmarAccion(texto, onConfirm)
+ *   confirmarAccion(titulo, texto, icono, textoConfirmar, onConfirm)
  *
  * Nota: los scripts se cargan al final del <body>, por lo que
  * el DOM ya está disponible; no se necesita window.onload aquí.
@@ -37,15 +37,15 @@ function toastError(texto) {
 }
 
 /* ── Confirmación de acción ──────────────────────────────── */
-function confirmarAccion(texto, onConfirm) {
+function confirmarAccion(titulo, texto, icono, textoConfirmar, onConfirm) {
     Swal.fire({
-        title: '¿Estás seguro?',
+        title: titulo || '¿Estás seguro?',
         text: texto || 'Esta acción no se puede deshacer.',
-        icon: 'warning',
+        icon: icono || 'warning',
         showCancelButton: true,
         confirmButtonColor: '#dc2626',
         cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Sí, continuar',
+        confirmButtonText: textoConfirmar || 'Sí, continuar',
         cancelButtonText: 'Cancelar'
     }).then(function (resultado) {
         if (resultado.isConfirmed && typeof onConfirm === 'function') {

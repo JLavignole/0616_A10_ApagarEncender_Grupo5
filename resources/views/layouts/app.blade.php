@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('titulo', 'CentralIT') — CentralIT</title>
+    <title>@yield('titulo', 'TechTrack') — TechTrack</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -29,8 +29,8 @@
         <aside class="sidebar" id="sidebar">
 
             <div class="sidebar-logo">
-                <img src="{{ asset('img/logo/logo.png') }}" alt="CentralIT" class="sidebar-logo-img">
-                <span class="sidebar-logo-text">CentralIT</span>
+                <img src="{{ asset('img/logo/logo.png') }}" alt="TechTrack" class="sidebar-logo-img">
+                <span class="sidebar-logo-text">TechTrack</span>
             </div>
 
             <nav class="sidebar-nav">
@@ -47,19 +47,28 @@
 
                     <p class="sidebar-section">Gestión</p>
 
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.usuarios.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/usuarios') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span>Usuarios</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.categorias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/categorias') ? 'active' : '' }}">
                         <i class="bi bi-tags"></i>
                         <span>Categorías</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.subcategorias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/subcategorias') ? 'active' : '' }}">
+                        <i class="bi bi-diagram-3"></i>
+                        <span>Subcategorías</span>
+                    </a>
+                    <a href="{{ route('administrador.sedes.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/sedes') ? 'active' : '' }}">
                         <i class="bi bi-building"></i>
                         <span>Sedes</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('administrador.sanciones.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/sanciones') ? 'active' : '' }}">
                         <i class="bi bi-shield-exclamation"></i>
                         <span>Sanciones</span>
                     </a>
@@ -131,7 +140,8 @@
                 {{-- ── Común ── --}}
                 <p class="sidebar-section">Mi cuenta</p>
 
-                <a href="#" class="sidebar-link">
+                <a href="{{ route('perfil.show') }}"
+                   class="sidebar-link {{ str_starts_with($rutaActual, 'perfil') ? 'active' : '' }}">
                     <i class="bi bi-person-circle"></i>
                     <span>Mi perfil</span>
                 </a>

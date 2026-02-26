@@ -1,8 +1,11 @@
 /* ═══════════════════════════════════════════════════
-   Cliente / Dashboard — Diseño creativo
+   Cliente / Dashboard — Diseño creativo y funcional
    ═══════════════════════════════════════════════════ */
 
-/* ── Bienvenida ────────────────────────────────────── */
+/* ── BLOQUE DE BIENVENIDA ─────────────────────────── 
+   Panel superior con degradado y acceso rápido.
+   Usa un gradiente lineal de azul oscuro a eléctrico.
+*/
 .dash-bienvenida {
     display: flex;
     align-items: center;
@@ -24,54 +27,45 @@
 
 .dash-bienvenida-sub {
     font-size: 14px;
-    color: rgba(255,255,255,.75);
+    color: rgba(255, 255, 255, .75);
     margin: 0;
 }
 
-.dash-bienvenida-sub strong {
-    color: #fff;
-}
-
+/* Botón con efecto 'cristal' (Glassmorphism) */
 .dash-btn-crear {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    background: rgba(255,255,255,.15);
+    background: rgba(255, 255, 255, .15);
     color: #fff;
-    border: 1.5px solid rgba(255,255,255,.3);
+    border: 1.5px solid rgba(255, 255, 255, .3);
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
     transition: background .2s, border-color .2s;
     backdrop-filter: blur(4px);
+    /* Difumina el fondo detrás del botón */
     flex-shrink: 0;
 }
 
 .dash-btn-crear:hover {
-    background: rgba(255,255,255,.25);
-    border-color: rgba(255,255,255,.5);
-    color: #fff;
+    background: rgba(255, 255, 255, .25);
+    border-color: rgba(255, 255, 255, .5);
 }
 
-/* ── Pipeline de estados ───────────────────────────── */
+/* ── PIPELINE DE ESTADOS ───────────────────────────── 
+   Representación visual del flujo de una incidencia.
+   Usa Flexbox para centrar los pasos y flechas.
+*/
 .dash-pipeline {
     background: #fff;
     border-radius: 14px;
     padding: 22px 28px;
     margin-bottom: 24px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 4px rgba(0,0,0,.04);
-}
-
-.dash-pipeline-titulo {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .8px;
-    color: #64748b;
-    margin: 0 0 18px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
 }
 
 .dash-pipeline-flujo {
@@ -90,6 +84,7 @@
     min-width: 80px;
 }
 
+/* Círculos con el número de paso */
 .dash-pipeline-numero {
     width: 48px;
     height: 48px;
@@ -104,19 +99,33 @@
 
 .dash-pipeline-numero:hover {
     transform: scale(1.1);
+    /* Efecto de crecimiento al pasar el ratón */
 }
 
-.pipeline-gris   { background: #f3f4f6; color: #6b7280; }
-.pipeline-azul   { background: #dbeafe; color: #1e40af; }
-.pipeline-morado { background: #ede9fe; color: #5b21b6; }
-.pipeline-verde  { background: #dcfce7; color: #166534; }
-.pipeline-oscuro { background: #e2e8f0; color: #334155; }
+/* Paleta de colores para cada estado del pipeline */
+.pipeline-gris {
+    background: #f3f4f6;
+    color: #6b7280;
+}
 
-.dash-pipeline-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: #64748b;
-    text-align: center;
+.pipeline-azul {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.pipeline-morado {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.pipeline-verde {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.pipeline-oscuro {
+    background: #e2e8f0;
+    color: #334155;
 }
 
 .dash-pipeline-flecha {
@@ -126,15 +135,18 @@
     margin-bottom: 18px;
 }
 
-/* ── Grid principal ────────────────────────────────── */
+/* ── ESTRUCTURA PRINCIPAL (GRID) ───────────────────── 
+   Layout dividido en columna principal y lateral fija.
+*/
 .dash-grid {
     display: grid;
     grid-template-columns: 1fr 300px;
+    /* Principal expansiva + Lateral 300px */
     gap: 24px;
     align-items: start;
 }
 
-/* ── Columna principal: tarjetas de incidencia ─────── */
+/* ── COLUMNA DE INCIDENCIAS RECIENTES ─────────────── */
 .dash-col-principal {
     display: flex;
     flex-direction: column;
@@ -148,28 +160,7 @@
     margin-bottom: 14px;
 }
 
-.dash-bloque-titulo {
-    font-size: 15px;
-    font-weight: 700;
-    color: #0f172a;
-    margin: 0;
-}
-
-.dash-bloque-enlace {
-    font-size: 13px;
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.dash-bloque-enlace:hover {
-    text-decoration: underline;
-}
-
-/* Tarjeta de incidencia tipo fila */
+/* Tarjeta individual de incidencia (tipo fila) */
 .dash-incidencia-card {
     display: flex;
     align-items: center;
@@ -181,19 +172,17 @@
     margin-bottom: 10px;
     text-decoration: none;
     color: inherit;
-    transition: border-color .15s, box-shadow .15s, transform .15s;
+    transition: all .15s ease;
 }
 
 .dash-incidencia-card:hover {
     border-color: #2563eb;
     box-shadow: 0 4px 16px rgba(37, 99, 235, .1);
     transform: translateY(-1px);
+    /* Elevación sutil */
 }
 
-.dash-inc-izq {
-    flex-shrink: 0;
-}
-
+/* Punto de color (indicador visual de estado rápido) */
 .dash-inc-dot {
     display: block;
     width: 12px;
@@ -202,114 +191,50 @@
     background: #94a3b8;
 }
 
-.dash-inc-dot--sin_asignar { background: #f59e0b; }
-.dash-inc-dot--asignada    { background: #3b82f6; }
-.dash-inc-dot--en_progreso { background: #8b5cf6; }
-.dash-inc-dot--resuelta    { background: #10b981; }
-.dash-inc-dot--cerrada     { background: #6b7280; }
+.dash-inc-dot--sin_asignar {
+    background: #f59e0b;
+}
 
-.dash-inc-cuerpo {
-    flex: 1;
-    min-width: 0;
+.dash-inc-dot--asignada {
+    background: #3b82f6;
+}
+
+.dash-inc-dot--en_progreso {
+    background: #8b5cf6;
+}
+
+.dash-inc-dot--resuelta {
+    background: #10b981;
+}
+
+.dash-inc-dot--cerrada {
+    background: #6b7280;
 }
 
 .dash-inc-titulo {
     font-size: 14px;
     font-weight: 600;
     color: #0f172a;
-    margin-bottom: 3px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.dash-inc-meta {
-    font-size: 12px;
-    color: #94a3b8;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex-wrap: wrap;
-}
-
-.dash-inc-codigo {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-}
-
-.dash-inc-sep {
-    color: #cbd5e1;
-}
-
-.dash-inc-der {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 5px;
-    flex-shrink: 0;
-}
-
-/* Estado vacío */
-.dash-vacio {
-    background: #fff;
-    border: 2px dashed #e2e8f0;
-    border-radius: 14px;
-    padding: 48px 24px;
-    text-align: center;
-    color: #94a3b8;
-}
-
-.dash-vacio i {
-    font-size: 40px;
-    display: block;
-    margin-bottom: 12px;
-    opacity: .5;
-}
-
-.dash-vacio p {
-    font-size: 15px;
-    font-weight: 500;
-    margin: 0 0 8px;
-}
-
-.dash-vacio a {
-    color: #2563eb;
-    font-size: 13px;
-    text-decoration: none;
-}
-
-.dash-vacio a:hover {
-    text-decoration: underline;
-}
-
-/* ── Columna lateral ───────────────────────────────── */
+/* ── COLUMNA LATERAL (WIDGETS) ─────────────────────── */
 .dash-col-lateral {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-/* Resumen numérico card */
+/* Widget de resumen numérico con barra de progreso */
 .dash-resumen-card {
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 24px;
     text-align: center;
-    box-shadow: 0 1px 4px rgba(0,0,0,.04);
-}
-
-.dash-resumen-icono {
-    width: 48px;
-    height: 48px;
-    margin: 0 auto 12px;
-    border-radius: 12px;
-    background: #eff6ff;
-    color: #2563eb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
 }
 
 .dash-resumen-big {
@@ -317,14 +242,6 @@
     font-weight: 800;
     color: #0f172a;
     line-height: 1;
-    margin-bottom: 4px;
-}
-
-.dash-resumen-label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #64748b;
-    margin-bottom: 16px;
 }
 
 .dash-resumen-barra {
@@ -332,52 +249,23 @@
     background: #e2e8f0;
     border-radius: 99px;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin: 15px 0 10px;
 }
 
 .dash-resumen-barra-fill {
     height: 100%;
     background: linear-gradient(90deg, #2563eb, #38bdf8);
+    /* Degradado en la barra */
     border-radius: 99px;
     transition: width .4s ease;
 }
 
-.dash-resumen-leyenda {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    font-size: 12px;
-    color: #64748b;
-}
-
-.dash-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
-.dash-dot--activas { background: #2563eb; }
-.dash-dot--cerradas { background: #e2e8f0; }
-
-/* Accesos rápidos */
+/* Menú de accesos directos laterales */
 .dash-accesos {
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.04);
-}
-
-.dash-accesos-titulo {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .8px;
-    color: #64748b;
-    margin: 0 0 14px;
 }
 
 .dash-acceso-item {
@@ -390,59 +278,82 @@
     font-weight: 500;
     color: #334155;
     text-decoration: none;
-    transition: background .15s, color .15s;
-    margin-bottom: 4px;
-}
-
-.dash-acceso-item i {
-    font-size: 16px;
-    color: #2563eb;
-    width: 18px;
-    text-align: center;
+    transition: all .15s;
 }
 
 .dash-acceso-item:hover {
     background: #eff6ff;
+    /* Fondo azul clarito al pasar el ratón */
     color: #2563eb;
 }
 
-/* ── Badges (reutilizados) ─────────────────────────── */
+/* ── BADGES DE ESTADO Y PRIORIDAD ─────────────────── */
 .badge-estado {
     display: inline-block;
     padding: 0.2rem 0.6rem;
     border-radius: 999px;
+    /* Forma de píldora */
     font-size: 0.72rem;
     font-weight: 600;
-    text-transform: capitalize;
-    white-space: nowrap;
 }
 
-.badge-estado--sin_asignar { background: #f3f4f6; color: #6b7280; }
-.badge-estado--asignada    { background: #e0f2fe; color: #0369a1; }
-.badge-estado--en_progreso { background: #fef9c3; color: #a16207; }
-.badge-estado--resuelta    { background: #dcfce7; color: #166534; }
-.badge-estado--cerrada     { background: #f0fdf4; color: #15803d; }
-.badge-estado--cancelada   { background: #fee2e2; color: #991b1b; }
-.badge-estado--reabierta   { background: #ede9fe; color: #6d28d9; }
+.badge-estado--sin_asignar {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.badge-estado--asignada {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.badge-estado--en_progreso {
+    background: #fef9c3;
+    color: #a16207;
+}
+
+.badge-estado--resuelta {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-estado--cerrada {
+    background: #f0fdf4;
+    color: #15803d;
+}
 
 .badge-prioridad {
     display: inline-block;
     padding: 0.2rem 0.55rem;
     border-radius: 4px;
+    /* Forma cuadrada redondeada */
     font-size: 0.72rem;
     font-weight: 600;
-    white-space: nowrap;
 }
 
-.badge-prioridad--baja    { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-.badge-prioridad--media   { background: #fefce8; color: #a16207; border: 1px solid #fde68a; }
-.badge-prioridad--alta    { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
-.badge-prioridad--critica { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.badge-prioridad--baja {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
 
-/* ── Responsive ────────────────────────────────────── */
+.badge-prioridad--media {
+    background: #fefce8;
+    color: #a16207;
+    border: 1px solid #fde68a;
+}
+
+.badge-prioridad--alta {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+}
+
+/* ── ADAPTACIÓN PARA MÓVILES (RESPONSIVE) ──────────── */
 @media (max-width: 992px) {
     .dash-grid {
         grid-template-columns: 1fr;
+        /* Una sola columna en tablets y móviles */
     }
 
     .dash-pipeline-flujo {
@@ -453,11 +364,9 @@
         min-width: 60px;
     }
 
-    .dash-pipeline-flecha {
-        padding: 0 4px;
-    }
-
     .dash-bienvenida {
         padding: 22px 20px;
+        text-align: center;
+        justify-content: center;
     }
 }
