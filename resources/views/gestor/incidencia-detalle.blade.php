@@ -120,23 +120,79 @@
 
     </div>
 
-    {{-- ── Mensajes ── --}}
-    @if ($incidencia->mensajes->count() > 0)
-        <div class="detalle-card mt-4">
-            <h3 class="detalle-card-titulo">Mensajes ({{ $incidencia->mensajes->count() }})</h3>
-            <div class="lista-mensajes">
-                @foreach ($incidencia->mensajes as $msg)
-                    <div class="mensaje-item">
-                        <div class="mensaje-cabecera">
-                            <span class="mensaje-autor">{{ $msg->usuario->nombre ?? 'Usuario' }}</span>
-                            <span class="mensaje-fecha">{{ $msg->created_at?->format('d/m/Y H:i') }}</span>
+    {{-- ── Conversación cliente ↔ técnico ── --}}
+    <div class="detalle-card mt-4">
+        <div class="conversacion-cabecera">
+            <h3 class="detalle-card-titulo" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">
+                <i class="bi bi-chat-left-text me-2"></i>Conversación
+                <span class="conversacion-contador">{{ $incidencia->mensajes->count() }}</span>
+            </h3>
+            @if ($incidencia->mensajes->count() > 0)
+                <span class="conversacion-participantes">
+                    <i class="bi bi-people-fill me-1"></i>
+                    {{ $incidencia->cliente->nombre ?? 'Cliente' }}
+                    @if ($incidencia->tecnico)
+                        &nbsp;↔&nbsp; {{ $incidencia->tecnico->nombre }}
+                    @endif
+                </span>
+            @endif
+        </div>
+
+        <div class="chat-contenedor-gestor">
+            <div class="chat-lista-gestor" id="chat-mensajes-gestor">
+                @forelse ($incidencia->mensajes as $msg)
+                    @if (!$msg->eliminado)
+                        @php
+                            $esCliente  = $incidencia->cliente_id === $msg->usuario_id;
+                            $esTecnico  = $incidencia->tecnico_id === $msg->usuario_id;
+                            $rolClase   = $esCliente ? 'msg-cliente' : ($esTecnico ? 'msg-tecnico' : 'msg-otro');
+                            $rolTexto   = $esCliente ? 'Cliente' : ($esTecnico ? 'Técnico' : ($msg->usuario->rol->nombre ?? 'Usuario'));
+                        @endphp
+                        <div class="chat-msg {{ $rolClase }}">
+                            <div class="chat-msg-avatar {{ $rolClase }}">
+                                {{ strtoupper(substr($msg->usuario->nombre ?? '?', 0, 1)) }}
+                            </div>
+                            <div class="chat-msg-burbuja">
+                                <div class="chat-msg-header">
+                                    <div>
+                                        <span class="chat-msg-nombre">{{ $msg->usuario->nombre ?? 'Usuario' }}</span>
+                                        <span class="chat-msg-rol chat-msg-rol--{{ $rolClase }}">{{ ucfirst($rolTexto) }}</span>
+                                    </div>
+                                    <span class="chat-msg-fecha">{{ $msg->created_at->format('d/m/Y, H:i') }}</span>
+                                </div>
+
+                                @if($msg->cuerpo)
+                                    <p class="chat-msg-texto">{{ $msg->cuerpo }}</p>
+                                @endif
+
+                                {{-- Adjuntos del mensaje --}}
+                                @if($msg->adjuntos->count() > 0)
+                                    <div class="chat-msg-adjuntos">
+                                        @foreach($msg->adjuntos as $adj)
+                                            @if(str_contains($adj->tipo_mime ?? '', 'image'))
+                                                <a href="{{ asset('storage/' . $adj->ruta) }}" target="_blank" class="chat-adjunto-img-link">
+                                                    <img src="{{ asset('storage/' . $adj->ruta) }}" alt="Adjunto" class="chat-adjunto-img">
+                                                </a>
+                                            @else
+                                                <a href="{{ asset('storage/' . $adj->ruta) }}" target="_blank" class="chat-adjunto-archivo">
+                                                    <i class="bi bi-file-earmark"></i> {{ $adj->nombre_original ?? 'Archivo' }}
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                        <p class="mensaje-texto">{{ $msg->contenido }}</p>
+                    @endif
+                @empty
+                    <div class="chat-vacio-gestor">
+                        <i class="bi bi-chat-dots"></i>
+                        <p>No hay mensajes en esta incidencia.</p>
                     </div>
-                @endforeach
+                @endforelse
             </div>
         </div>
-    @endif
+    </div>
 
     {{-- ── Adjuntos ── --}}
     @if ($incidencia->adjuntos->count() > 0)

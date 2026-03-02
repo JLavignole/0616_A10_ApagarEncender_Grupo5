@@ -83,7 +83,7 @@ class IncidenciaGestorController extends Controller
 
         $incidencia = Incidencia::with([
             'cliente', 'tecnico', 'gestor', 'categoria',
-            'subcategoria', 'sede', 'mensajes.usuario', 'adjuntos',
+            'subcategoria', 'sede', 'mensajes.usuario.rol', 'mensajes.adjuntos', 'adjuntos',
         ])
             ->where('sede_id', $usuario->sede_id)
             ->findOrFail($id);
