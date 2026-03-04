@@ -1,0 +1,202 @@
+/* ── Administrador / Sedes / index.css ─────────────────────── */
+
+/* ── Filtros ── */
+.filtros-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filtros-busqueda {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 340px;
+}
+
+.filtros-busqueda i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-texto-secundario);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.filtros-busqueda input {
+    width: 100%;
+    padding: 8px 12px 8px 34px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    font-size: 13.5px;
+    background: #fff;
+    color: var(--color-texto-principal);
+    outline: none;
+    transition: border-color .15s;
+}
+
+.filtros-busqueda input:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+/* ── Botones de estado ── */
+.filtros-estado {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.btn-filtro-estado {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--color-borde);
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-texto-secundario);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    line-height: 1.4;
+}
+
+.btn-filtro-estado:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.btn-filtro-estado.activo {
+    background: var(--color-primario);
+    border-color: var(--color-primario);
+    color: #fff;
+}
+
+/* ── Botón limpiar ── */
+.btn-limpiar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: var(--color-texto-secundario);
+    text-decoration: none;
+    font-size: 13px;
+    transition: background .15s, color .15s;
+}
+
+.btn-limpiar:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ── Tabla ── */
+.tabla-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.tabla-datos {
+    font-size: 0.875rem;
+    color: var(--color-texto-principal);
+}
+
+.tabla-datos thead tr {
+    background: var(--color-fondo-tabla);
+}
+
+.tabla-datos thead th {
+    font-weight: 600;
+    font-size: 0.775rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--color-texto-secundario);
+    padding: 0.65rem 1.1rem;
+    border-bottom: 1px solid var(--color-borde);
+    white-space: nowrap;
+}
+
+.tabla-datos tbody td {
+    padding: 0.7rem 1.1rem;
+    border-bottom: 1px solid #f0f2f5;
+    vertical-align: middle;
+}
+
+.tabla-datos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-datos tbody tr:hover {
+    background: #fafbfd;
+}
+
+.fila-inactiva {
+    opacity: .65;
+}
+
+.td-codigo {
+    font-family: monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: var(--color-primario);
+}
+
+.td-secundario {
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+}
+
+.td-vacio {
+    text-align: center;
+    padding: 3rem 1rem !important;
+    color: var(--color-texto-secundario);
+    font-size: 0.9rem;
+}
+
+.th-acciones { width: 110px; text-align: center; }
+.td-acciones { text-align: center; display: flex; gap: 6px; justify-content: center; }
+
+/* ── Badges estado ── */
+.badge-estado {
+    display: inline-block;
+    padding: 0.22rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-estado--activa   { background: #dcfce7; color: #166534; }
+.badge-estado--inactiva { background: #f3f4f6; color: #6b7280; }
+
+/* ── Botones icono ── */
+.btn-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    border: none;
+    background: #f1f5f9;
+    color: var(--color-texto-secundario);
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .15s, color .15s;
+}
+
+.btn-icono--editar:hover        { background: #eff6ff; color: var(--color-primario); }
+.btn-icono--activar             { font-size: 18px; color: #94a3b8; }
+.btn-icono--activar:hover       { background: #f0fdf4; color: #16a34a; }
+.btn-icono--desactivar          { font-size: 18px; color: #16a34a; }
+.btn-icono--desactivar:hover    { background: #fef2f2; color: #dc2626; }
+
+.form-toggle { display: inline; margin: 0; padding: 0; }

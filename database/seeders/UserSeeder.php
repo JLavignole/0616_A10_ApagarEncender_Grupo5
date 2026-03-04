@@ -13,18 +13,18 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $usuarios = [
-            ['nombre' => 'Nuria González', 'correo' => 'n.gonzalez@incitech.com', 'sede' => 'BCN', 'rol' => 'admin'],
-            ['nombre' => 'Laura Martínez', 'correo' => 'l.martinez@incitech.com', 'sede' => 'BCN', 'rol' => 'gestor'],
-            ['nombre' => 'David Ortega', 'correo' => 'd.ortega@incitech.com', 'sede' => 'MAD', 'rol' => 'gestor'],
-            ['nombre' => 'Carlos Ruiz', 'correo' => 'c.ruiz@incitech.com', 'sede' => 'BCN', 'rol' => 'tecnico'],
-            ['nombre' => 'Anna Schmidt', 'correo' => 'a.schmidt@incitech.com', 'sede' => 'BER', 'rol' => 'tecnico'],
-            ['nombre' => 'João Ferreira', 'correo' => 'j.ferreira@incitech.com', 'sede' => 'LIS', 'rol' => 'tecnico'],
-            ['nombre' => 'Giulia Bianchi', 'correo' => 'g.bianchi@incitech.com', 'sede' => 'ROM', 'rol' => 'tecnico'],
-            ['nombre' => 'Juan Pérez', 'correo' => 'j.perez@incitech.com', 'sede' => 'BCN', 'rol' => 'cliente'],
-            ['nombre' => 'María López', 'correo' => 'm.lopez@incitech.com', 'sede' => 'MAD', 'rol' => 'cliente'],
-            ['nombre' => 'Marc Dupont', 'correo' => 'm.dupont@incitech.com', 'sede' => 'YUL', 'rol' => 'cliente'],
-            ['nombre' => 'Helena Costa', 'correo' => 'h.costa@incitech.com', 'sede' => 'LIS', 'rol' => 'cliente'],
-            ['nombre' => 'Luca Moretti', 'correo' => 'l.moretti@incitech.com', 'sede' => 'ROM', 'rol' => 'cliente'],
+            ['nombre' => 'Nuria González', 'correo' => 'n.gonzalez@techtrack.com', 'sede' => 'BCN', 'rol' => 'admin'],
+            ['nombre' => 'Laura Martínez', 'correo' => 'l.martinez@techtrack.com', 'sede' => 'BCN', 'rol' => 'gestor'],
+            ['nombre' => 'David Ortega', 'correo' => 'd.ortega@techtrack.com', 'sede' => 'MAD', 'rol' => 'gestor'],
+            ['nombre' => 'Carlos Ruiz', 'correo' => 'c.ruiz@techtrack.com', 'sede' => 'BCN', 'rol' => 'tecnico'],
+            ['nombre' => 'Anna Schmidt', 'correo' => 'a.schmidt@techtrack.com', 'sede' => 'BER', 'rol' => 'tecnico'],
+            ['nombre' => 'João Ferreira', 'correo' => 'j.ferreira@techtrack.com', 'sede' => 'LIS', 'rol' => 'tecnico'],
+            ['nombre' => 'Giulia Bianchi', 'correo' => 'g.bianchi@techtrack.com', 'sede' => 'ROM', 'rol' => 'tecnico'],
+            ['nombre' => 'Juan Pérez', 'correo' => 'j.perez@techtrack.com', 'sede' => 'BCN', 'rol' => 'cliente'],
+            ['nombre' => 'María López', 'correo' => 'm.lopez@techtrack.com', 'sede' => 'MAD', 'rol' => 'cliente'],
+            ['nombre' => 'Marc Dupont', 'correo' => 'm.dupont@techtrack.com', 'sede' => 'YUL', 'rol' => 'cliente'],
+            ['nombre' => 'Helena Costa', 'correo' => 'h.costa@techtrack.com', 'sede' => 'LIS', 'rol' => 'cliente'],
+            ['nombre' => 'Luca Moretti', 'correo' => 'l.moretti@techtrack.com', 'sede' => 'ROM', 'rol' => 'cliente'],
         ];
 
         foreach ($usuarios as $usuario) {

@@ -1,0 +1,105 @@
+/* ── Administrador / Sedes / form.css ──────────────────────── */
+
+.form-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--shadow-sm);
+    padding: 2rem 2.5rem;
+    max-width: 640px;
+}
+
+/* Labels */
+.form-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-texto-principal);
+    margin-bottom: 6px;
+}
+
+.texto-requerido {
+    color: #dc2626;
+    margin-left: 2px;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid var(--color-borde);
+    font-size: 14px;
+    color: var(--color-texto-principal);
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.form-control:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.form-control.is-invalid {
+    border-color: #dc2626;
+}
+
+.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, .12);
+}
+
+/* Error messages */
+.invalid-feedback {
+    font-size: 12.5px;
+    color: #dc2626;
+    margin-top: 4px;
+    min-height: 18px;
+}
+
+/* Helper text */
+.form-text {
+    font-size: 12px;
+    color: var(--color-texto-secundario);
+    margin-top: 4px;
+}
+
+/* Switch activo */
+.form-check-input {
+    width: 2.5em;
+    height: 1.3em;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+
+.form-check-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-texto-principal);
+    cursor: pointer;
+}
+
+/* ── Footer del form ── */
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-borde);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .form-card {
+        padding: 1.25rem 1rem;
+    }
+
+    .form-footer {
+        flex-direction: column-reverse;
+    }
+
+    .form-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
