@@ -106,7 +106,8 @@
 
                     <p class="sidebar-section">Trabajo</p>
 
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('tecnico.incidencias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'tecnico/incidencias') && !str_contains($rutaActual, 'crear') ? 'active' : '' }}">
                         <i class="bi bi-tools"></i>
                         <span>Mis incidencias</span>
                     </a>
