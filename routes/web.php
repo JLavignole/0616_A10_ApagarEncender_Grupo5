@@ -81,9 +81,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/subcategorias/{subcategoria}/desactivar', [SubcategoriasController::class, 'desactivar'])->name('subcategorias.desactivar');
 
         // Gestión de incidencias
-        Route::get('/incidencias', [AdminIncidencias::class, 'index'])->name('administrador.incidencias.index');
-        Route::get('/incidencias/{incidencia}/editar', [AdminIncidencias::class, 'editar'])->name('administrador.incidencias.editar');
-        Route::put('/incidencias/{incidencia}', [AdminIncidencias::class, 'update'])->name('administrador.incidencias.update');
+        Route::get('/incidencias', [AdminIncidencias::class, 'index'])->name('incidencias.index');
+        Route::get('/incidencias/{incidencia}/editar', [AdminIncidencias::class, 'editar'])->name('incidencias.editar');
+        Route::put('/incidencias/{incidencia}', [AdminIncidencias::class, 'update'])->name('incidencias.update');
 
         // Gestión de sanciones
         Route::get('/sanciones', [SancionesController::class, 'index'])->name('sanciones.index');

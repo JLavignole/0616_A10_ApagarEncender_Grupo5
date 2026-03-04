@@ -23,7 +23,7 @@
               action="{{ route('administrador.incidencias.update', $incidencia) }}"
               id="formIncidencia"
               novalidate
-              data-url-subcategorias="{{ route('subcategorias.porCategoria', '__ID__') }}"
+              data-url-subcategorias="{{ route('administrador.subcategorias.porCategoria', '__ID__') }}"
               data-subcategoria-actual="{{ old('subcategoria_id', $incidencia->subcategoria_id) }}">
             @csrf
             @method('PUT')
