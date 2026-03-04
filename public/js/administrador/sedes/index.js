@@ -55,7 +55,10 @@ window.onload = function () {
 
 function confirmarDesactivar(nombre, formId) {
     confirmarAccion(
+        '¿Desactivar sede?',
         'La sede «' + nombre + '» quedará inactiva. Los usuarios de esta sede no podrán registrarse ni crear incidencias.',
+        'warning',
+        'Sí, desactivar',
         function () {
             document.getElementById(formId).submit();
         }
@@ -64,7 +67,10 @@ function confirmarDesactivar(nombre, formId) {
 
 function confirmarActivar(nombre, formId) {
     confirmarAccion(
-        '¿Activar la sede «' + nombre + '»?',
+        '¿Activar sede?',
+        'La sede «' + nombre + '» volverá a estar activa.',
+        'question',
+        'Sí, activar',
         function () {
             document.getElementById(formId).submit();
         }

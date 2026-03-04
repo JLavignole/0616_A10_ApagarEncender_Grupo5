@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PerfilController;
@@ -25,6 +26,22 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
+// Ruta requerida por el middleware guest (RedirectIfAuthenticated)
+// Redirige al dashboard del rol correspondiente
+Route::get('/dashboard', function () {
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    $rol  = $user->rol?->nombre ?? 'cliente';
+
+    return match (true) {
+        in_array($rol, ['admin', 'administrador']) => redirect()->route('administrador.dashboard'),
+        $rol === 'gestor'                           => redirect()->route('gestor.dashboard'),
+        $rol === 'tecnico'                          => redirect()->route('tecnico.dashboard'),
+        default                                     => redirect()->route('cliente.dashboard'),
+    };
+})->middleware('auth')->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
 

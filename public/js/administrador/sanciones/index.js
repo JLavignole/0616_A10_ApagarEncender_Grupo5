@@ -52,7 +52,10 @@ window.onload = function () {
 
 function confirmarFinalizar(nombre, formId) {
     confirmarAccion(
-        '¿Finalizar la sanción de ' + nombre + '? Esta acción no se puede deshacer.',
+        '¿Finalizar sanción?',
+        'La sanción de ' + nombre + ' será finalizada. Esta acción no se puede deshacer.',
+        'warning',
+        'Sí, finalizar',
         function () {
             document.getElementById(formId).submit();
         }

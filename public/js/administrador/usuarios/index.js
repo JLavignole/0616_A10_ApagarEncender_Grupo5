@@ -69,7 +69,10 @@ window.onload = function () {
 
 function confirmarDesactivar(nombre, formId) {
     confirmarAccion(
-        '¿Desactivar al usuario «' + nombre + '»? Su cuenta quedará inactiva.',
+        '¿Desactivar usuario?',
+        'El usuario «' + nombre + '» quedará inactivo. Su cuenta quedará inactiva.',
+        'warning',
+        'Sí, desactivar',
         function () {
             document.getElementById(formId).submit();
         }
@@ -78,7 +81,10 @@ function confirmarDesactivar(nombre, formId) {
 
 function confirmarReactivar(nombre, formId) {
     confirmarAccion(
-        '¿Reactivar al usuario «' + nombre + '»?',
+        '¿Reactivar usuario?',
+        'El usuario «' + nombre + '» volverá a estar activo.',
+        'question',
+        'Sí, reactivar',
         function () {
             document.getElementById(formId).submit();
         }
