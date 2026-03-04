@@ -17,6 +17,7 @@ use App\Http\Controllers\Gestor\TecnicoGestorController;
 use App\Http\Controllers\Tecnico\DashboardController as TecnicoDashboard;
 use App\Http\Controllers\Cliente\DashboardController as ClienteDashboard;
 use App\Http\Controllers\Cliente\IncidenciaController as ClienteIncidencia;
+use App\Http\Controllers\Tecnico\IncidenciasAsignadasController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -113,6 +114,19 @@ Route::middleware('auth')->group(function () {
     // Rutas del módulo Técnico
     Route::middleware('role:tecnico')->prefix('tecnico')->name('tecnico.')->group(function () {
         Route::get('/dashboard', [TecnicoDashboard::class, 'index'])->name('dashboard');
+
+        // Gestión de incidencias asignadas
+        Route::get('/incidencias',                [IncidenciasAsignadasController::class, 'index'])->name('incidencias.index');
+
+        // Detalle de incidencia
+        Route::get('/incidencias/{incidencia}',   [IncidenciasAsignadasController::class, 'show'])->name('incidencias.detalle');
+        
+        // Acciones de estado
+        Route::post('/incidencias/{incidencia}/comenzar', [IncidenciasAsignadasController::class, 'comenzar'])->name('comenzar');
+        Route::patch('/incidencias/{incidencia}/resolver', [IncidenciasAsignadasController::class, 'resolver'])->name('resolver');
+        
+        // Chat / Mensajes
+        Route::post('/incidencias/{incidencia}/mensajes', [IncidenciasAsignadasController::class, 'sendMessage'])->name('incidencias.mensaje');
     });
 
     // Rutas del módulo Cliente

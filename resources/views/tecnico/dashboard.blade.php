@@ -48,8 +48,8 @@
                     <i class="bi bi-check-circle-fill"></i>
                 </div>
                 <div class="tarjeta-kpi-info">
-                    <div class="tarjeta-kpi-valor">{{ $resueltasHoy }}</div>
-                    <div class="tarjeta-kpi-etiqueta">Resueltas hoy</div>
+                    <div class="tarjeta-kpi-valor">{{ $resueltas }}</div>
+                    <div class="tarjeta-kpi-etiqueta">Resueltas</div>
                 </div>
             </div>
         </div>
@@ -97,14 +97,19 @@
                             <td>{{ $inc->cliente->nombre ?? '—' }}</td>
                             <td>{{ $inc->sede->nombre ?? '—' }}</td>
                             <td class="td-fecha">{{ $inc->asignado_en?->format('d/m/Y') ?? '—' }}</td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Ver</a>
+                            <td class="text-end">
+                                <div class="d-flex gap-2 justify-content-end">
+                                                                       
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="td-vacio">
-                                <i class="bi bi-inbox"></i> No tienes incidencias asignadas
+                            <td colspan="8" class="text-center text-muted py-4">
+                                <i class="bi bi-info-circle-fill me-2"></i> No tienes incidencias activas asignadas.
                             </td>
                         </tr>
                     @endforelse
