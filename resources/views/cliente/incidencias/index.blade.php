@@ -8,6 +8,7 @@
 @endpush
 
 @section('contenido')
+    <div class="incidencias-layout-fit">
 
     {{-- ── Cabecera ── --}}
     <div class="seccion-header">
@@ -67,67 +68,66 @@
                 {{ request('orden') === 'asc' ? 'Recientes' : 'Antiguas' }}
             </a>
         </div>
+    </form>
+
     {{-- ── Tabla y Paginación (Contenedor para AJAX) ── --}}
     <div id="contenedor-incidencias">
-        <div class="tabla-card">
-            <div class="table-responsive">
-                <table class="table tabla-datos mb-0">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Título</th>
-                            <th>Categoría</th>
-                            <th>Estado</th>
-                            <th>Prioridad</th>
-                            <th>Técnico</th>
-                            <th>Fecha</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($incidencias as $inc)
-                            <tr>
-                                <td class="td-codigo">{{ $inc->codigo }}</td>
-                                <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
-                                <td>
-                                    <span class="badge-categoria">{{ $inc->categoria->nombre ?? '—' }}</span>
-                                    @if ($inc->subcategoria)
-                                        <span class="td-sub">{{ $inc->subcategoria->nombre }}</span>
-                                    @endif
-                                </td>
-                                <td>
+        @php
+            $estados = [
+                'sin_asignar' => 'Sin asignar',
+                'asignada' => 'Asignada',
+                'en_progreso' => 'En progreso',
+                'resuelta' => 'Resuelta',
+                'cerrada' => 'Cerrada',
+            ];
+            $incidenciasPorEstado = $incidencias->getCollection()->groupBy('estado');
+        @endphp
+
+        <div class="kanban-grid">
+            @foreach ($estados as $estadoKey => $estadoLabel)
+                @php
+                    $itemsEstado = $incidenciasPorEstado->get($estadoKey, collect());
+                @endphp
+
+                <section class="kanban-columna">
+                    <div class="kanban-columna-header">
+                        <h3>{{ $estadoLabel }}</h3>
+                        <span class="kanban-columna-total">{{ $itemsEstado->count() }}</span>
+                    </div>
+
+                    <div class="kanban-columna-cuerpo">
+                        @forelse ($itemsEstado as $inc)
+                            <a href="{{ route('cliente.incidencias.detalle', $inc) }}" class="inc-card">
+                                <div class="inc-card-top">
+                                    <span class="td-codigo">{{ $inc->codigo }}</span>
                                     <span class="badge-estado badge-estado--{{ $inc->estado }}">
                                         {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
                                     </span>
-                                </td>
-                                <td>
+                                </div>
+
+                                <h4 class="inc-card-titulo">{{ \Illuminate\Support\Str::limit($inc->titulo, 75) }}</h4>
+
+                                <div class="inc-card-meta">
+                                    <span class="badge-categoria">{{ $inc->categoria->nombre ?? '—' }}</span>
+
                                     @if ($inc->prioridad)
                                         <span class="badge-prioridad badge-prioridad--{{ $inc->prioridad }}">
                                             {{ ucfirst($inc->prioridad) }}
                                         </span>
-                                    @else
-                                        <span class="text-muted">—</span>
                                     @endif
-                                </td>
-                                <td>{{ $inc->tecnico->nombre ?? '—' }}</td>
-                                <td class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
-                                <td>
-                                    <a href="{{ route('cliente.incidencias.detalle', $inc) }}"
-                                       class="btn btn-sm btn-outline-primary">
-                                        Ver
-                                    </a>
-                                </td>
-                            </tr>
+                                </div>
+
+                                <div class="inc-card-footer">
+                                    <span>{{ $inc->tecnico->nombre ?? 'Sin técnico' }}</span>
+                                    <span class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</span>
+                                </div>
+                            </a>
                         @empty
-                            <tr>
-                                <td colspan="8" class="td-vacio">
-                                    <i class="bi bi-inbox"></i> No se encontraron incidencias
-                                </td>
-                            </tr>
+                            <div class="inc-card-vacio">Sin incidencias</div>
                         @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    </div>
+                </section>
+            @endforeach
         </div>
 
         {{-- ── Paginación ── --}}
@@ -136,6 +136,7 @@
                 {{ $incidencias->links() }}
             </div>
         @endif
+    </div>
     </div>
 
 @endsection
