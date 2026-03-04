@@ -107,13 +107,15 @@
                                 <a href="{{ route('gestor.incidencias.show', $inc->id) }}" class="accion-btn accion-btn--ver" title="Ver detalle">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                @if ($inc->estado === 'sin_asignar')
+                                @if ($inc->estado !== 'cerrada')
                                     <button type="button"
                                             class="accion-btn accion-btn--asignar btn-abrir-asignar"
-                                            title="Asignar"
+                                            title="{{ $inc->estado === 'sin_asignar' ? 'Asignar' : 'Reasignar' }}"
                                             data-id="{{ $inc->id }}"
                                             data-codigo="{{ $inc->codigo }}"
-                                            data-url="{{ route('gestor.incidencias.asignar', $inc->id) }}">
+                                            data-url="{{ route('gestor.incidencias.asignar', $inc->id) }}"
+                                            data-prioridad="{{ $inc->prioridad ?? '' }}"
+                                            data-tecnico-id="{{ $inc->tecnico_id ?? '' }}">
                                         <i class="bi bi-person-plus"></i>
                                     </button>
                                 @endif

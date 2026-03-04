@@ -125,11 +125,16 @@ class IncidenciaGestorController extends Controller
         DB::beginTransaction();
 
         try {
+            // Si ya tiene un estado activo, no retroceder a 'asignada'
+            $nuevoEstado = in_array($incidencia->estado, ['sin_asignar', 'reabierta'])
+                ? 'asignada'
+                : $incidencia->estado;
+
             $incidencia->update([
                 'tecnico_id'  => $tecnico->id,
                 'gestor_id'   => $usuario->id,
                 'prioridad'   => $request->input('prioridad'),
-                'estado'      => 'asignada',
+                'estado'      => $nuevoEstado,
                 'asignado_en' => now(),
             ]);
 

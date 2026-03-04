@@ -1,0 +1,114 @@
+@extends('layouts.app')
+
+@section('titulo', 'Editar Incidencia — ' . $incidencia->codigo)
+
+@push('estilos')
+    <link rel="stylesheet" href="{{ asset('css/cliente/incidencias.css') }}">
+@endpush
+
+@section('contenido')
+
+    {{-- ── Cabecera ── --}}
+    <div class="seccion-header">
+        <div>
+            <h2 class="seccion-titulo">Editar incidencia</h2>
+            <p class="seccion-subtitulo">{{ $incidencia->codigo }} — Solo puedes editar mientras no haya sido asignada</p>
+        </div>
+        <a href="{{ route('cliente.incidencias.detalle', $incidencia) }}" class="btn btn-outline-secondary btn-accion">
+            <i class="bi bi-arrow-left me-2"></i>Volver
+        </a>
+    </div>
+
+    {{-- ── Formulario ── --}}
+    <div class="crear-card">
+        <form method="POST"
+              action="{{ route('cliente.incidencias.update', $incidencia) }}"
+              novalidate>
+            @csrf
+            @method('PUT')
+
+            {{-- Título --}}
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
+                <input type="text"
+                       id="titulo"
+                       name="titulo"
+                       class="form-control @error('titulo') is-invalid @enderror"
+                       value="{{ old('titulo', $incidencia->titulo) }}"
+                       placeholder="Describe brevemente el problema"
+                       required>
+                @error('titulo')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- Categoría --}}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="categoria_id" class="form-label">Categoría <span class="text-danger">*</span></label>
+                    <select id="categoria_id"
+                            name="categoria_id"
+                            class="form-select @error('categoria_id') is-invalid @enderror"
+                            required>
+                        <option value="">Selecciona categoría...</option>
+                        @foreach ($categorias as $cat)
+                            <option value="{{ $cat->id }}" @selected(old('categoria_id', $incidencia->categoria_id) == $cat->id)>
+                                {{ $cat->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('categoria_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Subcategoría (cargada por AJAX) --}}
+                <div class="col-md-6">
+                    <label for="subcategoria_id" class="form-label">Subcategoría <span class="text-danger">*</span></label>
+                    <select id="subcategoria_id"
+                            name="subcategoria_id"
+                            class="form-select @error('subcategoria_id') is-invalid @enderror"
+                            required>
+                        {{-- Opción actual pre-cargada; el AJAX la reemplazará al cambiar categoría --}}
+                        @if ($incidencia->subcategoria)
+                            <option value="{{ $incidencia->subcategoria_id }}" selected>
+                                {{ $incidencia->subcategoria->nombre }}
+                            </option>
+                        @else
+                            <option value="">Selecciona subcategoría...</option>
+                        @endif
+                    </select>
+                    @error('subcategoria_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            {{-- Descripción --}}
+            <div class="mb-4">
+                <label for="descripcion" class="form-label">Descripción <span class="text-danger">*</span></label>
+                <textarea id="descripcion"
+                          name="descripcion"
+                          class="form-control @error('descripcion') is-invalid @enderror"
+                          rows="5"
+                          placeholder="Explica el problema con todo el detalle posible..."
+                          required>{{ old('descripcion', $incidencia->descripcion) }}</textarea>
+                @error('descripcion')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- Botón guardar --}}
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary btn-accion">
+                    <i class="bi bi-floppy me-2"></i>Guardar cambios
+                </button>
+            </div>
+        </form>
+    </div>
+
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('js/cliente/incidencias.js') }}"></script>
+@endpush

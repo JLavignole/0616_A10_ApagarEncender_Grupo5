@@ -14,8 +14,15 @@
             <i class="bi bi-arrow-left"></i> Detalle de Incidencia
         </a>
 
-        @if ($incidencia->estado === 'resuelta')
-            <div class="detalle-topbar-acciones">
+        <div class="detalle-topbar-acciones">
+            @if ($incidencia->estado === 'sin_asignar')
+                <a href="{{ route('cliente.incidencias.editar', $incidencia) }}"
+                   class="btn btn-outline-secondary btn-accion">
+                    <i class="bi bi-pencil me-1"></i>Editar
+                </a>
+            @endif
+
+            @if ($incidencia->estado === 'resuelta')
                 <form id="form-reabrir-incidencia"
                       method="POST"
                       action="{{ route('cliente.incidencias.reabrir', $incidencia) }}">
@@ -41,8 +48,8 @@
                         <i class="bi bi-check2-circle me-1"></i> Marcar como Cerrada
                     </button>
                 </form>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 
     {{-- ── Layout de dos columnas ── --}}

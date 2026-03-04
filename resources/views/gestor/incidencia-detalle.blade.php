@@ -21,13 +21,15 @@
             <span class="badge-estado badge-estado--{{ $incidencia->estado }}">
                 {{ str_replace('_', ' ', ucfirst($incidencia->estado)) }}
             </span>
-            @if ($incidencia->estado === 'sin_asignar')
+            @if ($incidencia->estado !== 'cerrada')
                 <button type="button"
                         class="btn btn-primary btn-accion btn-abrir-asignar"
                         data-id="{{ $incidencia->id }}"
                         data-codigo="{{ $incidencia->codigo }}"
-                        data-url="{{ route('gestor.incidencias.asignar', $incidencia->id) }}">
-                    <i class="bi bi-person-plus me-1"></i>Asignar
+                        data-url="{{ route('gestor.incidencias.asignar', $incidencia->id) }}"
+                        data-prioridad="{{ $incidencia->prioridad ?? '' }}"
+                        data-tecnico-id="{{ $incidencia->tecnico_id ?? '' }}">
+                    <i class="bi bi-person-plus me-1"></i>{{ $incidencia->estado === 'sin_asignar' ? 'Asignar' : 'Reasignar' }}
                 </button>
             @endif
         </div>

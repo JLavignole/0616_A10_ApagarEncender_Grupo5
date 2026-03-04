@@ -61,12 +61,14 @@ window.onload = function () {
     var botonesAbrir = document.querySelectorAll('.btn-abrir-asignar');
     for (var i = 0; i < botonesAbrir.length; i++) {
         botonesAbrir[i].onclick = function () {
-            var codigo = this.getAttribute('data-codigo') || '—';
-            urlAsignar = this.getAttribute('data-url') || '';
+            var codigo     = this.getAttribute('data-codigo') || '—';
+            urlAsignar     = this.getAttribute('data-url') || '';
+            var prioridad  = this.getAttribute('data-prioridad') || '';
+            var tecnicoId  = this.getAttribute('data-tecnico-id') || '';
 
             document.getElementById('modalCodigoInc').textContent = codigo;
-            document.getElementById('modalSelectPrioridad').value = '';
-            document.getElementById('modalSelectTecnico').value = '';
+            document.getElementById('modalSelectPrioridad').value = prioridad;
+            document.getElementById('modalSelectTecnico').value = tecnicoId;
             document.getElementById('modalAsignar').removeAttribute('hidden');
         };
     }

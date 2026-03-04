@@ -227,6 +227,83 @@ class IncidenciaController extends Controller
     }
 
     /**
+     * Formulario para editar una incidencia propia (solo si está sin_asignar).
+     */
+    public function edit(Incidencia $incidencia): View|RedirectResponse
+    {
+        $usuario = Auth::user();
+
+        if ($incidencia->cliente_id !== $usuario->id) {
+            abort(403);
+        }
+
+        if ($incidencia->estado !== 'sin_asignar') {
+            return redirect()->route('cliente.incidencias.detalle', $incidencia)
+                ->with('error', 'Solo puedes editar incidencias que aún no han sido asignadas.');
+        }
+
+        $categorias = Categoria::where('activo', true)->orderBy('nombre')->get();
+
+        return view('cliente.incidencias.editar', compact('incidencia', 'categorias'));
+    }
+
+    /**
+     * Guardar los cambios de una incidencia propia (solo si está sin_asignar).
+     * Usa transacción para garantizar consistencia.
+     */
+    public function update(Request $request, Incidencia $incidencia): RedirectResponse
+    {
+        $usuario = Auth::user();
+
+        if ($incidencia->cliente_id !== $usuario->id) {
+            abort(403);
+        }
+
+        if ($incidencia->estado !== 'sin_asignar') {
+            return back()->with('error', 'Solo puedes editar incidencias que aún no han sido asignadas.');
+        }
+
+        $validated = $request->validate([
+            'titulo'          => ['required', 'string', 'max:255'],
+            'descripcion'     => ['required', 'string'],
+            'categoria_id'    => ['required', 'exists:categorias,id'],
+            'subcategoria_id' => ['required', 'exists:subcategorias,id'],
+        ], [
+            'titulo.required'          => 'El título es obligatorio.',
+            'titulo.max'               => 'El título no puede superar los 255 caracteres.',
+            'descripcion.required'     => 'La descripción es obligatoria.',
+            'categoria_id.required'    => 'Selecciona una categoría.',
+            'categoria_id.exists'      => 'La categoría seleccionada no es válida.',
+            'subcategoria_id.required' => 'Selecciona una subcategoría.',
+            'subcategoria_id.exists'   => 'La subcategoría seleccionada no es válida.',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $incidencia->update([
+                'titulo'          => $validated['titulo'],
+                'descripcion'     => $validated['descripcion'],
+                'categoria_id'    => $validated['categoria_id'],
+                'subcategoria_id' => $validated['subcategoria_id'],
+            ]);
+
+            DB::commit();
+
+            return redirect()
+                ->route('cliente.incidencias.detalle', $incidencia)
+                ->with('exito', 'Incidencia actualizada correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()
+                ->withInput()
+                ->with('error', 'Error al actualizar la incidencia. Inténtalo de nuevo.');
+        }
+    }
+
+    /**
      * Enviar un mensaje de chat dentro de la incidencia.
      * Soporta mensaje de texto e imagen adjunta.
      */

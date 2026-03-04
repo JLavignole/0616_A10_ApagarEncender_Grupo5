@@ -67,6 +67,11 @@
                         <i class="bi bi-building"></i>
                         <span>Sedes</span>
                     </a>
+                    <a href="{{ route('administrador.incidencias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/incidencias') ? 'active' : '' }}">
+                        <i class="bi bi-clipboard2-pulse"></i>
+                        <span>Incidencias</span>
+                    </a>
                     <a href="{{ route('administrador.sanciones.index') }}"
                        class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/sanciones') ? 'active' : '' }}">
                         <i class="bi bi-shield-exclamation"></i>

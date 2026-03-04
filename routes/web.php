@@ -10,6 +10,7 @@ use App\Http\Controllers\Administrador\UsuariosController;
 use App\Http\Controllers\Administrador\CategoriasController;
 use App\Http\Controllers\Administrador\SubcategoriasController;
 use App\Http\Controllers\Administrador\SancionesController;
+use App\Http\Controllers\Administrador\IncidenciasController as AdminIncidencias;
 use App\Http\Controllers\Gestor\DashboardController as GestorDashboard;
 use App\Http\Controllers\Gestor\IncidenciaGestorController;
 use App\Http\Controllers\Gestor\TecnicoGestorController;
@@ -79,6 +80,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/subcategorias/{subcategoria}/activar', [SubcategoriasController::class, 'activar'])->name('subcategorias.activar');
         Route::post('/subcategorias/{subcategoria}/desactivar', [SubcategoriasController::class, 'desactivar'])->name('subcategorias.desactivar');
 
+        // Gestión de incidencias
+        Route::get('/incidencias', [AdminIncidencias::class, 'index'])->name('administrador.incidencias.index');
+        Route::get('/incidencias/{incidencia}/editar', [AdminIncidencias::class, 'editar'])->name('administrador.incidencias.editar');
+        Route::put('/incidencias/{incidencia}', [AdminIncidencias::class, 'update'])->name('administrador.incidencias.update');
+
         // Gestión de sanciones
         Route::get('/sanciones', [SancionesController::class, 'index'])->name('sanciones.index');
         Route::get('/sanciones/crear', [SancionesController::class, 'crear'])->name('sanciones.crear');
@@ -118,6 +124,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/incidencias/crear',                       [ClienteIncidencia::class, 'create'])->name('incidencias.crear');
         Route::post('/incidencias',                            [ClienteIncidencia::class, 'store'])->name('incidencias.store');
         Route::get('/incidencias/{incidencia}',                [ClienteIncidencia::class, 'show'])->name('incidencias.detalle');
+        Route::get('/incidencias/{incidencia}/editar',         [ClienteIncidencia::class, 'edit'])->name('incidencias.editar');
+        Route::put('/incidencias/{incidencia}',                [ClienteIncidencia::class, 'update'])->name('incidencias.update');
         Route::post('/incidencias/{incidencia}/mensajes',      [ClienteIncidencia::class, 'sendMessage'])->name('incidencias.mensaje');
         Route::patch('/incidencias/{incidencia}/cerrar',       [ClienteIncidencia::class, 'close'])->name('incidencias.cerrar');
         Route::patch('/incidencias/{incidencia}/reabrir',       [ClienteIncidencia::class, 'reopen'])->name('incidencias.reabrir');
