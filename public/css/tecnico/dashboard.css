@@ -1,26 +1,5 @@
 /* ─── Técnico / Dashboard ────────────────────────────────────── */
-
-.seccion-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.seccion-titulo {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--color-texto-principal);
-    margin: 0;
-}
-
-.seccion-subtitulo {
-    font-size: 0.875rem;
-    color: var(--color-texto-secundario);
-    margin: 0.25rem 0 0;
-}
+/* .seccion-header / .seccion-titulo / .seccion-subtitulo → layout.css */
 
 .tabla-card {
     background: #fff;

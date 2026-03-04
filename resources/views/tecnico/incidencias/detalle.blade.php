@@ -3,9 +3,7 @@
 @section('titulo', 'Detalle de Incidencia — Técnico')
 
 @push('estilos')
-    {{-- Reutilizamos los estilos de cliente ya que la estructura es la misma --}}
-    <link rel="stylesheet" href="{{ asset('css/cliente/incidencias.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/tecnico/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tecnico/incidencias/detalle.css') }}">
 @endpush
 
 @section('contenido')
@@ -19,20 +17,29 @@
         <div class="d-flex gap-2">
             {{-- Botón Comenzar (Solo si está asignada) --}}
             @if($incidencia->estado === 'asignada')
-                <form action="{{ route('tecnico.comenzar', $incidencia->id) }}" method="POST">
+                <form id="form-comenzar" action="{{ route('tecnico.comenzar', $incidencia) }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-primary btn-accion">
+                    <button type="button"
+                            id="btn-comenzar"
+                            class="btn btn-primary btn-accion"
+                            data-codigo="{{ $incidencia->codigo }}">
                         <i class="bi bi-play-fill"></i> Comenzar Trabajo
                     </button>
                 </form>
             @endif
 
-            {{-- Botón Resolver (Solo si está en progreso) --}}
-            @if($incidencia->estado === 'en_progreso')
-                <button type="button" class="btn btn-success btn-accion" 
-                        onclick="abrirModalResolver({{ $incidencia->id }}, '{{ $incidencia->codigo }}')">
-                    <i class="bi bi-check-circle"></i> Resolver Incidencia
-                </button>
+            {{-- Botón Resolver (Solo si está en progreso o reabierta) --}}
+            @if(in_array($incidencia->estado, ['en_progreso', 'reabierta']))
+                <form id="form-resolver" action="{{ route('tecnico.resolver', $incidencia) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="button"
+                            id="btn-resolver"
+                            class="btn btn-success btn-accion"
+                            data-codigo="{{ $incidencia->codigo }}">
+                        <i class="bi bi-check-circle"></i> Resolver Incidencia
+                    </button>
+                </form>
             @endif
         </div>
     </div>
@@ -115,7 +122,7 @@
                 </div>
 
                 {{-- Formulario de envío (solo si no está cerrada o resuelta) --}}
-                @if(!in_array($incidencia->estado, ['cerrada', 'resuelta']))
+                @if(!in_array($incidencia->estado, ['cerrada']))
                     <div class="chat-input-area">
                         <form id="form-chat" 
                               action="{{ route('tecnico.incidencias.mensaje', $incidencia) }}" 
@@ -125,7 +132,7 @@
                             <div class="chat-input-wrapper">
                                 <label for="adjunto-chat" class="btn-adjuntar" title="Adjuntar imagen">
                                     <i class="bi bi-image"></i>
-                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" style="display: none;">
+                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" class="adjunto-chat-input">
                                 </label>
                                 
                                 <textarea name="cuerpo" id="cuerpo-mensaje" placeholder="Escribe un mensaje al cliente..." rows="1"></textarea>
@@ -204,7 +211,7 @@
                     <a href="{{ asset('storage/' . $adj->ruta) }}" target="_blank" class="adjunto-item">
                         <i class="bi bi-file-earmark adjunto-icono"></i>
                         <div class="adjunto-info">
-                            <div class="adjunto-nombre text-truncate" style="max-width: 150px;">{{ $adj->nombre_original }}</div>
+                            <div class="adjunto-nombre">{{ $adj->nombre_original }}</div>
                             <div class="adjunto-tamano">{{ number_format($adj->tamano / 1024, 0) }} KB</div>
                         </div>
                     </a>
@@ -215,38 +222,10 @@
         </div>
     </div>
 
-    {{-- Modal para Resolver (Reutilizando el de dashboard.blade.php) --}}
-    <div class="modal fade" id="modalResolver" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Resolver Incidencia: <span id="modalCodigo" class="fw-bold"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="formResolver" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="comentario" class="form-label">Comentario técnico de resolución</label>
-                            <textarea class="form-control" name="comentario" id="comentario" rows="4" 
-                                placeholder="Describe la solución aplicada para el cliente..."></textarea>
-                            <div class="invalid-feedback">
-                                El comentario es obligatorio (mínimo 10 caracteres).
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-success" onclick="validarYEnviar()">Confirmar Resolución</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
 
 @endsection
 
 @push('scripts')
-    {{-- Importante: Usamos el JS del técnico para las funciones de modal y SweetAlert --}}
-    <script src="{{ asset('js/tecnico/dashboard.js') }}"></script>
+    <script src="{{ asset('js/tecnico/incidencias/detalle.js') }}"></script>
 @endpush

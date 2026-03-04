@@ -98,12 +98,11 @@
                             <td>{{ $inc->sede->nombre ?? '—' }}</td>
                             <td class="td-fecha">{{ $inc->asignado_en?->format('d/m/Y') ?? '—' }}</td>
                             <td class="text-end">
-                                <div class="d-flex gap-2 justify-content-end">
-                                                                       
-                                    <a href="#" class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </div>
+                                <a href="{{ route('tecnico.incidencias.detalle', $inc) }}"
+                                   class="btn-icono btn-icono--ver"
+                                   title="Ver detalle">
+                                    <i class="bi bi-eye"></i>
+                                </a>
                             </td>
                         </tr>
                     @empty
