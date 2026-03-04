@@ -203,6 +203,30 @@ class IncidenciaController extends Controller
     }
 
     /**
+     * Reabrir incidencia — solo si su estado es "resuelta".
+     * El cliente indica que el problema no está resuelto.
+     */
+    public function reopen(Incidencia $incidencia): RedirectResponse
+    {
+        $usuario = Auth::user();
+
+        if ($incidencia->cliente_id !== $usuario->id) {
+            abort(403);
+        }
+
+        if ($incidencia->estado !== 'resuelta') {
+            return back()->with('error', 'Solo se pueden reabrir incidencias con estado "Resuelta".');
+        }
+
+        $incidencia->update([
+            'estado'      => 'reabierta',
+            'resuelto_en' => null,
+        ]);
+
+        return back()->with('exito', 'Incidencia reabierta. El equipo técnico será notificado.');
+    }
+
+    /**
      * Enviar un mensaje de chat dentro de la incidencia.
      * Soporta mensaje de texto e imagen adjunta.
      */

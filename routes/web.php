@@ -114,6 +114,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/incidencias/{incidencia}',                [ClienteIncidencia::class, 'show'])->name('incidencias.detalle');
         Route::post('/incidencias/{incidencia}/mensajes',      [ClienteIncidencia::class, 'sendMessage'])->name('incidencias.mensaje');
         Route::patch('/incidencias/{incidencia}/cerrar',       [ClienteIncidencia::class, 'close'])->name('incidencias.cerrar');
+        Route::patch('/incidencias/{incidencia}/reabrir',       [ClienteIncidencia::class, 'reopen'])->name('incidencias.reabrir');
     });
 
     // AJAX: subcategorías por categoría (accesible por todos los roles)

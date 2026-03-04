@@ -15,18 +15,33 @@
         </a>
 
         @if ($incidencia->estado === 'resuelta')
-            <form id="form-cerrar-incidencia"
-                  method="POST"
-                  action="{{ route('cliente.incidencias.cerrar', $incidencia) }}">
-                @csrf
-                @method('PATCH')
-                <button type="button"
-                        id="btn-cerrar-incidencia"
-                        class="btn btn-success btn-accion btn-cerrar"
-                        data-codigo="{{ $incidencia->codigo }}">
-                    <i class="bi bi-check2-circle me-1"></i> Marcar como Cerrada
-                </button>
-            </form>
+            <div class="detalle-topbar-acciones">
+                <form id="form-reabrir-incidencia"
+                      method="POST"
+                      action="{{ route('cliente.incidencias.reabrir', $incidencia) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="button"
+                            id="btn-reabrir-incidencia"
+                            class="btn btn-warning btn-accion btn-reabrir"
+                            data-codigo="{{ $incidencia->codigo }}">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i> No resuelta
+                    </button>
+                </form>
+
+                <form id="form-cerrar-incidencia"
+                      method="POST"
+                      action="{{ route('cliente.incidencias.cerrar', $incidencia) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="button"
+                            id="btn-cerrar-incidencia"
+                            class="btn btn-success btn-accion btn-cerrar"
+                            data-codigo="{{ $incidencia->codigo }}">
+                        <i class="bi bi-check2-circle me-1"></i> Marcar como Cerrada
+                    </button>
+                </form>
+            </div>
         @endif
     </div>
 

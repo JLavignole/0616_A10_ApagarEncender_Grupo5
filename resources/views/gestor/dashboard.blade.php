@@ -109,6 +109,8 @@
                 </tbody>
             </table>
         </div>
+
+        {{ $pendientes->links() }}
     </div>
 
 @endsection

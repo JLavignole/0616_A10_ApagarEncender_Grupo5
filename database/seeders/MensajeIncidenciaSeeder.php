@@ -12,33 +12,84 @@ class MensajeIncidenciaSeeder extends Seeder
 {
     public function run(): void
     {
-        $mensajes = [
-            ['codigo' => 'BCN-2026-000101', 'correo' => 'c.ruiz@techtrack.com', 'cuerpo' => 'Estoy revisando los logs del gateway VPN para detectar la causa de la desconexión.', 'fecha' => Carbon::now()->subDays(2)->addHours(2)],
-            ['codigo' => 'BCN-2026-000101', 'correo' => 'j.perez@techtrack.com', 'cuerpo' => 'Gracias, estaré disponible esta tarde para hacer pruebas.', 'fecha' => Carbon::now()->subDays(2)->addHours(3)],
-            ['codigo' => 'MAD-2026-000102', 'correo' => 'd.ortega@techtrack.com', 'cuerpo' => 'Asignada a soporte de aplicaciones para revisión funcional del flujo de facturación.', 'fecha' => Carbon::now()->subDay()->addHours(3)],
-            ['codigo' => 'MAD-2026-000102', 'correo' => 'g.bianchi@techtrack.com', 'cuerpo' => 'He identificado un cambio en validaciones de impuestos; preparo parche para hoy.', 'fecha' => Carbon::now()->subDay()->addHours(5)],
-            ['codigo' => 'YUL-2026-000103', 'correo' => 'm.dupont@techtrack.com', 'cuerpo' => 'Necesito acceso para editar materiales de campaña de marzo.', 'fecha' => Carbon::now()->subHours(5)],
-            ['codigo' => 'LIS-2026-000104', 'correo' => 'j.ferreira@techtrack.com', 'cuerpo' => 'Se ha bloqueado el dominio fraudulento y enviado aviso preventivo al departamento.', 'fecha' => Carbon::now()->subDays(5)->addHours(2)],
-            ['codigo' => 'LIS-2026-000104', 'correo' => 'h.costa@techtrack.com', 'cuerpo' => 'Confirmo recepción. Gracias por la rapidez.', 'fecha' => Carbon::now()->subDays(5)->addHours(3)],
-            ['codigo' => 'ROM-2026-000105', 'correo' => 'g.bianchi@techtrack.com', 'cuerpo' => 'Actualizados drivers de audio y firmware del docking. ¿Puedes validar en la próxima reunión?', 'fecha' => Carbon::now()->subDays(8)],
-            ['codigo' => 'ROM-2026-000105', 'correo' => 'l.moretti@techtrack.com', 'cuerpo' => 'Probado esta mañana y el audio funciona correctamente.', 'fecha' => Carbon::now()->subDays(8)->addHours(2)],
-            ['codigo' => 'BCN-2026-000106', 'correo' => 'a.schmidt@techtrack.com', 'cuerpo' => 'He solicitado cable DisplayPort certificado y monitor de sustitución para pruebas.', 'fecha' => Carbon::now()->subDays(3)->addHours(4)],
-            ['codigo' => 'MAD-2026-000107', 'correo' => 'm.lopez@techtrack.com', 'cuerpo' => 'El problema persiste en dos equipos del departamento.', 'fecha' => Carbon::now()->subHours(3)],
-            ['codigo' => 'LIS-2026-000108', 'correo' => 'd.ortega@techtrack.com', 'cuerpo' => 'Aprobada la solicitud y aplicado rol de compras en producción.', 'fecha' => Carbon::now()->subDays(5)->addHours(1)],
+        $cuerposTecnico = [
+            'Estoy revisando los logs del servicio para detectar la causa.',
+            'He identificado el origen del problema; preparo un parche.',
+            'Se ha aplicado la corrección. Por favor, valida cuando puedas.',
+            'He actualizado los drivers y reiniciado el servicio.',
+            'El componente defectuoso ha sido sustituido.',
+            'Se ha reconfigurado el servicio y comprobado el funcionamiento.',
+            'He escalado el caso al proveedor; esperamos respuesta en 24 h.',
+            'Comprobado el cableado y reenrutado la conexión.',
+            'Parche desplegado en el entorno de producción.',
+            'Restaurada la copia de seguridad correspondiente.',
         ];
 
-        foreach ($mensajes as $mensaje) {
-            $incidencia = Incidencia::where('codigo', $mensaje['codigo'])->firstOrFail();
-            $usuario = User::where('correo', $mensaje['correo'])->firstOrFail();
+        $cuerposCliente = [
+            'Gracias, quedo a la espera.',
+            'He probado y el problema persiste.',
+            'Confirmado, ya funciona correctamente.',
+            'El error ha vuelto a aparecer esta mañana.',
+            'Necesito resolverlo hoy, tengo una presentación.',
+            'He reiniciado el equipo y sigue igual.',
+            'Perfecto, muchas gracias por la rapidez.',
+            '¿Hay alguna novedad sobre el caso?',
+            'Adjunto captura del error actualizado.',
+            'Puedo confirmar que la solución funciona.',
+        ];
 
+        $cuerposGestor = [
+            'Asignada al técnico correspondiente de la sede.',
+            'He priorizado este caso por impacto en producción.',
+            'Revisaré con el equipo en la daily de mañana.',
+            'Escalada al proveedor por superar el SLA interno.',
+            'Cerrada tras confirmación del usuario.',
+        ];
+
+        $incidencias = Incidencia::with(['cliente', 'gestor', 'tecnico'])->get();
+
+        foreach ($incidencias as $inc) {
+            $base = $inc->reportado_en ?? Carbon::now()->subDays(5);
+            $horasOffset = 2;
+
+            // Mensaje del cliente (siempre)
             MensajeIncidencia::create([
-                'incidencia_id' => $incidencia->id,
-                'usuario_id' => $usuario->id,
-                'cuerpo' => $mensaje['cuerpo'],
-                'eliminado' => false,
-                'created_at' => $mensaje['fecha'],
-                'updated_at' => $mensaje['fecha'],
+                'incidencia_id' => $inc->id,
+                'usuario_id'    => $inc->cliente_id,
+                'cuerpo'        => $cuerposCliente[array_rand($cuerposCliente)],
+                'eliminado'     => false,
+                'created_at'    => (clone $base)->addHours($horasOffset),
+                'updated_at'    => (clone $base)->addHours($horasOffset),
             ]);
+            $horasOffset += rand(1, 4);
+
+            // Mensaje del gestor (si existe)
+            if ($inc->gestor_id) {
+                MensajeIncidencia::create([
+                    'incidencia_id' => $inc->id,
+                    'usuario_id'    => $inc->gestor_id,
+                    'cuerpo'        => $cuerposGestor[array_rand($cuerposGestor)],
+                    'eliminado'     => false,
+                    'created_at'    => (clone $base)->addHours($horasOffset),
+                    'updated_at'    => (clone $base)->addHours($horasOffset),
+                ]);
+                $horasOffset += rand(1, 3);
+            }
+
+            // Mensaje del técnico (si existe)
+            if ($inc->tecnico_id) {
+                MensajeIncidencia::create([
+                    'incidencia_id' => $inc->id,
+                    'usuario_id'    => $inc->tecnico_id,
+                    'cuerpo'        => $cuerposTecnico[array_rand($cuerposTecnico)],
+                    'eliminado'     => false,
+                    'created_at'    => (clone $base)->addHours($horasOffset),
+                    'updated_at'    => (clone $base)->addHours($horasOffset),
+                ]);
+            }
         }
+
+        // Marcar algunos mensajes como eliminados para probar esa funcionalidad
+        MensajeIncidencia::inRandomOrder()->limit(5)->update(['eliminado' => true]);
     }
 }

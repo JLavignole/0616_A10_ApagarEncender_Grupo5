@@ -91,6 +91,56 @@
 
     </div>
 
+    {{-- ── Filtros de incidencias ── --}}
+    <form method="GET" action="{{ route('administrador.dashboard') }}" id="formFiltros" class="filtros-bar mb-4">
+
+        <div class="filtros-busqueda">
+            <i class="bi bi-search"></i>
+            <input type="text" name="buscar" id="inputBuscar" value="{{ request('buscar') }}" placeholder="Buscar por código..." autocomplete="off">
+        </div>
+
+        <div class="filtros-select">
+            <select name="estado" id="selectEstado" class="filtro-select">
+                <option value="">Estado</option>
+                <option value="sin_asignar" {{ request('estado') === 'sin_asignar' ? 'selected' : '' }}>Sin asignar</option>
+                <option value="asignada" {{ request('estado') === 'asignada' ? 'selected' : '' }}>Asignada</option>
+                <option value="en_progreso" {{ request('estado') === 'en_progreso' ? 'selected' : '' }}>En progreso</option>
+                <option value="resuelta" {{ request('estado') === 'resuelta' ? 'selected' : '' }}>Resuelta</option>
+                <option value="cerrada" {{ request('estado') === 'cerrada' ? 'selected' : '' }}>Cerrada</option>
+                <option value="reabierta" {{ request('estado') === 'reabierta' ? 'selected' : '' }}>Reabierta</option>
+            </select>
+        </div>
+
+        <div class="filtros-select">
+            <select name="prioridad" id="selectPrioridad" class="filtro-select">
+                <option value="">Prioridad</option>
+                <option value="alta" {{ request('prioridad') === 'alta' ? 'selected' : '' }}>Alta</option>
+                <option value="media" {{ request('prioridad') === 'media' ? 'selected' : '' }}>Media</option>
+                <option value="baja" {{ request('prioridad') === 'baja' ? 'selected' : '' }}>Baja</option>
+            </select>
+        </div>
+
+        <div class="filtros-select">
+            <select name="sede" id="selectSede" class="filtro-select">
+                <option value="">Sede</option>
+                @foreach ($sedes as $sede)
+                    <option value="{{ $sede->id }}" {{ request('sede') == $sede->id ? 'selected' : '' }}>{{ $sede->nombre }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="filtros-fecha">
+            <input type="date" name="fecha" id="inputFecha" value="{{ request('fecha') }}" class="filtro-fecha">
+        </div>
+
+        @if(request('buscar') || request('estado') || request('prioridad') || request('sede') || request('fecha'))
+            <a href="{{ route('administrador.dashboard') }}" class="btn-limpiar" title="Limpiar filtros">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        @endif
+
+    </form>
+
     {{-- ── Tabla últimas incidencias ── --}}
     <div class="tabla-card">
         <div class="tabla-card-header">
@@ -140,6 +190,8 @@
                 </tbody>
             </table>
         </div>
+
+        {{ $ultimasIncidencias->links() }}
     </div>
 
 @endsection

@@ -32,8 +32,7 @@ class DashboardController extends Controller
             ->where('tecnico_id', $usuario->id)
             ->whereIn('estado', ['asignada', 'en_progreso', 'reabierta'])
             ->latest('updated_at')
-            ->take(10)
-            ->get();
+            ->paginate(7);
 
         return view('tecnico.dashboard', compact(
             'usuario',

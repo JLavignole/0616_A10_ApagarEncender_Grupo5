@@ -24,8 +24,7 @@ class DashboardController extends Controller
         $pendientes = Incidencia::with(['sede', 'cliente'])
             ->where('estado', 'sin_asignar')
             ->oldest('created_at')
-            ->take(10)
-            ->get();
+            ->paginate(7);
 
         return view('gestor.dashboard', compact(
             'usuario',

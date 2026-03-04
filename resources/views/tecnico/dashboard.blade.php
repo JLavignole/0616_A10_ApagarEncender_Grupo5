@@ -111,6 +111,8 @@
                 </tbody>
             </table>
         </div>
+
+        {{ $misIncidencias->links() }}
     </div>
 
 @endsection

@@ -43,7 +43,7 @@ class UsuariosController extends Controller
             });
         }
 
-        $usuarios = $query->paginate(15)->withQueryString();
+        $usuarios = $query->paginate(7)->withQueryString();
         $sedes    = Sede::orderBy('nombre')->get();
         $roles    = Rol::orderBy('nombre')->get();
 

@@ -34,6 +34,7 @@ return new class extends Migration
                 'en_progreso',
                 'resuelta',
                 'cerrada',
+                'reabierta',
             ])->default('sin_asignar');
 
             // ── Fechas clave ───────────────────────────────
