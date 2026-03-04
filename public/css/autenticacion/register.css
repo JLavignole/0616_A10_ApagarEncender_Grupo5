@@ -1,0 +1,36 @@
+/* ────────────────────────────────────────────────────
+   CentralIT — CSS Register (complementa login.css)
+   ──────────────────────────────────────────────────── */
+
+/* ── Select con icono ── */
+.form-select {
+    border-color: #e2e8f0;
+    font-size: 14px;
+    padding: 10px 14px;
+    transition: border-color .15s;
+}
+
+.form-select:focus {
+    border-color: var(--login-accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+/* ── Enlace login <-> register ── */
+.login-enlace {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.login-enlace a {
+    color: var(--login-accent);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .15s;
+}
+
+.login-enlace a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}

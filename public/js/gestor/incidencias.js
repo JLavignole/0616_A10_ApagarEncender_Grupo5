@@ -1,8 +1,61 @@
-/* public/js/gestor/dashboard.js */
+/* public/js/gestor/incidencias.js */
 
 window.onload = function () {
 
-    /* ── Modal de asignación rápida ──────────────────── */
+    /* ── Filtros ─────────────────────────────────────────── */
+    var formFiltros      = document.getElementById('formFiltros');
+    var inputBuscar      = document.getElementById('inputBuscar');
+    var selectEstado     = document.getElementById('selectEstado');
+    var selectPrioridad  = document.getElementById('selectPrioridad');
+    var selectOrden      = document.getElementById('selectOrden');
+
+    var timerBuscar = null;
+
+    if (inputBuscar) {
+        inputBuscar.oninput = function () {
+            clearTimeout(timerBuscar);
+            timerBuscar = setTimeout(function () {
+                formFiltros.submit();
+            }, 400);
+        };
+    }
+
+    if (selectEstado) {
+        selectEstado.onchange = function () {
+            formFiltros.submit();
+        };
+    }
+
+    if (selectPrioridad) {
+        selectPrioridad.onchange = function () {
+            formFiltros.submit();
+        };
+    }
+
+    if (selectOrden) {
+        selectOrden.onchange = function () {
+            formFiltros.submit();
+        };
+    }
+
+    /* ── Checkbox ocultar cerradas ────────────────────── */
+    var chkOcultar = document.getElementById('chkOcultarCerradas');
+    if (chkOcultar) {
+        chkOcultar.onclick = function () {
+            var filas = document.querySelectorAll('.fila-incidencia');
+            for (var i = 0; i < filas.length; i++) {
+                if (filas[i].getAttribute('data-estado') === 'cerrada') {
+                    if (chkOcultar.checked) {
+                        filas[i].classList.add('oculta');
+                    } else {
+                        filas[i].classList.remove('oculta');
+                    }
+                }
+            }
+        };
+    }
+
+    /* ── Modal de asignación ─────────────────────────── */
     var urlAsignar = '';
 
     var botonesAbrir = document.querySelectorAll('.btn-abrir-asignar');
@@ -42,7 +95,6 @@ window.onload = function () {
         };
     }
 
-    /* ── Confirmar asignación con fetch() ────────────── */
     var btnConfirmar = document.getElementById('btnConfirmarAsignar');
     if (btnConfirmar) {
         btnConfirmar.onclick = function () {

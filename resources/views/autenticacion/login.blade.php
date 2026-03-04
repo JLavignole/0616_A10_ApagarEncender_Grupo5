@@ -77,6 +77,7 @@
 
                 </form>
 
+
                 <p class="login-footer-texto">
                     &copy; {{ date('Y') }} TechTrack — Acceso restringido a personal autorizado
                 </p>
@@ -102,9 +103,12 @@
 
     </div>
 
-    {{-- Error de servidor --}}
+    {{-- Flash messages --}}
     @if (session('error'))
         <span id="flash-error" data-msg="{{ session('error') }}" hidden></span>
+    @endif
+    @if (session('success'))
+        <span id="flash-success" data-msg="{{ session('success') }}" hidden></span>
     @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

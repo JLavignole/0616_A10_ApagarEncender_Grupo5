@@ -1,8 +1,8 @@
-/* public/js/gestor/dashboard.js */
+/* public/js/gestor/incidencia-detalle.js */
 
 window.onload = function () {
 
-    /* ── Modal de asignación rápida ──────────────────── */
+    /* ── Modal de asignación desde detalle ───────────── */
     var urlAsignar = '';
 
     var botonesAbrir = document.querySelectorAll('.btn-abrir-asignar');
