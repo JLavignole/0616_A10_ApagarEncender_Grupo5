@@ -117,9 +117,10 @@
                                           id="form-finalizar-{{ $sancion->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--finalizar"
+                                                class="btn-icono btn-icono--finalizar btn-confirmar-finalizar"
                                                 title="Finalizar sanción"
-                                                onclick="confirmarFinalizar('{{ addslashes($sancion->usuario->nombre ?? '') }}', 'form-finalizar-{{ $sancion->id }}')">
+                                                data-nombre="{{ $sancion->usuario->nombre ?? '' }}"
+                                                data-form="form-finalizar-{{ $sancion->id }}">
                                             <i class="bi bi-check-circle"></i>
                                         </button>
                                     </form>

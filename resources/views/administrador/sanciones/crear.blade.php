@@ -107,7 +107,7 @@
                 </div>
 
                 {{-- Aviso bloqueo --}}
-                <div class="col-12" id="avisoBan" style="display:none;">
+                <div class="col-12 oculto" id="avisoBan">
                     <div class="aviso-bloqueo">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                         <strong>Bloqueo:</strong> El usuario no podrá iniciar sesión mientras la sanción esté activa.

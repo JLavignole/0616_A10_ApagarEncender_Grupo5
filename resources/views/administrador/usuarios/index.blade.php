@@ -115,9 +115,10 @@
                                           id="form-desactivar-{{ $usuario->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--desactivar"
+                                                class="btn-icono btn-icono--desactivar btn-confirmar-desactivar"
                                                 title="Desactivar usuario"
-                                                onclick="confirmarDesactivar('{{ addslashes($usuario->nombre) }}', 'form-desactivar-{{ $usuario->id }}')">
+                                                data-nombre="{{ $usuario->nombre }}"
+                                                data-form="form-desactivar-{{ $usuario->id }}">
                                             <i class="bi bi-toggle-on"></i>
                                         </button>
                                     </form>
@@ -128,9 +129,10 @@
                                           id="form-reactivar-{{ $usuario->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--activar"
+                                                class="btn-icono btn-icono--activar btn-confirmar-reactivar"
                                                 title="Reactivar usuario"
-                                                onclick="confirmarReactivar('{{ addslashes($usuario->nombre) }}', 'form-reactivar-{{ $usuario->id }}')">
+                                                data-nombre="{{ $usuario->nombre }}"
+                                                data-form="form-reactivar-{{ $usuario->id }}">
                                             <i class="bi bi-toggle-off"></i>
                                         </button>
                                     </form>

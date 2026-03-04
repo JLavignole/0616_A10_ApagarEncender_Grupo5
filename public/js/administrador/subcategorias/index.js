@@ -48,28 +48,41 @@ window.onload = function () {
             formFiltros.submit();
         }, 400);
     };
+
+    /* ── Botones de desactivar / activar subcategoría ──── */
+
+    var botonesDesactivar = document.querySelectorAll('.btn-confirmar-desactivar');
+    for (var i = 0; i < botonesDesactivar.length; i++) {
+        botonesDesactivar[i].onclick = function () {
+            var nombre = this.dataset.nombre;
+            var formId = this.dataset.form;
+            confirmarAccion(
+                '¿Desactivar subcategoría?',
+                'La subcategoría <strong>' + nombre + '</strong> quedará inactiva.',
+                'warning',
+                'Sí, desactivar',
+                function () {
+                    document.getElementById(formId).submit();
+                }
+            );
+        };
+    }
+
+    var botonesActivar = document.querySelectorAll('.btn-confirmar-activar');
+    for (var j = 0; j < botonesActivar.length; j++) {
+        botonesActivar[j].onclick = function () {
+            var nombre = this.dataset.nombre;
+            var formId = this.dataset.form;
+            confirmarAccion(
+                '¿Activar subcategoría?',
+                'La subcategoría <strong>' + nombre + '</strong> volverá a estar activa.',
+                'question',
+                'Sí, activar',
+                function () {
+                    document.getElementById(formId).submit();
+                }
+            );
+        };
+    }
+
 };
-
-function confirmarDesactivar(nombre, formId) {
-    confirmarAccion(
-        '¿Desactivar subcategoría?',
-        'La subcategoría <strong>' + nombre + '</strong> quedará inactiva.',
-        'warning',
-        'Sí, desactivar',
-        function () {
-            document.getElementById(formId).submit();
-        }
-    );
-}
-
-function confirmarActivar(nombre, formId) {
-    confirmarAccion(
-        '¿Activar subcategoría?',
-        'La subcategoría <strong>' + nombre + '</strong> volverá a estar activa.',
-        'question',
-        'Sí, activar',
-        function () {
-            document.getElementById(formId).submit();
-        }
-    );
-}

@@ -908,7 +908,7 @@
     display: block;
 }
 
-/* �rea de entrada */
+/* �rea de entrada */
 .chat-input-area {
     background: #fff;
     padding: 16px;
@@ -998,5 +998,15 @@
     text-align: center;
     font-size: 13px;
     font-weight: 500;
+}
+
+/* ── Utilidades ──────────────────────────────────────────── */
+
+.oculto {
+    display: none;
+}
+
+.detalle-texto-secundario {
+    font-size: 13px;
 }
 

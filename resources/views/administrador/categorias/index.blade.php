@@ -79,9 +79,10 @@
                                           id="form-desactivar-{{ $categoria->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--desactivar"
+                                                class="btn-icono btn-icono--desactivar btn-confirmar-desactivar"
                                                 title="Desactivar categoría"
-                                                onclick="confirmarDesactivar('{{ addslashes($categoria->nombre) }}', 'form-desactivar-{{ $categoria->id }}')">
+                                                data-nombre="{{ $categoria->nombre }}"
+                                                data-form="form-desactivar-{{ $categoria->id }}">
                                             <i class="bi bi-toggle-on"></i>
                                         </button>
                                     </form>
@@ -92,9 +93,10 @@
                                           id="form-activar-{{ $categoria->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--activar"
+                                                class="btn-icono btn-icono--activar btn-confirmar-activar"
                                                 title="Activar categoría"
-                                                onclick="confirmarActivar('{{ addslashes($categoria->nombre) }}', 'form-activar-{{ $categoria->id }}')">
+                                                data-nombre="{{ $categoria->nombre }}"
+                                                data-form="form-activar-{{ $categoria->id }}">
                                             <i class="bi bi-toggle-off"></i>
                                         </button>
                                     </form>

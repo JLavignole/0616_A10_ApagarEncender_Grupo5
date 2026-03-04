@@ -119,7 +119,7 @@
                             <div class="chat-input-wrapper">
                                 <label for="adjunto-chat" class="btn-adjuntar" title="Adjuntar imagen">
                                     <i class="bi bi-image"></i>
-                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" style="display: none;">
+                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" class="oculto">
                                 </label>
                                 
                                 <textarea name="cuerpo" id="cuerpo-mensaje" placeholder="Escribe un mensaje..." rows="1"></textarea>
@@ -128,7 +128,7 @@
                                     <i class="bi bi-send-fill"></i>
                                 </button>
                             </div>
-                            <div id="preview-adjunto" class="preview-adjunto" style="display: none;">
+                            <div id="preview-adjunto" class="preview-adjunto oculto">
                                 <span class="preview-nombre"></span>
                                 <button type="button" class="btn-quitar-adjunto"><i class="bi bi-x"></i></button>
                             </div>
@@ -219,7 +219,7 @@
                         </div>
                     </div>
                 @else
-                    <p class="text-muted" style="font-size: 13px;">
+                    <p class="text-muted detalle-texto-secundario">
                         Pendiente de asignación
                     </p>
                 @endif
@@ -242,7 +242,7 @@
                         </div>
                     </a>
                 @empty
-                    <p class="text-muted" style="font-size: 13px;">
+                    <p class="text-muted detalle-texto-secundario">
                         Sin archivos adjuntos
                     </p>
                 @endforelse

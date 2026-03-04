@@ -86,9 +86,10 @@
                                           id="form-desactivar-{{ $sede->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--desactivar"
+                                                class="btn-icono btn-icono--desactivar btn-confirmar-desactivar"
                                                 title="Desactivar sede"
-                                                onclick="confirmarDesactivar('{{ $sede->nombre }}', 'form-desactivar-{{ $sede->id }}')">  
+                                                data-nombre="{{ $sede->nombre }}"
+                                                data-form="form-desactivar-{{ $sede->id }}">
                                             <i class="bi bi-toggle-on"></i>
                                         </button>
                                     </form>
@@ -99,9 +100,10 @@
                                           id="form-activar-{{ $sede->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--activar"
+                                                class="btn-icono btn-icono--activar btn-confirmar-activar"
                                                 title="Activar sede"
-                                                onclick="confirmarActivar('{{ $sede->nombre }}', 'form-activar-{{ $sede->id }}')">
+                                                data-nombre="{{ $sede->nombre }}"
+                                                data-form="form-activar-{{ $sede->id }}">
                                             <i class="bi bi-toggle-off"></i>
                                         </button>
                                     </form>
