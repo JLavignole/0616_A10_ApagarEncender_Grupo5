@@ -55,7 +55,7 @@
 
             {{-- Actividad (Chat) ── --}}
             <p class="detalle-seccion">ACTIVIDAD Y CHAT</p>
-            
+
             <div class="chat-contenedor">
                 <div class="actividad-lista" id="chat-mensajes">
                     @forelse ($incidencia->mensajes as $msg)
@@ -76,7 +76,7 @@
                                             {{ $msg->created_at->format('d/m/Y, H:i') }}
                                         </span>
                                     </div>
-                                    
+
                                     @if($msg->cuerpo)
                                         <p class="actividad-texto">{{ $msg->cuerpo }}</p>
                                     @endif
@@ -111,24 +111,24 @@
                 {{-- Formulario de envío (solo si no está cerrada) --}}
                 @if($incidencia->estado !== 'cerrada')
                     <div class="chat-input-area">
-                        <form id="form-chat" 
-                              action="{{ route('cliente.incidencias.mensaje', $incidencia) }}" 
-                              method="POST" 
+                        <form id="form-chat"
+                              action="{{ route('cliente.incidencias.mensaje', $incidencia) }}"
+                              method="POST"
                               enctype="multipart/form-data">
                             @csrf
                             <div class="chat-input-wrapper">
                                 <label for="adjunto-chat" class="btn-adjuntar" title="Adjuntar imagen">
                                     <i class="bi bi-image"></i>
-                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" style="display: none;">
+                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" class="input-adjunto-chat">
                                 </label>
-                                
+
                                 <textarea name="cuerpo" id="cuerpo-mensaje" placeholder="Escribe un mensaje..." rows="1"></textarea>
-                                
+
                                 <button type="submit" class="btn-enviar-chat" id="btn-enviar">
                                     <i class="bi bi-send-fill"></i>
                                 </button>
                             </div>
-                            <div id="preview-adjunto" class="preview-adjunto" style="display: none;">
+                            <div id="preview-adjunto" class="preview-adjunto">
                                 <span class="preview-nombre"></span>
                                 <button type="button" class="btn-quitar-adjunto"><i class="bi bi-x"></i></button>
                             </div>
@@ -219,7 +219,7 @@
                         </div>
                     </div>
                 @else
-                    <p class="text-muted" style="font-size: 13px;">
+                    <p class="text-muted detalle-texto-secundario">
                         Pendiente de asignación
                     </p>
                 @endif
@@ -242,7 +242,7 @@
                         </div>
                     </a>
                 @empty
-                    <p class="text-muted" style="font-size: 13px;">
+                    <p class="text-muted detalle-texto-secundario">
                         Sin archivos adjuntos
                     </p>
                 @endforelse

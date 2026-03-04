@@ -1178,6 +1178,10 @@
     color: #2563eb;
 }
 
+.input-adjunto-chat {
+    display: none;
+}
+
 .chat-input-wrapper textarea {
     flex: 1;
     background: transparent;
@@ -1211,7 +1215,7 @@
 }
 
 .preview-adjunto {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 10px;
     background: #eff6ff;
@@ -1239,5 +1243,9 @@
     text-align: center;
     font-size: 13px;
     font-weight: 500;
+}
+
+.detalle-texto-secundario {
+    font-size: 13px;
 }
 

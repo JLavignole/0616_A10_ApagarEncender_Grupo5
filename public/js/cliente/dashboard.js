@@ -1,5 +1,23 @@
 /* public/js/cliente/dashboard.js */
 window.onload = function () {
+    var barraResumen = document.querySelector('.dash-resumen-barra-fill');
+    if (barraResumen) {
+        var porcentaje = parseInt(barraResumen.getAttribute('data-width') || '0', 10);
+        if (isNaN(porcentaje)) {
+            porcentaje = 0;
+        }
+
+        if (porcentaje < 0) {
+            porcentaje = 0;
+        }
+
+        if (porcentaje > 100) {
+            porcentaje = 100;
+        }
+
+        barraResumen.style.width = porcentaje + '%';
+    }
+
     // Confirmación antes de cancelar una incidencia propia
     var botonesCancelar = document.querySelectorAll('[data-accion="cancelar"]');
     for (var i = 0; i < botonesCancelar.length; i++) {
