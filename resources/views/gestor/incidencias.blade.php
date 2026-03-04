@@ -148,8 +148,8 @@
             </div>
             <div class="modal-cuerpo">
                 <div class="campo-grupo">
-                    <label for="selectPrioridad" class="campo-label">Prioridad</label>
-                    <select id="selectPrioridad" class="campo-select">
+                    <label for="modalSelectPrioridad" class="campo-label">Prioridad</label>
+                    <select id="modalSelectPrioridad" class="campo-select">
                         <option value="">— Seleccionar —</option>
                         <option value="alta">Alta</option>
                         <option value="media">Media</option>
@@ -157,8 +157,8 @@
                     </select>
                 </div>
                 <div class="campo-grupo">
-                    <label for="selectTecnico" class="campo-label">Técnico</label>
-                    <select id="selectTecnico" class="campo-select">
+                    <label for="modalSelectTecnico" class="campo-label">Técnico</label>
+                    <select id="modalSelectTecnico" class="campo-select">
                         <option value="">— Seleccionar técnico —</option>
                         @foreach ($tecnicos as $tec)
                             <option value="{{ $tec->id }}">{{ $tec->nombre }}</option>

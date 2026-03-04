@@ -123,7 +123,7 @@
     {{-- ── Conversación cliente ↔ técnico ── --}}
     <div class="detalle-card mt-4">
         <div class="conversacion-cabecera">
-            <h3 class="detalle-card-titulo" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">
+            <h3 class="detalle-card-titulo detalle-card-titulo--plano">
                 <i class="bi bi-chat-left-text me-2"></i>Conversación
                 <span class="conversacion-contador">{{ $incidencia->mensajes->count() }}</span>
             </h3>

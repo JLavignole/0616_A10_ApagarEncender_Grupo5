@@ -65,8 +65,8 @@ window.onload = function () {
             urlAsignar = this.getAttribute('data-url') || '';
 
             document.getElementById('modalCodigoInc').textContent = codigo;
-            document.getElementById('selectPrioridad').value = '';
-            document.getElementById('selectTecnico').value = '';
+            document.getElementById('modalSelectPrioridad').value = '';
+            document.getElementById('modalSelectTecnico').value = '';
             document.getElementById('modalAsignar').removeAttribute('hidden');
         };
     }
@@ -98,8 +98,8 @@ window.onload = function () {
     var btnConfirmar = document.getElementById('btnConfirmarAsignar');
     if (btnConfirmar) {
         btnConfirmar.onclick = function () {
-            var prioridad = document.getElementById('selectPrioridad').value;
-            var tecnicoId = document.getElementById('selectTecnico').value;
+            var prioridad = document.getElementById('modalSelectPrioridad').value;
+            var tecnicoId = document.getElementById('modalSelectTecnico').value;
 
             if (!prioridad) {
                 toastError('Selecciona una prioridad');

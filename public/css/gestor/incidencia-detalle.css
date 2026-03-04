@@ -72,6 +72,12 @@
     border-bottom: 1px solid #f0f2f5;
 }
 
+.detalle-card-titulo--plano {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
 /* ── Campos ── */
 .detalle-campo {
     margin-bottom: 0.85rem;

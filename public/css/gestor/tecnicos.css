@@ -1,4 +1,23 @@
-/* ─── Gestor / Carga de Técnicos ─────────────────────────────── */
+/* ── Gestor / Carga de Técnicos ───────────────────────────── */
+
+/* ── Estado vacío (sin técnicos) ── */
+.td-vacio {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--color-texto-secundario);
+    font-size: 0.9rem;
+}
+
+.td-vacio i {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    opacity: .5;
+}
+
+.td-vacio--grande {
+    padding: 3rem;
+}
 
 /* ── Tarjeta de técnico ── */
 .tecnico-card {

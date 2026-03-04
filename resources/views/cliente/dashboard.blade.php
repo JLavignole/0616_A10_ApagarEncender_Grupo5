@@ -110,7 +110,7 @@
                     @php
                         $pctAbiertas = $totalMisIncidencias > 0 ? round($incidenciasAbiertas / $totalMisIncidencias * 100) : 0;
                     @endphp
-                    <div class="dash-resumen-barra-fill" style="width: {{ $pctAbiertas }}%"></div>
+                    <div class="dash-resumen-barra-fill" data-pct="{{ $pctAbiertas }}"></div>
                 </div>
                 <div class="dash-resumen-leyenda">
                     <span><span class="dash-dot dash-dot--activas"></span>{{ $incidenciasAbiertas }} activas</span>

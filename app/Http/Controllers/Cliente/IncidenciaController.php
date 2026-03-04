@@ -64,7 +64,7 @@ class IncidenciaController extends Controller
         }
 
         $incidencias = $query->orderBy('reportado_en', $orden)
-            ->paginate(10)
+            ->paginate(7)
             ->withQueryString();
         $categorias  = Categoria::where('activo', true)->orderBy('nombre')->get();
 

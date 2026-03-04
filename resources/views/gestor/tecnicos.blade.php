@@ -88,7 +88,7 @@
         @empty
             <div class="col-12">
                 <div class="tabla-card">
-                    <div class="td-vacio" style="padding: 3rem;">
+                    <div class="td-vacio td-vacio--grande">
                         <i class="bi bi-person-x"></i>
                         No hay técnicos activos en tu sede
                     </div>

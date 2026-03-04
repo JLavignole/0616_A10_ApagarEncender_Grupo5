@@ -2,63 +2,53 @@
    Cliente – Incidencias (index, crear, detalle)
    ═══════════════════════════════════════════════════ */
 
-/* ── Filtros Simples (Minimalistas) ────────────────── */
-.filtros-simple {
+/* ── Filtros ────────────────────────────────────────── */
+.filtros-bar {
     display: flex;
     align-items: center;
     gap: 8px;
-    /* Gap más pequeño */
     margin-bottom: 20px;
     flex-wrap: wrap;
     background: #f8fafc;
-    /* Fondo sutil para agrupar */
     padding: 6px 12px;
     border-radius: 10px;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--color-borde);
 }
 
-.filtro-campo-busqueda {
+.filtros-busqueda {
     position: relative;
     width: 180px;
-    /* Más pequeño para que quepa bien todo */
 }
 
-.filtro-campo-busqueda i {
+.filtros-busqueda i {
     position: absolute;
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
+    color: var(--color-texto-secundario);
     font-size: 14px;
 }
 
-.filtro-campo-busqueda input {
+.filtros-busqueda input {
     width: 100%;
     padding: 8px 12px 8px 36px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--color-borde);
     border-radius: 8px;
     font-size: 13px;
-    /* Fuente un pelín más pequeña */
-    color: #1e293b;
+    color: var(--color-texto-principal);
     background: #fff;
     transition: all 0.2s;
 }
 
-.filtro-campo-busqueda input:focus {
+.filtros-busqueda input:focus {
     outline: none;
     border-color: #cbd5e1;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.filtro-controles {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.filtro-mini-select {
+.filtro-select {
     padding: 8px 28px 8px 10px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--color-borde);
     border-radius: 8px;
     font-size: 13px;
     color: #475569;
@@ -72,33 +62,31 @@
     transition: border-color 0.2s;
 }
 
-.filtro-mini-select:hover {
+.filtro-select:hover {
     border-color: #cbd5e1;
     background-color: #fff;
 }
 
-.filtro-mini-select:focus {
+.filtro-select:focus {
     outline: none;
     border-color: #334155;
     box-shadow: 0 0 0 3px rgba(51, 65, 85, 0.1);
     background-color: #fff;
 }
 
-/* Estilos para las opciones (Compatibilidad limitada según navegador) */
-.filtro-mini-select option {
+.filtro-select option {
     background-color: #ffffff;
-    color: #1e293b;
+    color: var(--color-texto-principal);
     padding: 12px;
     font-size: 14px;
 }
 
-.filtro-mini-select option:first-child {
-    color: #94a3b8;
-    /* Color tenue para el placeholder */
+.filtro-select option:first-child {
+    color: var(--color-texto-secundario);
     font-style: italic;
 }
 
-.btn-filtro-simple {
+.btn-buscar {
     width: 34px;
     height: 34px;
     display: flex;
@@ -112,69 +100,28 @@
     transition: background 0.2s;
 }
 
-.btn-filtro-simple:hover {
+.btn-buscar:hover {
     background: #1e293b;
 }
 
-.btn-limpiar-simple {
+.btn-limpiar {
     width: 34px;
     height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
+    color: var(--color-texto-secundario);
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--color-borde);
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.2s;
 }
 
-.btn-limpiar-simple:hover {
+.btn-limpiar:hover {
     color: #ef4444;
     border-color: #fee2e2;
     background: #fef2f2;
-}
-
-.filtro-opciones-extra {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-left: 8px;
-    /* Leve separación pero sin margin-auto */
-    border-left: 1px solid #e2e8f0;
-    /* Separador sutil */
-}
-
-.link-filtro {
-    font-size: 13px;
-    color: #64748b;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.link-filtro:hover {
-    color: #1e293b;
-}
-
-.link-filtro.active {
-    color: #2563eb;
-    font-weight: 600;
-}
-
-.separador {
-    width: 1px;
-    height: 14px;
-    background: #e2e8f0;
-}
-
-@media (max-width: 992px) {
-    .filtro-opciones-extra {
-        margin-left: 0;
-        width: 100%;
-        justify-content: flex-end;
-    }
 }
 
 

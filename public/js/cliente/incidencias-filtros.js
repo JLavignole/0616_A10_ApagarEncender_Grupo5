@@ -1,56 +1,53 @@
 /**
- * Lógica de filtros AJAX para la vista de incidencias del cliente
- * Implementación con el sistema de promesas (2 then) y sin addEventListener.
+ * Filtros AJAX — incidencias del cliente.
+ * Promesas con 2 .then(), sin addEventListener.
  */
-
 window.onload = function () {
-    const form = document.querySelector('.filtros-simple');
-    const contenedor = document.getElementById('contenedor-incidencias');
+    var form      = document.getElementById('form-filtros');
+    var contenedor = document.getElementById('contenedor-incidencias');
     if (!form || !contenedor) return;
 
-    /**
-     * Función principal para actualizar la lista de incidencias vía AJAX
-     */
-    const actualizarFiltros = function () {
-        const formData = new FormData(form);
-        const params = new URLSearchParams(formData).toString();
-        const url = `${form.action}?${params}`;
+    var actualizarFiltros = function () {
+        var formData = new FormData(form);
+        var params   = new URLSearchParams(formData).toString();
+        var url      = form.action + '?' + params;
 
-        // Sistema de Promesas con 2 .then()
         fetch(url)
             .then(function (response) {
-                // PRIMER THEN: Convertimos la respuesta a texto (HTML completo)
+                // PRIMER THEN: respuesta a texto (HTML completo)
                 return response.text();
             })
             .then(function (html) {
-                // SEGUNDO THEN: Procesamos el HTML y actualizamos solo el contenedor necesario
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const nuevoContenido = doc.getElementById('contenedor-incidencias').innerHTML;
+                // SEGUNDO THEN: extraer y volcar el contenedor
+                var parser  = new DOMParser();
+                var doc     = parser.parseFromString(html, 'text/html');
+                var nuevo   = doc.getElementById('contenedor-incidencias').innerHTML;
 
-                // Actualizamos el DOM al momento
-                contenedor.innerHTML = nuevoContenido;
-
-                // Actualizamos la URL del navegador sin recargar la página
+                contenedor.innerHTML = nuevo;
                 window.history.pushState({}, '', url);
             });
     };
 
-    // Asignación de eventos manuales (evitando addEventListener)
-    const selects = document.querySelectorAll('.auto-submit');
-    selects.forEach(function (select) {
-        select.onchange = function () {
-            actualizarFiltros();
-        };
-    });
+    var selectEstado    = document.getElementById('selectEstado');
+    var selectPrioridad = document.getElementById('selectPrioridad');
+    var selectCategoria = document.getElementById('selectCategoria');
+    var inputBuscar     = document.getElementById('inputBuscar');
 
-    const inputBuscar = form.querySelector('input[name="buscar"]');
+    if (selectEstado) {
+        selectEstado.onchange = function () { actualizarFiltros(); };
+    }
+    if (selectPrioridad) {
+        selectPrioridad.onchange = function () { actualizarFiltros(); };
+    }
+    if (selectCategoria) {
+        selectCategoria.onchange = function () { actualizarFiltros(); };
+    }
+
     if (inputBuscar) {
-        let timeout = null;
+        var timeout = null;
         inputBuscar.oninput = function () {
-            // Debounce simple para no saturar con cada tecla
             clearTimeout(timeout);
-            timeout = setTimeout(actualizarFiltros, 300);
+            timeout = setTimeout(actualizarFiltros, 400);
         };
     }
 };

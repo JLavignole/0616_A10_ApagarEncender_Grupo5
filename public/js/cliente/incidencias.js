@@ -208,7 +208,8 @@ window.onload = function () {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'No se pudo enviar el mensaje.'
+                        text: 'No se pudo enviar el mensaje.',
+                        confirmButtonColor: '#dc2626'
                     });
                 });
         };
