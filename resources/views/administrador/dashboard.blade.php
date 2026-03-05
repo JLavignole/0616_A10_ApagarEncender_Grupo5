@@ -62,28 +62,28 @@
     <div class="row g-3 mb-4">
 
         <div class="col-12 col-sm-6 col-lg-3">
-            <a href="#" class="tarjeta-acceso">
+            <a href="{{ route('administrador.usuarios.index') }}" class="tarjeta-acceso">
                 <i class="bi bi-people"></i>
                 <span class="tarjeta-acceso-texto">Gestionar usuarios</span>
             </a>
         </div>
 
         <div class="col-12 col-sm-6 col-lg-3">
-            <a href="#" class="tarjeta-acceso">
+            <a href="{{ route('administrador.categorias.index') }}" class="tarjeta-acceso">
                 <i class="bi bi-tags"></i>
                 <span class="tarjeta-acceso-texto">Gestionar categorías</span>
             </a>
         </div>
 
         <div class="col-12 col-sm-6 col-lg-3">
-            <a href="#" class="tarjeta-acceso">
+            <a href="{{ route('administrador.sedes.index') }}" class="tarjeta-acceso">
                 <i class="bi bi-building"></i>
                 <span class="tarjeta-acceso-texto">Gestionar sedes</span>
             </a>
         </div>
 
         <div class="col-12 col-sm-6 col-lg-3">
-            <a href="#" class="tarjeta-acceso">
+            <a href="{{ route('administrador.sanciones.index') }}" class="tarjeta-acceso">
                 <i class="bi bi-shield-exclamation"></i>
                 <span class="tarjeta-acceso-texto">Ver sanciones</span>
             </a>
