@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PerfilController;
@@ -9,10 +10,14 @@ use App\Http\Controllers\Administrador\UsuariosController;
 use App\Http\Controllers\Administrador\CategoriasController;
 use App\Http\Controllers\Administrador\SubcategoriasController;
 use App\Http\Controllers\Administrador\SancionesController;
+use App\Http\Controllers\Administrador\IncidenciasController as AdminIncidencias;
 use App\Http\Controllers\Gestor\DashboardController as GestorDashboard;
+use App\Http\Controllers\Gestor\IncidenciaGestorController;
+use App\Http\Controllers\Gestor\TecnicoGestorController;
 use App\Http\Controllers\Tecnico\DashboardController as TecnicoDashboard;
 use App\Http\Controllers\Cliente\DashboardController as ClienteDashboard;
 use App\Http\Controllers\Cliente\IncidenciaController as ClienteIncidencia;
+use App\Http\Controllers\Tecnico\IncidenciasAsignadasController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -25,6 +30,22 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
+// Ruta requerida por el middleware guest (RedirectIfAuthenticated)
+// Redirige al dashboard del rol correspondiente
+Route::get('/dashboard', function () {
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    $rol  = $user->rol?->nombre ?? 'cliente';
+
+    return match (true) {
+        in_array($rol, ['admin', 'administrador']) => redirect()->route('administrador.dashboard'),
+        $rol === 'gestor'                           => redirect()->route('gestor.dashboard'),
+        $rol === 'tecnico'                          => redirect()->route('tecnico.dashboard'),
+        default                                     => redirect()->route('cliente.dashboard'),
+    };
+})->middleware('auth')->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
 
@@ -60,6 +81,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/subcategorias/{subcategoria}/activar', [SubcategoriasController::class, 'activar'])->name('subcategorias.activar');
         Route::post('/subcategorias/{subcategoria}/desactivar', [SubcategoriasController::class, 'desactivar'])->name('subcategorias.desactivar');
 
+        // Gestión de incidencias
+        Route::get('/incidencias', [AdminIncidencias::class, 'index'])->name('incidencias.index');
+        Route::get('/incidencias/{incidencia}/editar', [AdminIncidencias::class, 'editar'])->name('incidencias.editar');
+        Route::put('/incidencias/{incidencia}', [AdminIncidencias::class, 'update'])->name('incidencias.update');
+
         // Gestión de sanciones
         Route::get('/sanciones', [SancionesController::class, 'index'])->name('sanciones.index');
         Route::get('/sanciones/crear', [SancionesController::class, 'crear'])->name('sanciones.crear');
@@ -79,11 +105,28 @@ Route::middleware('auth')->group(function () {
     // Rutas del módulo Gestor
     Route::middleware('role:gestor')->prefix('gestor')->name('gestor.')->group(function () {
         Route::get('/dashboard', [GestorDashboard::class, 'index'])->name('dashboard');
+        Route::get('/incidencias', [IncidenciaGestorController::class, 'index'])->name('incidencias');
+        Route::get('/incidencias/{id}', [IncidenciaGestorController::class, 'show'])->name('incidencias.show');
+        Route::post('/incidencias/{id}/asignar', [IncidenciaGestorController::class, 'asignar'])->name('incidencias.asignar');
+        Route::get('/tecnicos', [TecnicoGestorController::class, 'index'])->name('tecnicos');
     });
 
     // Rutas del módulo Técnico
     Route::middleware('role:tecnico')->prefix('tecnico')->name('tecnico.')->group(function () {
         Route::get('/dashboard', [TecnicoDashboard::class, 'index'])->name('dashboard');
+
+        // Gestión de incidencias asignadas
+        Route::get('/incidencias',                [IncidenciasAsignadasController::class, 'index'])->name('incidencias.index');
+
+        // Detalle de incidencia
+        Route::get('/incidencias/{incidencia}',   [IncidenciasAsignadasController::class, 'show'])->name('incidencias.detalle');
+        
+        // Acciones de estado
+        Route::post('/incidencias/{incidencia}/comenzar', [IncidenciasAsignadasController::class, 'comenzar'])->name('comenzar');
+        Route::patch('/incidencias/{incidencia}/resolver', [IncidenciasAsignadasController::class, 'resolver'])->name('resolver');
+        
+        // Chat / Mensajes
+        Route::post('/incidencias/{incidencia}/mensajes', [IncidenciasAsignadasController::class, 'sendMessage'])->name('incidencias.mensaje');
     });
 
     // Rutas del módulo Cliente
@@ -95,8 +138,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/incidencias/crear',                       [ClienteIncidencia::class, 'create'])->name('incidencias.crear');
         Route::post('/incidencias',                            [ClienteIncidencia::class, 'store'])->name('incidencias.store');
         Route::get('/incidencias/{incidencia}',                [ClienteIncidencia::class, 'show'])->name('incidencias.detalle');
+        Route::get('/incidencias/{incidencia}/editar',         [ClienteIncidencia::class, 'edit'])->name('incidencias.editar');
+        Route::put('/incidencias/{incidencia}',                [ClienteIncidencia::class, 'update'])->name('incidencias.update');
         Route::post('/incidencias/{incidencia}/mensajes',      [ClienteIncidencia::class, 'sendMessage'])->name('incidencias.mensaje');
         Route::patch('/incidencias/{incidencia}/cerrar',       [ClienteIncidencia::class, 'close'])->name('incidencias.cerrar');
+        Route::patch('/incidencias/{incidencia}/reabrir',       [ClienteIncidencia::class, 'reopen'])->name('incidencias.reabrir');
     });
 
     // AJAX: subcategorías por categoría (accesible por todos los roles)

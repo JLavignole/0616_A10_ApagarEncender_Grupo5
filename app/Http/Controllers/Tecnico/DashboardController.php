@@ -23,23 +23,22 @@ class DashboardController extends Controller
             ->where('estado', 'en_progreso')
             ->count();
 
-        $resueltasHoy = Incidencia::where('tecnico_id', $usuario->id)
+        $resueltas = Incidencia::where('tecnico_id', $usuario->id)
             ->where('estado', 'resuelta')
-            ->whereDate('updated_at', today())
+            // ->whereDate('updated_at', today())
             ->count();
 
         $misIncidencias = Incidencia::with(['sede', 'cliente'])
             ->where('tecnico_id', $usuario->id)
-            ->whereIn('estado', ['asignada', 'en_progreso', 'reabierta'])
+            ->whereIn('estado', ['asignada', 'en_progreso'])
             ->latest('updated_at')
-            ->take(10)
-            ->get();
+            ->paginate(7);
 
         return view('tecnico.dashboard', compact(
             'usuario',
             'asignadas',
             'enProgreso',
-            'resueltasHoy',
+            'resueltas',
             'misIncidencias',
         ));
     }

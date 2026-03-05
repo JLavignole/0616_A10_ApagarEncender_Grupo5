@@ -16,6 +16,10 @@ class CategoriaSeeder extends Seeder
             ['nombre' => 'Seguridad', 'activo' => true],
             ['nombre' => 'Accesos y permisos', 'activo' => true],
             ['nombre' => 'Telefonía y colaboración', 'activo' => true],
+            ['nombre' => 'Impresión y escaneado', 'activo' => true],
+            ['nombre' => 'Almacenamiento y backup', 'activo' => true],
+            ['nombre' => 'Bases de datos', 'activo' => true],
+            ['nombre' => 'Infraestructura cloud', 'activo' => false],
         ];
 
         foreach ($categorias as $categoria) {

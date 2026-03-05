@@ -1,25 +1,95 @@
 /* public/js/gestor/dashboard.js */
+
 window.onload = function () {
-    // Confirmación al asignar una incidencia
-    var botonesAsignar = document.querySelectorAll('[data-accion="asignar"]');
-    for (var i = 0; i < botonesAsignar.length; i++) {
-        botonesAsignar[i].onclick = function () {
+
+    /* ── Modal de asignación rápida ──────────────────── */
+    var urlAsignar = '';
+
+    var botonesAbrir = document.querySelectorAll('.btn-abrir-asignar');
+    for (var i = 0; i < botonesAbrir.length; i++) {
+        botonesAbrir[i].onclick = function () {
             var codigo = this.getAttribute('data-codigo') || '—';
-            Swal.fire({
-                title: 'Asignar incidencia',
-                text: '¿Deseas asignar la incidencia ' + codigo + '?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#0d6efd',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Sí, asignar',
-                cancelButtonText: 'Cancelar'
-            }).then(function (resultado) {
-                if (resultado.isConfirmed) {
-                    var url = this.getAttribute('data-url');
-                    if (url) window.location.href = url;
+            urlAsignar = this.getAttribute('data-url') || '';
+
+            document.getElementById('modalCodigoInc').textContent = codigo;
+            document.getElementById('selectPrioridad').value = '';
+            document.getElementById('selectTecnico').value = '';
+            document.getElementById('modalAsignar').removeAttribute('hidden');
+        };
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalAsignar').setAttribute('hidden', '');
+        urlAsignar = '';
+    }
+
+    var btnCerrar = document.getElementById('btnCerrarModal');
+    if (btnCerrar) {
+        btnCerrar.onclick = cerrarModal;
+    }
+
+    var btnCancelar = document.getElementById('btnCancelarModal');
+    if (btnCancelar) {
+        btnCancelar.onclick = cerrarModal;
+    }
+
+    var overlay = document.getElementById('modalAsignar');
+    if (overlay) {
+        overlay.onclick = function (e) {
+            if (e.target === overlay) {
+                cerrarModal();
+            }
+        };
+    }
+
+    /* ── Confirmar asignación con fetch() ────────────── */
+    var btnConfirmar = document.getElementById('btnConfirmarAsignar');
+    if (btnConfirmar) {
+        btnConfirmar.onclick = function () {
+            var prioridad = document.getElementById('selectPrioridad').value;
+            var tecnicoId = document.getElementById('selectTecnico').value;
+
+            if (!prioridad) {
+                toastError('Selecciona una prioridad');
+                return;
+            }
+            if (!tecnicoId) {
+                toastError('Selecciona un técnico');
+                return;
+            }
+
+            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch(urlAsignar, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    prioridad: prioridad,
+                    tecnico_id: tecnicoId
+                })
+            })
+            .then(function (respuesta) {
+                return respuesta.json();
+            })
+            .then(function (datos) {
+                cerrarModal();
+                if (datos.exito) {
+                    toastExito(datos.mensaje);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    toastError(datos.mensaje || 'Error al asignar la incidencia');
                 }
-            }.bind(this));
+            })
+            .catch(function (error) {
+                cerrarModal();
+                toastError('Error de conexión: ' + error.message);
+            });
         };
     }
 };

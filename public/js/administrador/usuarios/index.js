@@ -65,22 +65,40 @@ window.onload = function () {
         };
     }
 
+    /* ── Botones de desactivar / reactivar usuario ─────── */
+
+    var botonesDesactivar = document.querySelectorAll('.btn-confirmar-desactivar');
+    for (var i = 0; i < botonesDesactivar.length; i++) {
+        botonesDesactivar[i].onclick = function () {
+            var nombre = this.dataset.nombre;
+            var formId = this.dataset.form;
+            confirmarAccion(
+                '¿Desactivar usuario?',
+                'El usuario «' + nombre + '» quedará inactivo. Su cuenta quedará inactiva.',
+                'warning',
+                'Sí, desactivar',
+                function () {
+                    document.getElementById(formId).submit();
+                }
+            );
+        };
+    }
+
+    var botonesReactivar = document.querySelectorAll('.btn-confirmar-reactivar');
+    for (var j = 0; j < botonesReactivar.length; j++) {
+        botonesReactivar[j].onclick = function () {
+            var nombre = this.dataset.nombre;
+            var formId = this.dataset.form;
+            confirmarAccion(
+                '¿Reactivar usuario?',
+                'El usuario «' + nombre + '» volverá a estar activo.',
+                'question',
+                'Sí, reactivar',
+                function () {
+                    document.getElementById(formId).submit();
+                }
+            );
+        };
+    }
+
 };
-
-function confirmarDesactivar(nombre, formId) {
-    confirmarAccion(
-        '¿Desactivar al usuario «' + nombre + '»? Su cuenta quedará inactiva.',
-        function () {
-            document.getElementById(formId).submit();
-        }
-    );
-}
-
-function confirmarReactivar(nombre, formId) {
-    confirmarAccion(
-        '¿Reactivar al usuario «' + nombre + '»?',
-        function () {
-            document.getElementById(formId).submit();
-        }
-    );
-}

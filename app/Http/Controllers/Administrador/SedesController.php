@@ -31,7 +31,7 @@ class SedesController extends Controller
             });
         }
 
-        $sedes = $query->orderBy('nombre')->paginate(10)->withQueryString();
+        $sedes = $query->orderBy('nombre')->paginate(7)->withQueryString();
 
         return view('administrador.sedes.index', compact('sedes', 'estado'));
     }

@@ -4,7 +4,6 @@
 
 @push('estilos')
     <link rel="stylesheet" href="{{ asset('css/cliente/incidencias.css') }}">
-    <script src="{{ asset('js/cliente/incidencias-filtros.js') }}" defer></script>
 @endpush
 
 @section('contenido')
@@ -21,43 +20,43 @@
         </a>
     </div>
 
-    {{-- ── Filtros Simples ── --}}
-    <form method="GET" action="{{ route('cliente.incidencias.index') }}" class="filtros-simple">
-        <div class="filtro-campo-busqueda">
+    {{-- ── Filtros ── --}}
+    <form id="form-filtros" method="GET" action="{{ route('cliente.incidencias.index') }}" class="filtros-bar">
+        <div class="filtros-busqueda">
             <i class="bi bi-search"></i>
-            <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar por título o código...">
+            <input type="text" id="inputBuscar" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar por título o código...">
         </div>
 
-        <div class="filtro-controles">
-            <select name="estado" class="filtro-mini-select auto-submit">
-                <option value="">Estado</option>
-                @foreach (['sin_asignar' => 'Sin asignar', 'asignada' => 'Asignada', 'en_progreso' => 'En progreso', 'resuelta' => 'Resuelta', 'cerrada' => 'Cerrada'] as $val => $label)
-                    <option value="{{ $val }}" @selected(request('estado') === $val)>{{ $label }}</option>
-                @endforeach
-            </select>
+        <select id="selectEstado" name="estado" class="filtro-select">
+            <option value="">Estado</option>
+            @foreach (['sin_asignar' => 'Sin asignar', 'asignada' => 'Asignada', 'en_progreso' => 'En progreso', 'resuelta' => 'Resuelta', 'cerrada' => 'Cerrada'] as $val => $label)
+                <option value="{{ $val }}" @selected(request('estado') === $val)>{{ $label }}</option>
+            @endforeach
+        </select>
 
-            <select name="prioridad" class="filtro-mini-select auto-submit">
-                <option value="">Prioridad</option>
-                @foreach (['alta' => 'Alta', 'media' => 'Media', 'baja' => 'Baja'] as $val => $label)
-                    <option value="{{ $val }}" @selected(request('prioridad') === $val)>{{ $label }}</option>
-                @endforeach
-            </select>
+        <select id="selectPrioridad" name="prioridad" class="filtro-select">
+            <option value="">Prioridad</option>
+            @foreach (['alta' => 'Alta', 'media' => 'Media', 'baja' => 'Baja'] as $val => $label)
+                <option value="{{ $val }}" @selected(request('prioridad') === $val)>{{ $label }}</option>
+            @endforeach
+        </select>
 
-            <select name="categoria_id" class="filtro-mini-select auto-submit">
-                <option value="">Categoría</option>
-                @foreach ($categorias as $cat)
-                    <option value="{{ $cat->id }}" @selected(request('categoria_id') == $cat->id)>{{ $cat->nombre }}</option>
-                @endforeach
-            </select>
+        <select id="selectCategoria" name="categoria_id" class="filtro-select">
+            <option value="">Categoría</option>
+            @foreach ($categorias as $cat)
+                <option value="{{ $cat->id }}" @selected(request('categoria_id') == $cat->id)>{{ $cat->nombre }}</option>
+            @endforeach
+        </select>
 
-            <button type="submit" class="btn-filtro-simple" title="Aplicar filtros">
-                <i class="bi bi-filter"></i>
-            </button>
+        <button type="submit" class="btn-buscar" title="Aplicar filtros">
+            <i class="bi bi-search"></i>
+        </button>
 
-            <a href="{{ route('cliente.incidencias.index') }}" class="btn-limpiar-simple" title="Limpiar filtros">
-                <i class="bi bi-x-lg"></i>
-            </a>
-        </div>
+        <a href="{{ route('cliente.incidencias.index') }}" class="btn-limpiar" title="Limpiar filtros">
+            <i class="bi bi-x-lg"></i>
+        </a>
+
+    </form>
 
         <div class="filtro-opciones-extra">
             <a href="{{ request()->fullUrlWithQuery(['ocultar_resueltas' => request('ocultar_resueltas') ? null : 1]) }}" class="link-filtro {{ request('ocultar_resueltas') ? 'active' : '' }}">
@@ -142,5 +141,6 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('js/cliente/incidencias-filtros.js') }}"></script>
     <script src="{{ asset('js/cliente/incidencias.js') }}"></script>
 @endpush

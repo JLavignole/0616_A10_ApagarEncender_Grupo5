@@ -90,9 +90,10 @@
                                           id="form-desactivar-{{ $sub->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--desactivar"
+                                                class="btn-icono btn-icono--desactivar btn-confirmar-desactivar"
                                                 title="Desactivar subcategoría"
-                                                onclick="confirmarDesactivar('{{ addslashes($sub->nombre) }}', 'form-desactivar-{{ $sub->id }}')">
+                                                data-nombre="{{ $sub->nombre }}"
+                                                data-form="form-desactivar-{{ $sub->id }}">
                                             <i class="bi bi-toggle-on"></i>
                                         </button>
                                     </form>
@@ -103,9 +104,10 @@
                                           id="form-activar-{{ $sub->id }}">
                                         @csrf
                                         <button type="button"
-                                                class="btn-icono btn-icono--activar"
+                                                class="btn-icono btn-icono--activar btn-confirmar-activar"
                                                 title="Activar subcategoría"
-                                                onclick="confirmarActivar('{{ addslashes($sub->nombre) }}', 'form-activar-{{ $sub->id }}')">
+                                                data-nombre="{{ $sub->nombre }}"
+                                                data-form="form-activar-{{ $sub->id }}">
                                             <i class="bi bi-toggle-off"></i>
                                         </button>
                                     </form>

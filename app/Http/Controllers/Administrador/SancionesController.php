@@ -44,7 +44,7 @@ class SancionesController extends Controller
             });
         }
 
-        $sanciones = $query->orderByDesc('created_at')->paginate(10)->withQueryString();
+        $sanciones = $query->orderByDesc('created_at')->paginate(7)->withQueryString();
         $tipo      = $request->input('tipo', 'todas');
 
         return view('administrador.sanciones.index', compact('sanciones', 'tipo', 'estado'));

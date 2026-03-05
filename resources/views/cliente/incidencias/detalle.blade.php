@@ -14,20 +14,42 @@
             <i class="bi bi-arrow-left"></i> Detalle de Incidencia
         </a>
 
-        @if ($incidencia->estado === 'resuelta')
-            <form id="form-cerrar-incidencia"
-                  method="POST"
-                  action="{{ route('cliente.incidencias.cerrar', $incidencia) }}">
-                @csrf
-                @method('PATCH')
-                <button type="button"
-                        id="btn-cerrar-incidencia"
-                        class="btn btn-success btn-accion btn-cerrar"
-                        data-codigo="{{ $incidencia->codigo }}">
-                    <i class="bi bi-check2-circle me-1"></i> Marcar como Cerrada
-                </button>
-            </form>
-        @endif
+        <div class="detalle-topbar-acciones">
+            @if ($incidencia->estado === 'sin_asignar')
+                <a href="{{ route('cliente.incidencias.editar', $incidencia) }}"
+                   class="btn btn-outline-secondary btn-accion">
+                    <i class="bi bi-pencil me-1"></i>Editar
+                </a>
+            @endif
+
+            @if ($incidencia->estado === 'resuelta')
+                <form id="form-reabrir-incidencia"
+                      method="POST"
+                      action="{{ route('cliente.incidencias.reabrir', $incidencia) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="button"
+                            id="btn-reabrir-incidencia"
+                            class="btn btn-warning btn-accion btn-reabrir"
+                            data-codigo="{{ $incidencia->codigo }}">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i> No resuelta
+                    </button>
+                </form>
+
+                <form id="form-cerrar-incidencia"
+                      method="POST"
+                      action="{{ route('cliente.incidencias.cerrar', $incidencia) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="button"
+                            id="btn-cerrar-incidencia"
+                            class="btn btn-success btn-accion btn-cerrar"
+                            data-codigo="{{ $incidencia->codigo }}">
+                        <i class="bi bi-check2-circle me-1"></i> Marcar como Cerrada
+                    </button>
+                </form>
+            @endif
+        </div>
     </div>
 
     {{-- ── Layout de dos columnas ── --}}
@@ -119,7 +141,7 @@
                             <div class="chat-input-wrapper">
                                 <label for="adjunto-chat" class="btn-adjuntar" title="Adjuntar imagen">
                                     <i class="bi bi-image"></i>
-                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" class="input-adjunto-chat">
+                                    <input type="file" id="adjunto-chat" name="imagen" accept="image/*" class="oculto">
                                 </label>
 
                                 <textarea name="cuerpo" id="cuerpo-mensaje" placeholder="Escribe un mensaje..." rows="1"></textarea>
@@ -128,7 +150,7 @@
                                     <i class="bi bi-send-fill"></i>
                                 </button>
                             </div>
-                            <div id="preview-adjunto" class="preview-adjunto">
+                            <div id="preview-adjunto" class="preview-adjunto oculto">
                                 <span class="preview-nombre"></span>
                                 <button type="button" class="btn-quitar-adjunto"><i class="bi bi-x"></i></button>
                             </div>

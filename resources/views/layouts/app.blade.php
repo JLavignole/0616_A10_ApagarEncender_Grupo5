@@ -67,6 +67,11 @@
                         <i class="bi bi-building"></i>
                         <span>Sedes</span>
                     </a>
+                    <a href="{{ route('administrador.incidencias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/incidencias') ? 'active' : '' }}">
+                        <i class="bi bi-clipboard2-pulse"></i>
+                        <span>Incidencias</span>
+                    </a>
                     <a href="{{ route('administrador.sanciones.index') }}"
                        class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/sanciones') ? 'active' : '' }}">
                         <i class="bi bi-shield-exclamation"></i>
@@ -85,11 +90,13 @@
 
                     <p class="sidebar-section">Gestión</p>
 
-                    <a href="#" class="sidebar-link">
-                        <i class="bi bi-clipboard-list"></i>
+                    <a href="{{ route('gestor.incidencias') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'gestor/incidencias') ? 'active' : '' }}">
+                        <i class="bi bi-clipboard2-pulse"></i>
                         <span>Incidencias</span>
                     </a>
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('gestor.tecnicos') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'gestor/tecnicos') ? 'active' : '' }}">
                         <i class="bi bi-bar-chart-line"></i>
                         <span>Carga técnicos</span>
                     </a>
@@ -106,7 +113,8 @@
 
                     <p class="sidebar-section">Trabajo</p>
 
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('tecnico.incidencias.index') }}"
+                       class="sidebar-link {{ str_starts_with($rutaActual, 'tecnico/incidencias') && !str_contains($rutaActual, 'crear') ? 'active' : '' }}">
                         <i class="bi bi-tools"></i>
                         <span>Mis incidencias</span>
                     </a>

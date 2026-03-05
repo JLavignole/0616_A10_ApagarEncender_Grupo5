@@ -55,20 +55,35 @@ window.onload = function () {
             e.preventDefault();
             var codigo = this.getAttribute('data-codigo');
 
-            Swal.fire({
-                title: '¿Cerrar incidencia?',
-                text: 'Se cerrará la incidencia ' + codigo + '. Esto confirma que el problema ha sido resuelto satisfactoriamente.',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#16a34a',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Sí, cerrar',
-                cancelButtonText: 'Cancelar'
-            }).then(function (resultado) {
-                if (resultado.isConfirmed) {
+            confirmarAccion(
+                '¿Cerrar incidencia?',
+                'Se cerrará la incidencia ' + codigo + '. Esto confirma que el problema ha sido resuelto satisfactoriamente.',
+                'question',
+                'Sí, cerrar',
+                function () {
                     document.getElementById('form-cerrar-incidencia').submit();
                 }
-            });
+            );
+        };
+    }
+
+    // ── Confirmación de reabrir ───────────────────────
+    var btnReabrir = document.getElementById('btn-reabrir-incidencia');
+
+    if (btnReabrir) {
+        btnReabrir.onclick = function (e) {
+            e.preventDefault();
+            var codigo = this.getAttribute('data-codigo');
+
+            confirmarAccion(
+                '¿Reabrir incidencia?',
+                'Se reabrirá la incidencia ' + codigo + '. Esto indica que el problema no ha sido resuelto y el equipo técnico será notificado.',
+                'warning',
+                'Sí, reabrir',
+                function () {
+                    document.getElementById('form-reabrir-incidencia').submit();
+                }
+            );
         };
     }
 
@@ -193,7 +208,8 @@ window.onload = function () {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'No se pudo enviar el mensaje.'
+                        text: 'No se pudo enviar el mensaje.',
+                        confirmButtonColor: '#dc2626'
                     });
                 });
         };

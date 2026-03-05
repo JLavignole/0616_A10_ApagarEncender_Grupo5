@@ -48,13 +48,24 @@ window.onload = function () {
             formFiltros.submit();
         }, 400);
     };
-};
 
-function confirmarFinalizar(nombre, formId) {
-    confirmarAccion(
-        '¿Finalizar la sanción de ' + nombre + '? Esta acción no se puede deshacer.',
-        function () {
-            document.getElementById(formId).submit();
-        }
-    );
-}
+    /* ── Botones de finalizar sanción ──────────────────── */
+
+    var botonesFinalizar = document.querySelectorAll('.btn-confirmar-finalizar');
+    for (var i = 0; i < botonesFinalizar.length; i++) {
+        botonesFinalizar[i].onclick = function () {
+            var nombre = this.dataset.nombre;
+            var formId = this.dataset.form;
+            confirmarAccion(
+                '¿Finalizar sanción?',
+                'La sanción de ' + nombre + ' será finalizada. Esta acción no se puede deshacer.',
+                'warning',
+                'Sí, finalizar',
+                function () {
+                    document.getElementById(formId).submit();
+                }
+            );
+        };
+    }
+
+};
