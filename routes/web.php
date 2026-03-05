@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\Administrador\DashboardController as AdminDashboard;
+use App\Http\Controllers\Administrador\ResumController;
 use App\Http\Controllers\Administrador\SedesController;
 use App\Http\Controllers\Administrador\UsuariosController;
 use App\Http\Controllers\Administrador\CategoriasController;
@@ -52,6 +53,9 @@ Route::middleware('auth')->group(function () {
     // Rutas del módulo Administrador
     Route::middleware('role:administrador')->prefix('administrador')->name('administrador.')->group(function () {
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+
+        // Ruta a resum
+        Route::get('/resum', [ResumController::class, 'index'])->name('resum');
 
         // Gestión de usuarios
         Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');

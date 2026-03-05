@@ -34,15 +34,27 @@
             </div>
 
             <nav class="sidebar-nav">
-
+                <a href="{{ route('administrador.dashboard') }}"
+                
                 {{-- ── Administrador ── --}}
                 @if (in_array($rolNombre, ['admin', 'administrador']))
+                class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/dashboard')}}">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Volver a dashboard</span>
+                </a>
                     <p class="sidebar-section">Principal</p>
 
                     <a href="{{ route('administrador.dashboard') }}"
                        class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/dashboard') ? 'active' : '' }}">
                         <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
+                    </a>
+
+                    {{-- Ruta a resum --}}
+                    <a href="{{ route('administrador.resum') }}"
+                    class="sidebar-link {{ str_starts_with($rutaActual, 'administrador/resum') ? 'active' : '' }}">
+                        <i class="bi bi-back"></i>
+                        <span>Resum</span>
                     </a>
 
                     <p class="sidebar-section">Gestión</p>
