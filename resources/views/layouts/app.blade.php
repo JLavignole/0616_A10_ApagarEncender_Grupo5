@@ -44,6 +44,11 @@
                         <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
                     </a>
+                    <a href="{{ route('administrador.dashboard.incidencias') }}"
+                       class="sidebar-link {{ $rutaActual === 'resum' ? 'active' : '' }}">
+                        <i class="bi bi-clipboard2-data"></i>
+                        <span>Resumen incidencias</span>
+                    </a>
 
                     <p class="sidebar-section">Gestión</p>
 

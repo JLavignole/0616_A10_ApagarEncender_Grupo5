@@ -7,10 +7,12 @@ window.onload = function () {
     var selectEstado   = document.getElementById('selectEstado');
     var selectPrioridad = document.getElementById('selectPrioridad');
     var selectSede     = document.getElementById('selectSede');
+    var selectCategoria = document.getElementById('selectCategoria');
     var inputFecha     = document.getElementById('inputFecha');
 
     var timerBuscar = null;
 
+    // Si hay un texto en el input de búsqueda, esperar a que el usuario deje de escribir para enviar el formulario
     if (inputBuscar) {
         inputBuscar.oninput = function () {
             clearTimeout(timerBuscar);
@@ -19,13 +21,13 @@ window.onload = function () {
             }, 400);
         };
     }
-
+    // Para los selects, enviar el formulario inmediatamente al cambiar la selección
     if (selectEstado) {
         selectEstado.onchange = function () {
             formFiltros.submit();
         };
     }
-
+    // Lo mismo para prioridad, sede, categoría y fecha
     if (selectPrioridad) {
         selectPrioridad.onchange = function () {
             formFiltros.submit();
@@ -34,6 +36,12 @@ window.onload = function () {
 
     if (selectSede) {
         selectSede.onchange = function () {
+            formFiltros.submit();
+        };
+    }
+
+    if (selectCategoria) {
+        selectCategoria.onchange = function () {
             formFiltros.submit();
         };
     }

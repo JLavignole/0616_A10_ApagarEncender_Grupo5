@@ -62,6 +62,13 @@
     <div class="row g-3 mb-4">
 
         <div class="col-12 col-sm-6 col-lg-3">
+            <a href="{{ route('administrador.dashboard.incidencias') }}" class="tarjeta-acceso">
+                <i class="bi bi-people"></i>
+                <span class="tarjeta-acceso-texto">Dashboard Incidencias</span>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-3">
             <a href="#" class="tarjeta-acceso">
                 <i class="bi bi-people"></i>
                 <span class="tarjeta-acceso-texto">Gestionar usuarios</span>

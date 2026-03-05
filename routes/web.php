@@ -46,8 +46,11 @@ Route::get('/dashboard', function () {
     };
 })->middleware('auth')->name('dashboard');
 
-
 Route::middleware('auth')->group(function () {
+
+    Route::middleware('role:administrador')
+        ->get('administrador/resum', [AdminDashboard::class, 'dashboardIncidencias'])
+        ->name('administrador.dashboard.incidencias');
 
     // Rutas del módulo Administrador
     Route::middleware('role:administrador')->prefix('administrador')->name('administrador.')->group(function () {
@@ -85,7 +88,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/incidencias', [AdminIncidencias::class, 'index'])->name('incidencias.index');
         Route::get('/incidencias/{incidencia}/editar', [AdminIncidencias::class, 'editar'])->name('incidencias.editar');
         Route::put('/incidencias/{incidencia}', [AdminIncidencias::class, 'update'])->name('incidencias.update');
-
+        
         // Gestión de sanciones
         Route::get('/sanciones', [SancionesController::class, 'index'])->name('sanciones.index');
         Route::get('/sanciones/crear', [SancionesController::class, 'crear'])->name('sanciones.crear');

@@ -6,6 +6,7 @@ use App\Models\Rol;
 use App\Models\Sede;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
 
 class UserSeeder extends Seeder
@@ -91,7 +92,7 @@ class UserSeeder extends Seeder
                 'rol_id' => $rol->id,
                 'nombre' => $usuario['nombre'],
                 'correo' => $usuario['correo'],
-                'contrasena' => 'password',
+                'contrasena' => Hash::make('password'),
                 'activo' => true,
                 'ultimo_acceso' => Carbon::now()->subHours(rand(1, 96)),
             ]);
