@@ -411,6 +411,20 @@ body {
 
 .tarjeta-acceso-texto { font-size: 14px; font-weight: 600; }
 
+/* ── Overlay móvil (fondo oscuro al abrir sidebar) ─── */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 199;
+    cursor: pointer;
+}
+
+.sidebar-overlay.activo {
+    display: block;
+}
+
 /* ── Responsive ─────────────────────────────────────── */
 @media (max-width: 992px) {
     .sidebar {
@@ -428,5 +442,33 @@ body {
 
     .contenido-pagina {
         padding: 20px 16px 32px;
+    }
+}
+
+/* ── Pantallas muy pequeñas ─────────────────────────── */
+@media (max-width: 576px) {
+    .topbar {
+        padding: 0 14px;
+    }
+
+    .topbar-titulo {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+    }
+
+    .topbar-sede {
+        display: none;
+    }
+
+    .contenido-pagina {
+        padding: 16px 12px 28px;
+    }
+
+    .seccion-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

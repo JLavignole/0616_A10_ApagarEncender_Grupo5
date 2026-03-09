@@ -53,8 +53,8 @@
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
-                        <th>Zona horaria</th>
-                        <th>Usuarios</th>
+                        <th class="d-none d-md-table-cell">Zona horaria</th>
+                        <th class="d-none d-md-table-cell">Usuarios</th>
                         <th>Estado</th>
                         <th class="th-acciones">Acciones</th>
                     </tr>
@@ -64,8 +64,8 @@
                         <tr class="{{ $sede->activo ? '' : 'fila-inactiva' }}">
                             <td class="td-codigo">{{ $sede->codigo }}</td>
                             <td class="fw-semibold">{{ $sede->nombre }}</td>
-                            <td class="td-secundario">{{ $sede->zona_horaria ?? '—' }}</td>
-                            <td class="td-secundario">{{ $sede->usuarios()->count() }}</td>
+                            <td class="td-secundario d-none d-md-table-cell">{{ $sede->zona_horaria ?? '—' }}</td>
+                            <td class="td-secundario d-none d-md-table-cell">{{ $sede->usuarios()->count() }}</td>
                             <td>
                                 <span class="badge-estado badge-estado--{{ $sede->activo ? 'activa' : 'inactiva' }}">
                                     {{ $sede->activo ? 'Activa' : 'Inactiva' }}

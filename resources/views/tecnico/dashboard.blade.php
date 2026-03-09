@@ -66,12 +66,12 @@
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Título</th>
+                        <th class="d-none d-md-table-cell">Título</th>
                         <th>Estado</th>
                         <th>Prioridad</th>
-                        <th>Cliente</th>
-                        <th>Sede</th>
-                        <th>Desde</th>
+                        <th class="d-none d-lg-table-cell">Cliente</th>
+                        <th class="d-none d-lg-table-cell">Sede</th>
+                        <th class="d-none d-md-table-cell">Desde</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -79,7 +79,7 @@
                     @forelse ($misIncidencias as $inc)
                         <tr>
                             <td class="td-codigo">{{ $inc->codigo }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 38) }}</td>
+                            <td class="d-none d-md-table-cell">{{ \Illuminate\Support\Str::limit($inc->titulo, 38) }}</td>
                             <td>
                                 <span class="badge-estado badge-estado--{{ $inc->estado }}">
                                     {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
@@ -94,9 +94,9 @@
                                     <span class="text-muted">—</span>
                                 @endif
                             </td>
-                            <td>{{ $inc->cliente->nombre ?? '—' }}</td>
-                            <td>{{ $inc->sede->nombre ?? '—' }}</td>
-                            <td class="td-fecha">{{ $inc->asignado_en?->format('d/m/Y') ?? '—' }}</td>
+                            <td class="d-none d-lg-table-cell">{{ $inc->cliente->nombre ?? '—' }}</td>
+                            <td class="d-none d-lg-table-cell">{{ $inc->sede->nombre ?? '—' }}</td>
+                            <td class="td-fecha d-none d-md-table-cell">{{ $inc->asignado_en?->format('d/m/Y') ?? '—' }}</td>
                             <td class="text-end">
                                 <a href="{{ route('tecnico.incidencias.detalle', $inc) }}"
                                    class="btn-icono btn-icono--ver"

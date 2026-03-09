@@ -62,13 +62,13 @@
                     <tr>
                         <th></th>
                         <th>Código</th>
-                        <th>Título</th>
-                        <th>Categoría</th>
-                        <th>Cliente</th>
-                        <th>Técnico</th>
+                        <th class="d-none d-md-table-cell">Título</th>
+                        <th class="d-none d-md-table-cell">Categoría</th>
+                        <th class="d-none d-md-table-cell">Cliente</th>
+                        <th class="d-none d-lg-table-cell">Técnico</th>
                         <th>Prioridad</th>
                         <th>Estado</th>
-                        <th>Fecha</th>
+                        <th class="d-none d-lg-table-cell">Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -79,15 +79,15 @@
                                 <span class="estado-dot estado-dot--{{ $inc->estado }}"></span>
                             </td>
                             <td class="td-codigo">{{ $inc->codigo }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
-                            <td>
+                            <td class="d-none d-md-table-cell">{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
+                            <td class="d-none d-md-table-cell">
                                 <span class="badge-cat">{{ $inc->categoria->nombre ?? '—' }}</span>
                                 @if($inc->subcategoria)
                                     <span class="td-sub">{{ $inc->subcategoria->nombre }}</span>
                                 @endif
                             </td>
-                            <td>{{ $inc->cliente->nombre ?? '—' }}</td>
-                            <td>{{ $inc->tecnico->nombre ?? '—' }}</td>
+                            <td class="d-none d-md-table-cell">{{ $inc->cliente->nombre ?? '—' }}</td>
+                            <td class="d-none d-lg-table-cell">{{ $inc->tecnico->nombre ?? '—' }}</td>
                             <td>
                                 @if ($inc->prioridad)
                                     <span class="badge-prioridad badge-prioridad--{{ $inc->prioridad }}">
@@ -102,7 +102,7 @@
                                     {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
                                 </span>
                             </td>
-                            <td class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
+                            <td class="td-fecha d-none d-lg-table-cell">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
                             <td class="td-acciones">
                                 <a href="{{ route('gestor.incidencias.show', $inc->id) }}" class="accion-btn accion-btn--ver" title="Ver detalle">
                                     <i class="bi bi-eye"></i>

@@ -65,12 +65,12 @@
                     <thead>
                         <tr>
                             <th>Código</th>
-                            <th>Título</th>
-                            <th>Categoría</th>
+                            <th class="d-none d-md-table-cell">Título</th>
+                            <th class="d-none d-md-table-cell">Categoría</th>
                             <th>Estado</th>
                             <th>Prioridad</th>
-                            <th>Técnico</th>
-                            <th>Fecha</th>
+                            <th class="d-none d-lg-table-cell">Técnico</th>
+                            <th class="d-none d-lg-table-cell">Fecha</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -78,8 +78,8 @@
                         @forelse ($incidencias as $inc)
                             <tr>
                                 <td class="td-codigo">{{ $inc->codigo }}</td>
-                                <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
-                                <td>
+                                <td class="d-none d-md-table-cell">{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
+                                <td class="d-none d-md-table-cell">
                                     <span class="badge-categoria">{{ $inc->categoria->nombre ?? '—' }}</span>
                                     @if ($inc->subcategoria)
                                         <span class="td-sub">{{ $inc->subcategoria->nombre }}</span>
@@ -99,8 +99,8 @@
                                         <span class="text-muted">—</span>
                                     @endif
                                 </td>
-                                <td>{{ $inc->tecnico->nombre ?? '—' }}</td>
-                                <td class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
+                                <td class="d-none d-lg-table-cell">{{ $inc->tecnico->nombre ?? '—' }}</td>
+                                <td class="td-fecha d-none d-lg-table-cell">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
                                 <td>
                                     <a href="{{ route('cliente.incidencias.detalle', $inc) }}"
                                        class="btn btn-sm btn-outline-primary">

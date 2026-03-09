@@ -23,6 +23,9 @@
         $rutaActual   = request()->path();
     @endphp
 
+    {{-- Overlay para cerrar sidebar en móvil --}}
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="layout-wrapper" id="layoutWrapper">
 
         {{-- ═══════════ SIDEBAR ═══════════ --}}

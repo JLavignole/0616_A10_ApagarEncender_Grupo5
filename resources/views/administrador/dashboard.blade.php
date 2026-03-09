@@ -151,18 +151,18 @@
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Título</th>
+                        <th class="d-none d-md-table-cell">Título</th>
                         <th>Estado</th>
                         <th>Prioridad</th>
-                        <th>Sede</th>
-                        <th>Fecha</th>
+                        <th class="d-none d-lg-table-cell">Sede</th>
+                        <th class="d-none d-lg-table-cell">Fecha</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($ultimasIncidencias as $inc)
                         <tr>
                             <td class="td-codigo">{{ $inc->codigo }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 42) }}</td>
+                            <td class="d-none d-md-table-cell">{{ \Illuminate\Support\Str::limit($inc->titulo, 42) }}</td>
                             <td>
                                 <span class="badge-estado badge-estado--{{ $inc->estado }}">
                                     {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
@@ -177,8 +177,8 @@
                                     <span class="text-muted">—</span>
                                 @endif
                             </td>
-                            <td>{{ $inc->sede->nombre ?? '—' }}</td>
-                            <td class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
+                            <td class="d-none d-lg-table-cell">{{ $inc->sede->nombre ?? '—' }}</td>
+                            <td class="td-fecha d-none d-lg-table-cell">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
                         </tr>
                     @empty
                         <tr>

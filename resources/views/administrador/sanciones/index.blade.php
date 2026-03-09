@@ -61,11 +61,11 @@
                     <tr>
                         <th>Usuario</th>
                         <th>Tipo</th>
-                        <th>Motivo</th>
-                        <th>Inicio</th>
-                        <th>Fin</th>
+                        <th class="d-none d-md-table-cell">Motivo</th>
+                        <th class="d-none d-lg-table-cell">Inicio</th>
+                        <th class="d-none d-lg-table-cell">Fin</th>
                         <th>Estado</th>
-                        <th>Creado por</th>
+                        <th class="d-none d-lg-table-cell">Creado por</th>
                         <th class="th-acciones">Acciones</th>
                     </tr>
                 </thead>
@@ -92,13 +92,13 @@
                                     @endif
                                 </span>
                             </td>
-                            <td class="td-motivo" title="{{ $sancion->motivo }}">
+                            <td class="td-motivo d-none d-md-table-cell" title="{{ $sancion->motivo }}">
                                 {{ \Illuminate\Support\Str::limit($sancion->motivo, 50) }}
                             </td>
-                            <td class="td-secundario">
+                            <td class="td-secundario d-none d-lg-table-cell">
                                 {{ isset($sancion->inicio_en) ? $sancion->inicio_en->format('d/m/Y H:i') : '—' }}
                             </td>
-                            <td class="td-secundario">
+                            <td class="td-secundario d-none d-lg-table-cell">
                                 {{ isset($sancion->fin_en) ? $sancion->fin_en->format('d/m/Y H:i') : 'Indefinida' }}
                             </td>
                             <td>
@@ -106,7 +106,7 @@
                                     {{ $activa ? 'Activa' : 'Finalizada' }}
                                 </span>
                             </td>
-                            <td class="td-secundario">
+                            <td class="td-secundario d-none d-lg-table-cell">
                                 {{ $sancion->creadoPor->nombre ?? '—' }}
                             </td>
                             <td class="td-acciones">

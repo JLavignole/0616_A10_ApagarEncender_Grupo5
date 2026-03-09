@@ -65,12 +65,12 @@
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Título</th>
-                        <th>Categoría</th>
-                        <th>Cliente</th>
+                        <th class="d-none d-md-table-cell">Título</th>
+                        <th class="d-none d-md-table-cell">Categoría</th>
+                        <th class="d-none d-lg-table-cell">Cliente</th>
                         <th>Estado</th>
                         <th>Prioridad</th>
-                        <th>Fecha</th>
+                        <th class="d-none d-lg-table-cell">Fecha</th>
                         <th class="th-acciones">Acciones</th>
                     </tr>
                 </thead>
@@ -78,14 +78,14 @@
                     @forelse ($incidencias as $inc)
                         <tr>
                             <td class="td-codigo">{{ $inc->codigo }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
-                            <td>
+                            <td class="d-none d-md-table-cell">{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
+                            <td class="d-none d-md-table-cell">
                                 <span>{{ $inc->categoria->nombre ?? '—' }}</span>
                                 @if ($inc->subcategoria)
                                     <span class="td-sub">{{ $inc->subcategoria->nombre }}</span>
                                 @endif
                             </td>
-                            <td class="td-secundario">{{ $inc->cliente->nombre ?? '—' }}</td>
+                            <td class="td-secundario d-none d-lg-table-cell">{{ $inc->cliente->nombre ?? '—' }}</td>
                             <td>
                                 <span class="badge-estado badge-estado--{{ $inc->estado }}">
                                     {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
@@ -100,7 +100,7 @@
                                     <span class="text-muted">—</span>
                                 @endif
                             </td>
-                            <td class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
+                            <td class="td-fecha d-none d-lg-table-cell">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
                             <td class="td-acciones">
                                 @if ($inc->estado === 'asignada')
                                     <form id="form-comenzar-{{ $inc->id }}"

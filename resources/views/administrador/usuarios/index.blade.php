@@ -67,8 +67,8 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Sede</th>
+                        <th class="d-none d-md-table-cell">Correo</th>
+                        <th class="d-none d-lg-table-cell">Sede</th>
                         <th>Rol</th>
                         <th>Estado</th>
                         <th class="th-acciones">Acciones</th>
@@ -88,8 +88,8 @@
                                     <span class="fw-semibold">{{ $usuario->nombre }}</span>
                                 </div>
                             </td>
-                            <td class="td-secundario">{{ $usuario->correo }}</td>
-                            <td class="td-secundario">{{ $usuario->sede?->nombre ?? '—' }}</td>
+                            <td class="td-secundario d-none d-md-table-cell">{{ $usuario->correo }}</td>
+                            <td class="td-secundario d-none d-lg-table-cell">{{ $usuario->sede?->nombre ?? '—' }}</td>
                             <td>
                                 <span class="badge-rol badge-rol--{{ $usuario->rol?->nombre ?? 'sin-rol' }}">
                                     {{ ucfirst($usuario->rol?->nombre ?? 'Sin rol') }}

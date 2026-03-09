@@ -62,12 +62,12 @@
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Título</th>
-                        <th>Sede</th>
+                        <th class="d-none d-md-table-cell">Título</th>
+                        <th class="d-none d-lg-table-cell">Sede</th>
                         <th>Estado</th>
                         <th>Prioridad</th>
-                        <th>Técnico</th>
-                        <th>Fecha</th>
+                        <th class="d-none d-lg-table-cell">Técnico</th>
+                        <th class="d-none d-lg-table-cell">Fecha</th>
                         <th class="th-acciones">Acciones</th>
                     </tr>
                 </thead>
@@ -75,8 +75,8 @@
                     @forelse ($incidencias as $inc)
                         <tr>
                             <td class="td-codigo">{{ $inc->codigo }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
-                            <td class="td-secundario">{{ $inc->sede->nombre ?? '—' }}</td>
+                            <td class="d-none d-md-table-cell">{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
+                            <td class="td-secundario d-none d-lg-table-cell">{{ $inc->sede->nombre ?? '—' }}</td>
                             <td>
                                 <span class="badge-estado badge-estado--{{ $inc->estado }}">
                                     {{ str_replace('_', ' ', ucfirst($inc->estado)) }}
@@ -91,8 +91,8 @@
                                     <span class="text-muted">—</span>
                                 @endif
                             </td>
-                            <td class="td-secundario">{{ $inc->tecnico->nombre ?? '—' }}</td>
-                            <td class="td-secundario">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
+                            <td class="td-secundario d-none d-lg-table-cell">{{ $inc->tecnico->nombre ?? '—' }}</td>
+                            <td class="td-secundario d-none d-lg-table-cell">{{ $inc->reportado_en?->format('d/m/Y') ?? '—' }}</td>
                             <td class="td-acciones">
                                 <a href="{{ route('administrador.incidencias.editar', $inc) }}"
                                    class="btn-icono btn-icono--editar"

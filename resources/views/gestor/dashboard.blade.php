@@ -82,10 +82,10 @@
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Título</th>
-                        <th>Categoría</th>
+                        <th class="d-none d-md-table-cell">Título</th>
+                        <th class="d-none d-lg-table-cell">Categoría</th>
                         <th>Cliente</th>
-                        <th>Fecha</th>
+                        <th class="d-none d-lg-table-cell">Fecha</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -93,10 +93,10 @@
                     @forelse ($pendientes as $inc)
                         <tr>
                             <td class="td-codigo">{{ $inc->codigo }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
-                            <td>{{ $inc->categoria->nombre ?? '—' }}</td>
+                            <td class="d-none d-md-table-cell">{{ \Illuminate\Support\Str::limit($inc->titulo, 40) }}</td>
+                            <td class="d-none d-lg-table-cell">{{ $inc->categoria->nombre ?? '—' }}</td>
                             <td>{{ $inc->cliente->nombre ?? '—' }}</td>
-                            <td class="td-fecha">{{ $inc->reportado_en?->format('d/m/Y H:i') ?? '—' }}</td>
+                            <td class="td-fecha d-none d-lg-table-cell">{{ $inc->reportado_en?->format('d/m/Y H:i') ?? '—' }}</td>
                             <td>
                                 <button type="button"
                                         class="btn btn-sm btn-outline-primary btn-abrir-asignar"
