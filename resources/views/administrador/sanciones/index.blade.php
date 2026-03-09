@@ -54,6 +54,7 @@
 
     </form>
 
+    <div id="contenedor-tabla">
     <div class="tabla-card">
         <div class="table-responsive">
             <table class="table tabla-datos mb-0">
@@ -148,6 +149,7 @@
             {{ $sanciones->links() }}
         </div>
     @endif
+    </div>
 
 @endsection
 

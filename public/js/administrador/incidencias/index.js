@@ -1,35 +1,43 @@
 /* ── Administrador / Incidencias / index.js ─────────────── */
 
 window.onload = function () {
-    const formFiltros   = document.getElementById('formFiltros');
-    const inputBuscar   = document.getElementById('inputBuscar');
-    const selectEstado  = document.getElementById('selectEstado');
-    const selectPrioridad = document.getElementById('selectPrioridad');
-    const selectSede    = document.getElementById('selectSede');
-    const selectOrden   = document.getElementById('selectOrden');
+    var formFiltros     = document.getElementById('formFiltros');
+    var inputBuscar     = document.getElementById('inputBuscar');
+    var selectEstado    = document.getElementById('selectEstado');
+    var selectPrioridad = document.getElementById('selectPrioridad');
+    var selectSede      = document.getElementById('selectSede');
+    var selectOrden     = document.getElementById('selectOrden');
+    var contenedor      = document.getElementById('contenedor-tabla');
 
-    let timerBuscar = null;
+    if (!formFiltros || !contenedor) return;
 
-    inputBuscar.oninput = function () {
-        clearTimeout(timerBuscar);
-        timerBuscar = setTimeout(function () {
-            formFiltros.submit();
-        }, 400);
-    };
+    var timerBuscar = null;
 
-    selectEstado.onchange = function () {
-        formFiltros.submit();
-    };
+    function aplicarFiltros() {
+        var params = new URLSearchParams(new FormData(formFiltros)).toString();
+        var url = formFiltros.action + '?' + params;
 
-    selectPrioridad.onchange = function () {
-        formFiltros.submit();
-    };
+        fetch(url)
+            .then(function (respuesta) {
+                return respuesta.text();
+            })
+            .then(function (html) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                contenedor.innerHTML = doc.getElementById('contenedor-tabla').innerHTML;
+                window.history.pushState({}, '', url);
+            });
+    }
 
-    selectSede.onchange = function () {
-        formFiltros.submit();
-    };
+    if (inputBuscar) {
+        inputBuscar.oninput = function () {
+            clearTimeout(timerBuscar);
+            timerBuscar = setTimeout(aplicarFiltros, 400);
+        };
+    }
 
-    selectOrden.onchange = function () {
-        formFiltros.submit();
-    };
+    if (selectEstado)    { selectEstado.onchange    = aplicarFiltros; }
+    if (selectPrioridad) { selectPrioridad.onchange = aplicarFiltros; }
+    if (selectSede)      { selectSede.onchange      = aplicarFiltros; }
+    if (selectOrden)     { selectOrden.onchange     = aplicarFiltros; }
 };

@@ -1,15 +1,13 @@
 /**
  * CentralIT — Layout (sidebar toggle responsive)
- * Usa addEventListener para no colisionar con window.onload de las páginas hijas.
+ * El script se carga al final del body, el DOM está disponible directamente.
  */
-document.addEventListener('DOMContentLoaded', function () {
-    var toggle  = document.getElementById('sidebarToggle');
-    var sidebar = document.getElementById('sidebar');
-    var overlay = document.getElementById('sidebarOverlay');
-    var main    = document.querySelector('.main-wrapper');
+var toggle  = document.getElementById('sidebarToggle');
+var sidebar = document.getElementById('sidebar');
+var overlay = document.getElementById('sidebarOverlay');
+var main    = document.querySelector('.main-wrapper');
 
-    if (!toggle || !sidebar) return;
-
+if (toggle && sidebar) {
     var esMobil = window.innerWidth <= 992;
 
     function cerrarSidebar() {
@@ -17,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (overlay) overlay.classList.remove('activo');
     }
 
-    toggle.addEventListener('click', function () {
+    toggle.onclick = function () {
         if (esMobil) {
             sidebar.classList.toggle('abierto');
             if (overlay) overlay.classList.toggle('activo');
@@ -25,16 +23,16 @@ document.addEventListener('DOMContentLoaded', function () {
             sidebar.classList.toggle('cerrado');
             if (main) main.classList.toggle('expandido');
         }
-    });
+    };
 
     if (overlay) {
-        overlay.addEventListener('click', cerrarSidebar);
+        overlay.onclick = cerrarSidebar;
     }
 
-    window.addEventListener('resize', function () {
+    window.onresize = function () {
         esMobil = window.innerWidth <= 992;
         if (!esMobil) {
             cerrarSidebar();
         }
-    });
-});
+    };
+}

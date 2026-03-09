@@ -9,40 +9,38 @@ window.onload = function () {
     var selectSede     = document.getElementById('selectSede');
     var inputFecha     = document.getElementById('inputFecha');
 
+    var contenedor = document.getElementById('contenedor-tabla');
     var timerBuscar = null;
+
+    function aplicarFiltros() {
+        var params = new URLSearchParams(new FormData(formFiltros)).toString();
+        var url = formFiltros.action + '?' + params;
+
+        fetch(url)
+            .then(function (respuesta) {
+                return respuesta.text();
+            })
+            .then(function (html) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                if (contenedor && doc.getElementById('contenedor-tabla')) {
+                    contenedor.innerHTML = doc.getElementById('contenedor-tabla').innerHTML;
+                }
+                window.history.pushState({}, '', url);
+            });
+    }
 
     if (inputBuscar) {
         inputBuscar.oninput = function () {
             clearTimeout(timerBuscar);
-            timerBuscar = setTimeout(function () {
-                formFiltros.submit();
-            }, 400);
+            timerBuscar = setTimeout(aplicarFiltros, 400);
         };
     }
 
-    if (selectEstado) {
-        selectEstado.onchange = function () {
-            formFiltros.submit();
-        };
-    }
-
-    if (selectPrioridad) {
-        selectPrioridad.onchange = function () {
-            formFiltros.submit();
-        };
-    }
-
-    if (selectSede) {
-        selectSede.onchange = function () {
-            formFiltros.submit();
-        };
-    }
-
-    if (inputFecha) {
-        inputFecha.onchange = function () {
-            formFiltros.submit();
-        };
-    }
+    if (selectEstado)    { selectEstado.onchange    = aplicarFiltros; }
+    if (selectPrioridad) { selectPrioridad.onchange = aplicarFiltros; }
+    if (selectSede)      { selectSede.onchange      = aplicarFiltros; }
+    if (inputFecha)      { inputFecha.onchange      = aplicarFiltros; }
 
     /* ── Botones de eliminar (genérico) ─────────────────── */
     var botonesEliminar = document.querySelectorAll('[data-accion="eliminar"]');

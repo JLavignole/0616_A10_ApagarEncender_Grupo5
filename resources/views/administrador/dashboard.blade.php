@@ -142,6 +142,7 @@
     </form>
 
     {{-- ── Tabla últimas incidencias ── --}}
+    <div id="contenedor-tabla">
     <div class="tabla-card">
         <div class="tabla-card-header">
             <h3 class="tabla-card-titulo">Últimas incidencias</h3>
@@ -193,6 +194,7 @@
 
         {{ $ultimasIncidencias->links() }}
     </div>
+    </div>{{-- #contenedor-tabla --}}
 
 @endsection
 

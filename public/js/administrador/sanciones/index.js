@@ -1,71 +1,99 @@
 /* ── Administrador / Sanciones / index.js ───────────────── */
 
 window.onload = function () {
-    const formFiltros    = document.getElementById('formFiltros');
-    const inputEstado    = document.getElementById('inputEstado');
-    const inputBuscar    = document.getElementById('inputBuscar');
-    const selectTipo     = document.getElementById('selectTipo');
-    const btnTodas       = document.getElementById('btnEstadoTodas');
-    const btnActivas     = document.getElementById('btnEstadoActivas');
-    const btnFinalizadas = document.getElementById('btnEstadoFinalizadas');
+    var formFiltros    = document.getElementById('formFiltros');
+    var inputEstado    = document.getElementById('inputEstado');
+    var inputBuscar    = document.getElementById('inputBuscar');
+    var selectTipo     = document.getElementById('selectTipo');
+    var btnTodas       = document.getElementById('btnEstadoTodas');
+    var btnActivas     = document.getElementById('btnEstadoActivas');
+    var btnFinalizadas = document.getElementById('btnEstadoFinalizadas');
+    var contenedor     = document.getElementById('contenedor-tabla');
 
-    let timerBuscar = null;
+    if (!formFiltros || !contenedor) return;
+
+    var timerBuscar = null;
 
     function quitarActivos() {
-        btnTodas.classList.remove('activo');
-        btnActivas.classList.remove('activo');
-        btnFinalizadas.classList.remove('activo');
+        if (btnTodas)       { btnTodas.classList.remove('activo'); }
+        if (btnActivas)     { btnActivas.classList.remove('activo'); }
+        if (btnFinalizadas) { btnFinalizadas.classList.remove('activo'); }
     }
 
-    btnTodas.onclick = function () {
-        quitarActivos();
-        btnTodas.classList.add('activo');
-        inputEstado.value = 'todas';
-        formFiltros.submit();
-    };
+    function aplicarFiltros() {
+        var params = new URLSearchParams(new FormData(formFiltros)).toString();
+        var url = formFiltros.action + '?' + params;
 
-    btnActivas.onclick = function () {
-        quitarActivos();
-        btnActivas.classList.add('activo');
-        inputEstado.value = 'activas';
-        formFiltros.submit();
-    };
+        fetch(url)
+            .then(function (respuesta) {
+                return respuesta.text();
+            })
+            .then(function (html) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                contenedor.innerHTML = doc.getElementById('contenedor-tabla').innerHTML;
+                window.history.pushState({}, '', url);
+                vincularBotones();
+            });
+    }
 
-    btnFinalizadas.onclick = function () {
-        quitarActivos();
-        btnFinalizadas.classList.add('activo');
-        inputEstado.value = 'finalizadas';
-        formFiltros.submit();
-    };
+    if (btnTodas) {
+        btnTodas.onclick = function () {
+            quitarActivos();
+            btnTodas.classList.add('activo');
+            inputEstado.value = 'todas';
+            aplicarFiltros();
+        };
+    }
 
-    selectTipo.onchange = function () {
-        formFiltros.submit();
-    };
+    if (btnActivas) {
+        btnActivas.onclick = function () {
+            quitarActivos();
+            btnActivas.classList.add('activo');
+            inputEstado.value = 'activas';
+            aplicarFiltros();
+        };
+    }
 
-    inputBuscar.oninput = function () {
-        clearTimeout(timerBuscar);
-        timerBuscar = setTimeout(function () {
-            formFiltros.submit();
-        }, 400);
-    };
+    if (btnFinalizadas) {
+        btnFinalizadas.onclick = function () {
+            quitarActivos();
+            btnFinalizadas.classList.add('activo');
+            inputEstado.value = 'finalizadas';
+            aplicarFiltros();
+        };
+    }
+
+    if (selectTipo) { selectTipo.onchange = aplicarFiltros; }
+
+    if (inputBuscar) {
+        inputBuscar.oninput = function () {
+            clearTimeout(timerBuscar);
+            timerBuscar = setTimeout(aplicarFiltros, 400);
+        };
+    }
+
+    vincularBotones();
 
     /* ── Botones de finalizar sanción ──────────────────── */
 
-    var botonesFinalizar = document.querySelectorAll('.btn-confirmar-finalizar');
-    for (var i = 0; i < botonesFinalizar.length; i++) {
-        botonesFinalizar[i].onclick = function () {
-            var nombre = this.dataset.nombre;
-            var formId = this.dataset.form;
-            confirmarAccion(
-                '¿Finalizar sanción?',
-                'La sanción de ' + nombre + ' será finalizada. Esta acción no se puede deshacer.',
-                'warning',
-                'Sí, finalizar',
-                function () {
-                    document.getElementById(formId).submit();
-                }
-            );
-        };
+    function vincularBotones() {
+        var botonesFinalizar = document.querySelectorAll('.btn-confirmar-finalizar');
+        for (var i = 0; i < botonesFinalizar.length; i++) {
+            botonesFinalizar[i].onclick = function () {
+                var nombre = this.dataset.nombre;
+                var formId = this.dataset.form;
+                confirmarAccion(
+                    '¿Finalizar sanción?',
+                    'La sanción de ' + nombre + ' será finalizada. Esta acción no se puede deshacer.',
+                    'warning',
+                    'Sí, finalizar',
+                    function () {
+                        document.getElementById(formId).submit();
+                    }
+                );
+            };
+        }
     }
 
 };
